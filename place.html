@@ -28,15 +28,12 @@
         font-size: 0.8rem;
         border-radius: 10px;
         margin: 10px 5px;
-        padding: 20px;
+        padding: 20px 0px;
         box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    }
+      }
       .profile img {
         height: 90px;
         width: 90px;
-      }
-      .two:hover {
-        background-color: rgba(240, 248, 255, 0.313);
       }
       .two:hover img {
         scale: 1.07;
@@ -61,8 +58,9 @@
         color: rgba(14, 14, 14, 0.938);
       }
       .deta {
+        margin-top: 20px;
         padding: 20px 10px;
-        border-radius: 20px 20px 0px 0px;
+        border-radius: 25px 25px 0px 0px;
         text-align: justify;
         position: sticky;
         background-color: white;
@@ -73,8 +71,22 @@
       .deta h2 {
         text-align: center;
       }
+      h3{
+        margin: 5px;
+        text-align: center;
+      }
       .deta > p {
         margin-bottom: 10px;
+      }
+      .map{
+        background-color: red;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+      }
+      .map iframe{
+        width: 100%;
+        height: 200px;
       }
       .more {
         display: flex;
@@ -82,24 +94,23 @@
         margin-top: 5px;
       }
       .more a {
-        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-        width: 25vw;
+        width: 30vw;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         align-items: center;
-        padding: 10px;
+        padding: 15px 10px;
         margin: 4px;
         text-decoration: none;
         color: black;
         border-radius: 5px;
-      }
-      .more a:hover {
-        background-color: #2ecc71; /* Cool green color */
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+ }
+      .more a:hover img{
+        scale: 1.05;
         transition: 0.5s;
       }
-      
-      
+
       .more img {
         object-fit: cover;
         object-position: center;
@@ -158,85 +169,134 @@
       $(document).ready(function () {
         const placeName = localStorage.getItem("PlaceName");
         const storedData = localStorage.getItem("PublicDataPlaces");
-    
+
         if (!storedData) {
-            console.error("No CSV data found in local storage.");
-            return;
+          console.error("No CSV data found in local storage.");
+          return;
         }
-    
+
         Papa.parse(storedData, {
-            complete: function (results) {
-                const rows = results.data;
-                rows.shift(); // Skip first row
-                renderProfilesFromLocalStorage(rows, placeName);
-            },
-            header: false,
+          complete: function (results) {
+            const rows = results.data;
+            rows.shift(); // Skip first row
+            renderProfilesFromLocalStorage(rows, placeName);
+          },
+          header: false,
         });
-    
+
         function renderProfilesFromLocalStorage(data, placeName) {
-            $("#profiles").empty(); // Clear existing content
-            for (let j = 0; j < data.length; j++) {
-                const rowData = data[j];
-    
-                if (rowData[1].trim() === placeName.trim()) {
-                    const profileDiv = createProfileDiv(rowData);
-                    $("#profiles").append(profileDiv);
-                }
+          $("#profiles").empty(); // Clear existing content
+          for (let j = 0; j < data.length; j++) {
+            const rowData = data[j];
+
+            if (rowData[1].trim() === placeName.trim()) {
+              const profileDiv = createProfileDiv(rowData);
+              $("#profiles").append(profileDiv);
             }
+          }
         }
-    
+
         function createProfileDiv(rowData) {
-            return `
-                <div class="profile" data-one="${rowData[1]}" data-two="${rowData[2]}" data-three="${rowData[3]}" data-four="${rowData[18]}">
+          return `
+                <div class="profile" data-one="${
+                  rowData[1]
+                }" data-two="${rowData[2]}" data-three="${rowData[3]}" data-four="${rowData[18]}">
                     <div class="sticky">
                         <div class="two">
                             <img src="${rowData[7]}" alt="${rowData[1]}">
                             <div class="one">
                                 <h2>${rowData[1]}</h2>
-                                ${rowData[9] ? `<p>প্রধান : ${rowData[9]}</p>` : ""}
-                                ${rowData[8] ? `<p>ধরন : ${rowData[8]}</p>` : ""}
-                                ${rowData[6] ? `<p>ঠিকানা : ${rowData[6]}</p>` : ""}
-                                ${rowData[4] ? `<p>Contact : ${rowData[4]}</p>` : ""}
-                                ${rowData[5] ? `<p>Email : ${rowData[5]}</p>` : ""}
+                                ${
+                                  rowData[9]
+                                    ? `<p>প্রধান : ${rowData[9]}</p>`
+                                    : ""
+                                }
+                                ${
+                                  rowData[8] ? `<p>ধরন : ${rowData[8]}</p>` : ""
+                                }
+                                ${
+                                  rowData[6]
+                                    ? `<p>ঠিকানা : ${rowData[6]}</p>`
+                                    : ""
+                                }
+                                ${
+                                  rowData[4]
+                                    ? `<p>Contact : ${rowData[4]}</p>`
+                                    : ""
+                                }
+                                ${
+                                  rowData[5]
+                                    ? `<p>Email : ${rowData[5]}</p>`
+                                    : ""
+                                }
                             </div>
                         </div>
                         <div class="slide">
-                            ${rowData[13] ? `<img src="${rowData[13]}" alt="Image 1">` : ""}
-                            ${rowData[14] ? `<img src="${rowData[14]}" alt="Image 2">` : ""}
-                            ${rowData[15] ? `<img src="${rowData[15]}" alt="Image 3">` : ""}
+                            ${
+                              rowData[13]
+                                ? `<img src="${rowData[13]}" alt="Image 1">`
+                                : ""
+                            }
+                            ${
+                              rowData[14]
+                                ? `<img src="${rowData[14]}" alt="Image 2">`
+                                : ""
+                            }
+                            ${
+                              rowData[15]
+                                ? `<img src="${rowData[15]}" alt="Image 3">`
+                                : ""
+                            }
                         </div>
-                        <p class="pa">Change Image by Scroll Right<p>
+                        ${
+                          rowData[14]? `<p class="pa">Change Image by Scroll Right</p>`: ""
+                        }
                     </div>
                     <div class="deta">
                         <h2>${rowData[1]}</h2>
                         ${rowData[10] ? `<p>${rowData[10]}</p>` : ""}
+                        ${rowData[16]? `<h3>লোকেশন</h3>`: ""}
+                        <div class="map">
+                          ${rowData[16]? `<iframe src="${rowData[16]}"></iframe>`: ""}
+                        </div>
                         ${rowData[11] ? `<p>${rowData[11]}</p>` : ""}
                         <h2>আরো জানুন</h2>
                         <div class="more">
-                            ${rowData[17] ? `<a href="${rowData[19]}"><img src="${rowData[17]}"><br><p>${rowData[18]}</p></a>` : ""}
-                            ${rowData[20] ? `<a href="${rowData[22]}"><img src="${rowData[20]}"><br><p>${rowData[21]}</p></a>` : ""}
-                            ${rowData[23] ? `<a href="${rowData[25]}"><img src="${rowData[23]}"><br><p>${rowData[24]}</p></a>` : ""}
+                            ${
+                              rowData[17]
+                                ? `<a href="${rowData[19]}"><img src="${rowData[17]}"><br><p>${rowData[18]}</p></a>`
+                                : ""
+                            }
+                            ${
+                              rowData[20]
+                                ? `<a href="${rowData[22]}"><img src="${rowData[20]}"><br><p>${rowData[21]}</p></a>`
+                                : ""
+                            }
+                            ${
+                              rowData[23]
+                                ? `<a href="${rowData[25]}"><img src="${rowData[23]}"><br><p>${rowData[24]}</p></a>`
+                                : ""
+                            }
                         </div>
                     </div>
                 </div>`;
         }
-    
+
         // Event listener for click on a tag
         $("#profiles").on("click", ".profile a", function () {
-            const profileDiv = $(this).closest(".profile");
-            const one = profileDiv.data("one");
-            const two = profileDiv.data("two");
-            const three = profileDiv.data("three");
-            const four = profileDiv.data("four");
-    
-            // Store data in local storage
-            localStorage.setItem("one", one);
-            localStorage.setItem("two", two);
-            localStorage.setItem("three", three);
-            localStorage.setItem("four", four);
+          const profileDiv = $(this).closest(".profile");
+          const one = profileDiv.data("one");
+          const two = profileDiv.data("two");
+          const three = profileDiv.data("three");
+          const four = profileDiv.data("four");
+
+          // Store data in local storage
+          localStorage.setItem("one", one);
+          localStorage.setItem("two", two);
+          localStorage.setItem("three", three);
+          localStorage.setItem("four", four);
         });
-    });
-    
+      });
     </script>
   </body>
 </html>
