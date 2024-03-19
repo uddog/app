@@ -1,0 +1,53 @@
+/*for main content */
+
+header {
+  backdrop-filter: blur(10px);
+  background-color: transparent;
+}
+.sidebar {
+  backdrop-filter: blur(10px);
+  background-color: transparent;
+}
+.bio-section {
+  background-color: transparent;
+  backdrop-filter: blur(10px);
+}
+.ad2 {
+  width: 95vw;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-wrap: wrap;
+  padding: 7px;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.ad2 a {
+  font-family: "font1";
+  width: 30vw;
+  margin: 5px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.345);
+  padding: 20px;
+  text-decoration: none;
+  color: black;
+  backdrop-filter: blur(10px);
+  border-radius: 5px; /* Rounded corners for buttons */
+  transition: background-color 0.1s; /* Smooth transition for hover effect */
+}
+.ad2 img{
+  width: 25vw;
+  height: 25vw;
+}
+.ad2 a ion-icon {
+  font-size: 4rem;
+  margin-bottom: 10px;
+}
+
+.ad2 a:hover {
+  background-color: white;
+}

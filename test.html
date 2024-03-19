@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Full Scroll Parallax</title>
+<link rel="stylesheet" href="universal.css">
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+  .section {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .parallax {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    z-index: -1;
+  }
+  .content {
+    font-family: 'font1';
+    text-align: center;
+    color: white;
+    z-index: 1;
+  }
+</style>
+</head>
+<body>
+
+<div class="section">
+  <div class="parallax" style="background-image: url('https://i.pinimg.com/474x/32/44/37/324437fd4d4de973df5e751a7491553d.jpg');"></div>
+  <div class="content">
+    <h1>উদ্যোগ -একটি সামাজিক উন্নয়নমূলক সংগঠন </h1>
+  </div>
+</div>
+
+<div class="section">
+  <div class="parallax" style="background-image: url('https://i.pinimg.com/474x/a1/5f/c3/a15fc370ae1528ab8d8ecfce9694010f.jpg');"></div>
+  <div class="content">
+    <h1>Parallax Effect</h1>
+    <p>This is some sample text for demonstration purposes.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="parallax" style="background-image: url('https://i.pinimg.com/474x/c1/08/59/c10859f691f0bfd7bbe3746e79b0b005.jpg');"></div>
+  <div class="content">
+    <h1>End of Parallax</h1>
+    <p>Thank you for scrolling!</p>
+  </div>
+</div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    let parallaxSections = document.querySelectorAll(".section");
+
+    window.addEventListener("scroll", function() {
+      parallaxSections.forEach(function(section) {
+        let yOffset = window.pageYOffset;
+        let parallax = section.querySelector(".parallax");
+        let parallaxOffset = parallax.offsetTop;
+        let sectionHeight = section.offsetHeight;
+
+        if (yOffset > parallaxOffset - window.innerHeight && yOffset <= (parallaxOffset + sectionHeight)) {
+          parallax.style.backgroundPositionY = (yOffset - parallaxOffset) * 0.7 + "px"; // Adjust the parallax speed here
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

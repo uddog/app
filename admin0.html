@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="universal.css">
+    <style>
+      #profilesContainer {
+            padding: 20px;
+            border-radius: 10px;
+            overflow: hidden; /* Added to prevent container from collapsing */
+        }
+
+        .section {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            position: relative;
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid;
+        }
+
+        .section a{
+            text-decoration: none;
+        }
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+            width: 100%;
+            color: #333;
+        }
+
+        .profile {
+            flex-wrap: wrap;
+            width: 25vw;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px;
+            cursor: pointer;
+            justify-content: center;
+            display: flex;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, opacity 0.5s ease; /* Added opacity transition */
+            text-align: center;
+            opacity: 0; /* Initially set opacity to 0 */
+        }
+        
+        .profile.show {
+            opacity: 1; /* When profile is shown, set opacity to 1 */
+        }
+        
+        .profile:hover {
+            background-color: #f9f8f8;
+        }
+
+        .profile img {
+            object-fit: cover;
+            object-position: center;
+            width: 70px;
+            height: 70px;
+            margin-right: 0 auto;
+        }
+        .profile div {
+            color: black;
+        }
+
+        #searchBox {
+            margin-top: 10vh;
+            padding: 10px;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 90vw;
+            box-sizing: border-box;
+        }
+          
+
+
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid ;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+
+    
+    <!--NavBar Start-->
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-top" id="sidebarTop"></div>
+        <a onclick="toggleSidebar()" class="close-btn">&times;</a>
+        <a href="index.html" id="homeLink">Home</a>
+        <a href="inbox.html">Inbox</a>
+        <a href="profiles.html" id="profileBtn">Profile</a>
+        <a href="settings.html">Settings</a>
+        <a href="#" onclick="openLogoutPopup()" id="logoutBtn">Log Out</a>
+    </div>
+    <!-- Main content -->
+    <header>
+        <div>
+            <div class="menu-icon" id="sidebarButton" onclick="toggleSidebar()">&#9776;</div>
+        </div>
+        <nav id="navbar">
+        </nav>
+    </header>
+
+    <!-- Bio section -->
+    <div class="bio-section" id="bioSection" style="display: none;">
+    </div>
+
+    <!-- Logout Popup -->
+    <div class="overlay" id="overlay" onclick="closeLogoutPopup()"></div>
+    <div class="popup" id="logoutPopup">
+        <p>Are you sure you want to logout?</p>
+        <a style="color: black;" href="index.html"><button onclick="logout()">Yes</button></a>  
+        <button onclick="closeLogoutPopup()">No</button>
+    </div>    
+    <!--NavBar End-->
+
+
+
+    <input type="text" id="searchBox" placeholder="Search" oninput="searchProfiles()">
+
+
+       <!-- Loading screen -->
+    <div id="loading-screen">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <div id="profilesContainer">
+        <!-- Profile content will be dynamically generated here -->
+    </div>
+
+
+    <script src="universal.js"></script>
+    <script src="navbar.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script>
+    // Function to fetch and display CSV data
+    async function fetchAndDisplayCSVData() {
+        // Show loading screen
+        document.getElementById('loading-screen').style.display = 'flex';
+    
+        try {
+            // Retrieve CSV data from local storage
+            const cachedData = localStorage.getItem('MoreOption');
+    
+            if (cachedData) {
+                // Parse CSV data using PapaParse
+                Papa.parse(cachedData, {
+                    complete: function(results) {
+                        // Hide loading screen
+                        document.getElementById('loading-screen').style.display = 'none';
+    
+                        const profilesContainer = document.getElementById('profilesContainer');
+                        const rows = results.data;
+    
+                        let sections = {};
+    
+                        // Group profiles by section
+                        for (let i = 1; i < rows.length; i++) {
+                            const profileData = rows[i];
+    
+                            const sectionName = profileData[1];
+                            const profileDiv = document.createElement('div');
+                            profileDiv.classList.add('profile');
+    
+                            // Create an image element and set its source (column B)
+                            const imgElement = document.createElement('img');
+                            imgElement.src = profileData[2]; // Assuming column B contains the image source
+                            profileDiv.appendChild(imgElement);
+    
+                            // Create a div for column C content
+                            const columnCContent = document.createElement('div');
+                            columnCContent.textContent = profileData[3]; // Assuming column C contains content
+                            profileDiv.appendChild(columnCContent);
+    
+                            // Create an anchor tag and set its link (column D)
+                            const anchorElement = document.createElement('a');
+                            anchorElement.href = profileData[4]; // Assuming column D contains the link
+                            anchorElement.appendChild(profileDiv);
+    
+                            // Add anchor tag to the corresponding section
+                            if (!sections[sectionName]) {
+                                sections[sectionName] = {
+                                    sectionElement: document.createElement('div'),
+                                    hasMatchingProfile: false
+                                };
+                                sections[sectionName].sectionElement.classList.add('section');
+                                profilesContainer.appendChild(sections[sectionName].sectionElement);
+    
+                                const sectionTitle = document.createElement('div');
+                                sectionTitle.classList.add('section-title');
+                                sectionTitle.textContent = sectionName;
+                                sections[sectionName].sectionElement.appendChild(sectionTitle);
+                            }
+    
+                            sections[sectionName].sectionElement.appendChild(anchorElement);
+    
+                            // Check if the profile matches the search term
+                            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+                            if (columnCContent.textContent.toLowerCase().includes(searchTerm)) {
+                                sections[sectionName].hasMatchingProfile = true;
+                            }
+    
+                            // Add class to show profile with fade-in effect
+                            setTimeout(() => {
+                                profileDiv.classList.add('show');
+                            }, 10 * i); // Adjust timing as per your preference
+                        }
+    
+                        // Initially hide sections without matching profiles
+                        Object.values(sections).forEach(section => {
+                            if (!section.hasMatchingProfile) {
+                                section.sectionElement.style.display = 'none';
+                            }
+                        });
+                    },
+                    error: function(error) {
+                        console.error('Error parsing CSV data:', error);
+                        // Hide loading screen in case of an error
+                        document.getElementById('loading-screen').style.display = 'none';
+                    }
+                });
+            } else {
+                console.error('CSV data not found in local storage.');
+            }
+        } catch (error) {
+            console.error('Error fetching and displaying CSV data:', error);
+            // Hide loading screen in case of an error
+            document.getElementById('loading-screen').style.display = 'none';
+        }
+    }
+    
+    // Call the function to fetch and display CSV data
+    fetchAndDisplayCSVData();
+    
+    // Add event listener to search box for real-time filtering
+    document.getElementById('searchBox').addEventListener('input', function() {
+        searchProfiles();
+    });
+    
+    // Add event listener to the container to capture clicks on profiles
+    document.getElementById('profilesContainer').addEventListener('click', function(event) {
+        console.log("Clicked profile");
+        const clickedProfile = event.target.closest('.profile');
+        if (clickedProfile) {
+            const catName = clickedProfile.querySelector('div:nth-child(2)').textContent; // Assuming column C contains the content
+            localStorage.setItem('CatName', catName);
+        }
+    });
+    </script>
+    
+
+</body>
+
+</html>

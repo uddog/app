@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSV Profiles</title>
+    <link rel="stylesheet" href="universal.css" />
+    <link rel="stylesheet" href="navbar.css" />
+    <style>
+      #searchContainer {
+        display: flex;
+        justify-content: center;
+      }
+
+      #searchInput {
+        margin-top: 11vh;
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 90vw;
+      }
+
+      #searchInput:focus {
+        outline: none;
+        border-color: #007bff;
+      }
+      #profilesContainer {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      /* Profile styles */
+      .profile {
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-family: "font1";
+        width: 90vw;
+      }
+      .profile:hover img {
+        scale: 1.05;
+        transition: 0.3s;
+      }
+      .profile img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        object-position: center;
+      }
+      .two {
+        display: flex;
+        justify-content: space-around;
+      }
+      .one {
+        padding: 5px;
+        width: 100%;
+        display: grid;
+        place-items: center;
+      }
+      .one h2 {
+        font-size: 1.2rem;
+      }
+      .one p {
+        font-size: 0.8rem;
+      }
+      .see-more {
+        width: 90vw;
+        display: block;
+        margin-top: 10px;
+        padding: 5px 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Material-like shadow */
+      }
+
+      .see-more:hover {
+        background-color: #0056b3;
+      }
+      .skeleton-profile {
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 90vw;
+        animation: skeleton-loading 1s infinite alternate;
+      }
+
+      @keyframes skeleton-loading {
+        0% {
+          background-color: rgba(0, 0, 0, 0.1);
+        }
+        100% {
+          background-color: rgba(0, 0, 0, 0.3);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!--NavBar Start-->
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+      <div class="sidebar-top" id="sidebarTop"></div>
+      <a onclick="toggleSidebar()" class="close-btn">&times;</a>
+      <a href="index.html" id="homeLink">Home</a>
+      <a href="inbox.html">Inbox</a>
+      <a href="profiles.html" id="profileBtn">Profile</a>
+      <a href="settings.html">Settings</a>
+      <a href="#" onclick="openLogoutPopup()" id="logoutBtn">Log Out</a>
+    </div>
+    <!-- Main content -->
+    <header>
+      <div>
+        <div class="menu-icon" id="sidebarButton" onclick="toggleSidebar()">
+          &#9776;
+        </div>
+      </div>
+      <nav id="navbar"></nav>
+    </header>
+
+    <!-- Bio section -->
+    <div class="bio-section" id="bioSection" style="display: none"></div>
+
+    <!-- Logout Popup -->
+    <div class="overlay" id="overlay" onclick="closeLogoutPopup()"></div>
+    <div class="popup" id="logoutPopup">
+      <p>Are you sure you want to logout?</p>
+      <a style="color: black" href="index.html"
+        ><button onclick="logout()">Yes</button></a
+      >
+      <button onclick="closeLogoutPopup()">No</button>
+    </div>
+    <!--NavBar End-->
+
+    <div id="searchContainer">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search"
+      />
+    </div>
+    <div id="profilesContainer"></div>
+    <script src="universal.js"></script>
+    <script src="navbar.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+<script>
+  const catName = localStorage.getItem('CatName');
+
+  function showSkeleton() {
+    const profilesContainer = document.getElementById("profilesContainer");
+    profilesContainer.innerHTML = ""; // Clear previous content
+    for (let i = 0; i < 5; i++) {
+      profilesContainer.innerHTML += `
+        <div class="skeleton-profile">
+          <div class="two">
+            <div style="width: 100px; height: 100px; background-color: #ddd; border-radius: 50%;"></div>
+            <div class="one" style="width: 60%;">
+              <h2 style="height: 20px; background-color: #ddd; margin-bottom: 10px;"></h2>
+              <p style="height: 15px; background-color: #ddd;"></p>
+              <p style="height: 15px; background-color: #ddd;"></p>
+            </div>
+          </div>
+        </div>`;
+    }
+  }
+
+  function hideSkeletonAndRenderProfiles(data) {
+    renderProfiles(data);
+    const profilesContainer = document.getElementById("profilesContainer");
+    profilesContainer.querySelectorAll(".skeleton-profile").forEach((profile) => profile.remove());
+  }
+
+  function renderProfiles(data) {
+    const profilesContainer = document.getElementById("profilesContainer");
+    profilesContainer.innerHTML = ""; // Clear previous content
+
+    data.forEach(rowData => {
+      const profileType = rowData[3].trim(); // Profile type from column D
+      if (profileType === catName.trim()) {
+        const profileName = rowData[1].trim(); // Profile name from column B
+        const profileImgSrc = rowData[7].trim(); // Image source from column H
+        const profileAddress = rowData[6].trim(); // Address from column G
+        const profilePhone = rowData[4].trim(); // Phone number from column E
+        const profileLink = rowData[12].trim(); // Link from column L
+
+        profilesContainer.innerHTML += `
+          <div class="profile">
+            <div class="two">
+              <img src="${profileImgSrc}" alt="${profileName}">
+              <div class="one">
+                <h2>${profileName}</h2>
+                ${
+                  profileAddress
+                    ? `<p class="address">ঠিকানা : ${profileAddress}</p>`
+                    : ""
+                }
+                ${
+                  profilePhone
+                    ? `<p class="phone">যোগাযোগ : ${profilePhone}</p>`
+                    : ""
+                }
+              </div>
+            </div>
+            ${
+              profileLink
+                ? `<button class="see-more" onclick="storePlaceName('${profileName}', '${profileLink}')">See more</button>`
+                : ""
+            }
+          </div>`;
+      }
+    });
+  }
+
+  // Function to store profile name in localStorage
+  function storePlaceName(placeName, link) {
+    localStorage.setItem("PlaceName", placeName);
+    window.location.href = link;
+  }
+
+  // Function to search profiles by name
+  function searchProfiles() {
+    var input, filter, profiles, profile, i, txtValue;
+    input = document.getElementById("searchInput");
+    filter = input.value.toUpperCase();
+    profiles = document.getElementsByClassName("profile");
+
+    for (i = 0; i < profiles.length; i++) {
+      profile = profiles[i].getElementsByClassName("one")[0]; // Get the div containing profile details
+      txtValue = profile.textContent || profile.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        profiles[i].style.display = ""; // Show the profile if the search term matches
+      } else {
+        profiles[i].style.display = "none"; // Hide the profile if the search term does not match
+      }
+    }
+  }
+
+  window.onload = function () {
+    showSkeleton();
+    const storedData = localStorage.getItem("PublicDataPlaces");
+    if (storedData) {
+      Papa.parse(storedData, {
+        complete: function (results) {
+          hideSkeletonAndRenderProfiles(results.data);
+        },
+        header: false
+      });
+    }
+    document.getElementById("searchInput").addEventListener("input", searchProfiles);
+  };
+</script>
+
+  </body>
+</html> 

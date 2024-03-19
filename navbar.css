@@ -1,0 +1,152 @@
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    height: 4vh;
+    border-radius: 5px;
+    position: fixed;
+    width: 90vw;
+    top: 1vh;
+    z-index: 5;
+    left: 50%;
+    background-color: white;
+    transform: translateX(-50%);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+nav li {
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--text);
+    margin-right: 5px;
+}
+
+nav img {
+    object-fit: cover;
+    object-position: center;
+    height: 30px;
+    width: 30px;
+    margin-right: -18px;
+    border-radius: 50%; /* Optional: adds rounded corners to the photo */
+}
+
+/* Sidebar styles */
+.sidebar-top {
+    text-align: center;
+    margin-right: 15vw;
+    margin-bottom: 20px;
+}
+.sidebar {
+    margin-top: 10px;
+    height: 100vh;
+    width: 0;
+    position: fixed;
+    z-index: 9;
+    top: 0px;
+    overflow-x: hidden;
+    background-color: white;
+    transition: 0.5s;
+    padding-top: 20px;
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.sidebar a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 18px;
+    color: var(--text);
+    display: block;
+    transition: 0.3s;
+}
+
+.sidebar a:hover {
+    background-color: #FFDD95; /* Lighter shade of orange */
+    color: rgb(18, 16, 16);
+}
+
+.sidebar .close-btn {
+    position: absolute;
+    top: -13px;
+    height: 30px;
+    left: 80px;
+    font-size: 36px;
+}
+.bio-section {
+    padding: 3px;
+    border-radius: 8px;
+    margin-top: 5px;
+    text-align: center;
+    width: 40vw;
+    background-color: white;
+    position: fixed;
+    right: 5px;
+    top: 8vh;
+    z-index: 2;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+.bio-section p {
+    font-size: 0.7rem;
+    margin: 4px;
+}
+.bio-section button {
+    border: none;
+    margin-bottom: 5px;
+    border-bottom: 0.3px solid;
+}
+.popup {
+    border-radius: 10px;
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border: 1px solid #ccc;
+    z-index: 10;
+    text-align: center;
+    background-color: white;
+}
+.popup button{
+    border-radius: px;
+    margin-top: 5px;
+    padding: 5px;
+    border: none;
+    width: 35px;
+    margin: 4px;
+    font-size: 1rem;
+    background-color: transparent;
+}
+.popup button:hover{
+    background-color: black;
+    color: white;
+}
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10;
+}
