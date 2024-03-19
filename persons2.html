@@ -188,13 +188,13 @@
     profilesContainer.innerHTML = ""; // Clear previous content
 
     data.forEach(rowData => {
-      const profileType1 = rowData[9].trim(); // Profile type from column D
-      const profileType2 = rowData[10].trim(); // Profile type from column D
+      const profileType1 = rowData[8].trim(); // Profile type from column D
+      const profileType2 = rowData[9].trim(); // Profile type from column D
       if (profileType1 === one.trim() || profileType2 === one.trim()) {
         const profileName = rowData[3].trim(); // Profile name from column B
-        const profileImgSrc = rowData[19].trim(); // Image source from column H
-        const specialist = rowData[6].trim(); // Address from column G
-        const profileLink = rowData[20].trim(); // Link from column L
+        const profileImgSrc = rowData[18].trim(); // Image source from column H
+        const specialist = rowData[5].trim(); // Address from column G
+        const profileLink = rowData[19].trim(); // Link from column L
 
         profilesContainer.innerHTML += `
           <div class="profile">
