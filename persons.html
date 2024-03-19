@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CSV to HTML Div Groups</title>
+    <title>Person</title>
     <link rel="stylesheet" href="universal.css" />
     <link rel="stylesheet" href="navbar.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
@@ -17,7 +17,7 @@
       }
 
       /* Style for the select dropdown */
-      #doctorSelect {
+      #specialistSelect {
         padding: 8px; /* Adjust padding as needed */
         border-radius: 5px; /* Adjust border radius as needed */
         background-color: transparent;
@@ -160,8 +160,8 @@
 
     <div class="srch">
       <div>
-        <select id="doctorSelect">
-          <option class="val" value=""></option>
+        <select id="specialistSelect">
+          <option class="option1" value=""></option>
         </select>
       </div>
       <div>
@@ -178,11 +178,11 @@
 
       const catName = localStorage.getItem('CatName');
 
-      const val = document.getElementsByClassName("val");
+      const val = document.getElementsByClassName("option1");
       for (let i = 0; i < val.length; i++) {
           val[i].innerHTML = "All " + catName;
       }
-      // Function to fetch data from local storage and organize it into div groups
+      
       function localStorageToDivGroups() {
         showSkeleton(); // Show skeleton loading scenes
       
@@ -204,8 +204,71 @@
       // Call the function to process data from local storage
       window.onload = function () {
         localStorageToDivGroups();
-      };
+        // Add event listener to the select box
+        const selectBox = document.getElementById("specialistSelect");
+        selectBox.addEventListener("change", function () {
+          const selectedSpecialist = this.value; // Get the selected specialist
       
+          // Hide all profile groups
+          const allGroups = document.querySelectorAll(".group");
+          allGroups.forEach(group => {
+            group.style.display = "none";
+          });
+      
+          if(selectedSpecialist === "") {
+            // If "All" is selected, display all profile groups
+            allGroups.forEach(group => {
+              group.style.display = "block";
+            });
+          } else {
+            // Show the profile group for the selected specialist
+            const selectedGroup = document.querySelector(`.group[data-specialist="${selectedSpecialist}"]`);
+            if (selectedGroup) {
+              selectedGroup.style.display = "block";
+            }
+          }
+        });
+      };
+    
+
+      // Add event listener to the search box
+      const searchBox = document.getElementById("searchBox");
+      searchBox.addEventListener("input", function () {
+          const searchTerm = this.value.trim().toLowerCase(); // Get the search term and convert to lowercase
+      
+          // Hide all profile groups
+          const allGroups = document.querySelectorAll(".group");
+          allGroups.forEach(group => {
+              group.style.display = "none";
+          });
+      
+          // Iterate over each group
+          allGroups.forEach(group => {
+              let groupHasMatch = false;
+      
+              // Get profiles within the group
+              const profiles = group.querySelectorAll(".profile");
+              profiles.forEach(profile => {
+                  const profileName = profile.querySelector('.nam').textContent.trim().toLowerCase(); // Get the profile name and convert to lowercase
+                  if (profileName.includes(searchTerm)) {
+                      // If a profile matches the search term, show the group and set flag to true
+                      group.style.display = "block";
+                      groupHasMatch = true;
+                      profile.style.display = "block";
+                  } else {
+                      // If no profile matches the search term, hide the profile
+                      profile.style.display = "none";
+                  }
+              });
+      
+              // If the group has at least one match, show the group
+              if (groupHasMatch) {
+                  group.style.display = "block";
+              }
+          });
+      });
+      
+
       // Function to process fetched data and populate div groups
       function processData(rowData) {
         // Clear existing content
@@ -218,23 +281,23 @@
         for (let i = 1; i < rowData.length; i++) {
           const profileData = rowData[i];
           const name = profileData[3]; // Column D for name
-          const doctor = profileData[5]; // Column F for doctor
-          const institute = profileData[6]; // Column G for institute
-          const details = profileData[11]; // Column L for details
-          const time = profileData[12]; // Column M for time
-          const imgSrc = profileData[13]; // Column N for image source
-          const medicalField = profileData[4]; // Column E for medical field
-          const number = profileData[7]; // Column E for medical field
+          const specialist = profileData[5]; // Column F for specialist
+          const institute = profileData[8]; 
+          const details = profileData[15]; // Column L for details
+          const time = profileData[16]; // Column M for time
+          const imgSrc = profileData[18]; // Column N for image source
+          const Profession = profileData[4]; // Column E for medical field
+          const number = profileData[11]; // Column E for medical field
       
           // Check if the profile belongs to "Medical" field
-          if (medicalField === catName.trim()) {
+          if (Profession === catName.trim()) {
             // Create a new group if it doesn't exist
-            if (!groups[doctor]) {
-              groups[doctor] = [];
+            if (!groups[specialist]) {
+              groups[specialist] = [];
             }
       
             // Add the row to the respective group
-            groups[doctor].push({
+            groups[specialist].push({
               name: name,
               institute: institute,
               number: number,
@@ -245,31 +308,33 @@
           }
         }
       
-        // Populate select box with doctor names
-        const selectBox = document.getElementById("doctorSelect");
-        for (const doctor in groups) {
-          if (groups.hasOwnProperty(doctor)) {
+        
+        // Populate select box with specialist names
+        
+        const selectBox = document.getElementById("specialistSelect");
+        for (const specialist in groups) {
+          if (groups.hasOwnProperty(specialist)) {
             const option = document.createElement("option");
-            option.textContent = doctor;
-            option.value = doctor;
+            option.textContent = specialist;
+            option.value = specialist;
             selectBox.appendChild(option);
           }
         }
       
         // Create divs for each group
-        for (const doctor in groups) {
-          if (groups.hasOwnProperty(doctor)) {
+        for (const specialist in groups) {
+          if (groups.hasOwnProperty(specialist)) {
             const groupDiv = document.createElement("div");
             groupDiv.classList.add("group");
-            groupDiv.setAttribute("data-doctor", doctor); // Add doctor name as data attribute
+            groupDiv.setAttribute("data-specialist", specialist); // Add specialist name as data attribute
       
-            // Add doctor's name as heading
+            // Add specialist's name as heading
             const heading = document.createElement("h2");
-            heading.textContent = doctor;
+            heading.textContent = specialist;
             groupDiv.appendChild(heading);
       
-            // Add profiles under the doctor
-            groups[doctor].forEach((profileData) => {
+            // Add profiles under the specialist
+            groups[specialist].forEach((profileData) => {
               const profileDiv = `
                 <div class="profile">
                   <div class="two">
@@ -339,6 +404,10 @@
         const resultDiv = document.getElementById("result");
         resultDiv.innerHTML = ""; // Clear skeleton scenes
       }
+      
+
+
+
       
     </script>
   </body>

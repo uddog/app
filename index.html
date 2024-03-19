@@ -10,33 +10,8 @@
     <link rel="stylesheet" href="universal.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="universal.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-  // Registering a service worker
-  navigator.serviceWorker.register('/swr.js')
-    .then(registration => {
-      console.log('Service Worker registered:', registration);
-    })
-    .catch(error => {
-      console.error('Service Worker registration failed:', error);
-    });
 
-  // Unregistering a service worker
-  navigator.serviceWorker.getRegistrations().then(registrations => {
-    for (let registration of registrations) {
-      registration.unregister().then(success => {
-        console.log('Service Worker unregistered:', success);
-      }).catch(error => {
-        console.error('Service Worker unregistration failed:', error);
-      });
-    }
-  });
-}
-    </script>
 </head>
-<style>
-  
-</style>
 
 <body>
 
