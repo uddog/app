@@ -281,13 +281,13 @@
         for (let i = 1; i < rowData.length; i++) {
           const profileData = rowData[i];
           const name = profileData[3]; // Column D for name
-          const specialist = profileData[5]; // Column F for specialist
-          const institute = profileData[8]; 
-          const details = profileData[15]; // Column L for details
-          const time = profileData[16]; // Column M for time
-          const imgSrc = profileData[18]; // Column N for image source
-          const Profession = profileData[4]; // Column E for medical field
-          const number = profileData[11]; // Column E for medical field
+          const specialist = profileData[6]; // Column F for specialist
+          const institute = profileData[9]; 
+          const degree = profileData[8]; // Column L for degree
+          const time = profileData[17]; // Column M for time
+          const imgSrc = profileData[19]; // Column N for image source
+          const Profession = profileData[5]; // Column E for medical field
+          const number = profileData[12]; // Column E for medical field
       
           // Check if the profile belongs to "Medical" field
           if (Profession === catName.trim()) {
@@ -301,7 +301,7 @@
               name: name,
               institute: institute,
               number: number,
-              details: details,
+              degree: degree,
               time: time,
               imgSrc: imgSrc, // Include image source in the profile data
             });
@@ -358,8 +358,8 @@
                     </div>
                   </div>
                   ${
-                    profileData.details
-                      ? `<p class="det">তথ্য: ${profileData.details}</p>`
+                    profileData.degree
+                      ? `<p class="det">তথ্য: ${profileData.degree}</p>`
                       : ""
                   }
                   ${
