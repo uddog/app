@@ -100,7 +100,7 @@
       }
       #profileCount{
         position: fixed;
-        top: 19vh;
+        top: 11.5vh;
         right: 0px;
         padding: 3px 20px 3px 10px;
         border-radius: 10px 0px 0px 10px;
@@ -202,6 +202,7 @@ function renderProfiles(data) {
       const profileAddress = rowData[6].trim(); // Address from column G
       const profilePhone = rowData[4].trim(); // Phone number from column E
       const profileLink = rowData[12].trim(); // Link from column L
+      const mainperson = rowData[9].trim(); // Link from column L
 
       profilesContainer.innerHTML += `
         <div class="profile">
@@ -209,6 +210,11 @@ function renderProfiles(data) {
             <img src="${profileImgSrc}" alt="${profileName}">
             <div class="one">
               <h2>${profileName}</h2>
+              ${
+                mainperson
+                  ? `<p class="main">প্রধান : ${mainperson}</p>`
+                  : ""
+              }
               ${
                 profileAddress
                   ? `<p class="address">ঠিকানা : ${profileAddress}</p>`
