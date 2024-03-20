@@ -6,9 +6,91 @@
     <title>Person</title>
     <link rel="stylesheet" href="universal.css" />
     <link rel="stylesheet" href="navbar.css" />
-    <link rel="stylesheet" href="test.css">
     <style>
-
+      body {
+        width: 100vw;
+        overflow-x: hidden;
+      }
+      #profiles {
+        margin-top: 10vh;
+      }
+      .profile {
+        font-family: "font1";
+      }
+      .sticky {
+        position: sticky;
+        top: 10vh;
+      }
+      .two {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        font-size: 0.8rem;
+        border-radius: 10px;
+        margin: 10px 5px;
+        padding: 20px 0px;
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+      }
+      .profile img {
+        height: 90px;
+        width: 90px;
+      }
+      .two:hover img {
+        scale: 1.07;
+        transition: 0.8s;
+      }
+      .more{
+        padding-top: 20px;
+        border-radius: 20px 20px 0px 0px ;
+        position: sticky;
+        margin-top: 20px;
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+        background-color: white;
+        padding-bottom: 40px;
+      }
+      .more h2{
+        text-align: center;
+      }
+      .more .man{
+        padding: 5px;
+        margin-top: 20px;
+      }
+      .slide{
+        width: 55vw;
+        float: left;
+        display: flex;
+        overflow-y: scroll;
+        margin-right: 10px;
+      }
+      .slide::-webkit-scrollbar {
+        width:0px;
+        }
+        
+      .slide img{
+        height: auto;
+        object-fit: cover;
+        object-position: center;
+        min-width: 55vw;
+      }
+      .more .man p{
+        text-align: justify;
+      }
+      .more .man p::first-letter{
+        font-size: 2rem;
+      }
+      .data{
+        margin-top: 10px;
+        border-radius: 20px 20px 0px 0px;
+        padding: 10px;
+        box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+      }
+      .data p {
+        margin: 5px;
+      }
+      .nn{
+        display: flex;
+        justify-content: space-around;
+      }
     </style>
   </head>
   <body>

@@ -137,6 +137,17 @@
           transform: translateX(100%);
         }
       }
+      #profileCount{
+        position: fixed;
+        top: 19vh;
+        right: 0px;
+        padding: 3px 20px 3px 10px;
+        border-radius: 10px 0px 0px 10px;
+        font-size: 1.2rem;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        background-color: white;
+        z-index: 1;
+      }
     </style>
   </head>
   <body>
@@ -178,8 +189,11 @@
     <div class="srch">
       <div>
         <select id="specialistSelect">
-          <option class="option1" value=""></option>
+          <option value="">ALL</option>
         </select>
+
+      <span id="profileCount">0</span>
+
       </div>
       <div>
         <input type="text" id="searchBox" />
@@ -194,11 +208,6 @@
     <script>
       const catName = localStorage.getItem('CatName');
 
-      const val = document.querySelectorAll(".option1");
-      val.forEach(element => {
-          element.innerHTML = "All " + catName;
-      });
-      
       window.onload = function () {
           localStorageToDivGroups();
       
@@ -228,14 +237,27 @@
       function toggleProfileGroups() {
           const selectedSpecialist = this.value;
           const allGroups = document.querySelectorAll(".group");
+          let totalCount = 0; // Initialize counter
+      
           allGroups.forEach(group => {
-              group.style.display = (selectedSpecialist === "" || group.dataset.specialist === selectedSpecialist) ? "block" : "none";
+              const profiles = group.querySelectorAll(".profile");
+              if (selectedSpecialist === "" || group.dataset.specialist === selectedSpecialist) {
+                  group.style.display = "block";
+                  totalCount += profiles.length; // Update count
+              } else {
+                  group.style.display = "none";
+              }
           });
+      
+          // Update the total count display
+          document.getElementById("profileCount").textContent = totalCount;
       }
       
       function filterProfileGroups() {
           const searchTerm = this.value.trim().toLowerCase();
           const allGroups = document.querySelectorAll(".group");
+          let totalCount = 0; // Initialize counter
+      
           allGroups.forEach(group => {
               const profiles = group.querySelectorAll(".profile");
               let groupHasMatch = false;
@@ -243,15 +265,22 @@
                   const profileName = profile.querySelector('.nam').textContent.trim().toLowerCase();
                   const match = profileName.includes(searchTerm);
                   profile.style.display = match ? "block" : "none";
-                  if (match) groupHasMatch = true;
+                  if (match) {
+                      groupHasMatch = true;
+                      totalCount++; // Increment count if profile is displayed
+                  }
               });
               group.style.display = groupHasMatch ? "block" : "none";
           });
+      
+          // Update the total count display
+          document.getElementById("profileCount").textContent = totalCount;
       }
       
       function processData(rowData) {
           document.getElementById("result").innerHTML = "";
           const groups = {};
+          let totalCount = 0; // Initialize counter
       
           for (let i = 1; i < rowData.length; i++) {
               const profileData = rowData[i];
@@ -269,11 +298,15 @@
                       imgSrc: profileData[18],
                       link: profileData[19]
                   });
+                  totalCount++; // Increment count for each profile
               }
           }
       
+          // Update the total count display
+          document.getElementById("profileCount").textContent = totalCount;
+      
           const selectBox = document.getElementById("specialistSelect");
-          selectBox.innerHTML = "";
+          selectBox.innerHTML = `<option value="">All ${catName}</option>`;
           for (const specialist in groups) {
               const option = document.createElement("option");
               option.textContent = specialist;
@@ -286,7 +319,7 @@
               groupDiv.classList.add("group");
               groupDiv.dataset.specialist = specialist;
               groupDiv.innerHTML = `<h2>${specialist}</h2>`;
-              
+      
               groups[specialist].forEach(profileData => {
                   const profileDiv = `
                       <div class="profile">
@@ -338,8 +371,7 @@
       }
       
 
-
-      
-    </script>
+  </script>
+  
   </body>
 </html>

@@ -1,87 +1,200 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Full Scroll Parallax</title>
-<link rel="stylesheet" href="universal.css">
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-  }
-  .section {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .parallax {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    z-index: -1;
-  }
-  .content {
-    font-family: 'font1';
-    text-align: center;
-    color: white;
-    z-index: 1;
-  }
-</style>
+    <title>Snake Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        canvas {
+            border: 1px solid black;
+            background-color: #f2f2f2;
+            display: block;
+            margin: 0 auto;
+            width: 95vw;
+            height: 80vh;
+            touch-action: manipulation;
+        }
+        #score {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 18px;
+        }
+        #controls {
+            text-align: center;
+            margin-top: 10px;
+        }
+        button {
+            font-size: 16px;
+            padding: 10px 20px;
+            margin: 0 5px;
+            background-color: #f55e00;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
+    <div id="score">Score: 0</div>
+    <canvas id="gameCanvas"></canvas>
+    <div id="controls">
+        <button id="pauseButton" onclick="togglePause()">Pause</button>
+        <button onclick="restart()">Restart</button>
+    </div>
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
 
-<div class="section">
-  <div class="parallax" style="background-image: url('https://i.pinimg.com/474x/32/44/37/324437fd4d4de973df5e751a7491553d.jpg');"></div>
-  <div class="content">
-    <h1>উদ্যোগ -একটি সামাজিক উন্নয়নমূলক সংগঠন </h1>
-  </div>
-</div>
+        const box = 20;
+        let rows;
+        let cols;
 
-<div class="section">
-  <div class="parallax" style="background-image: url('https://i.pinimg.com/474x/a1/5f/c3/a15fc370ae1528ab8d8ecfce9694010f.jpg');"></div>
-  <div class="content">
-    <h1>Parallax Effect</h1>
-    <p>This is some sample text for demonstration purposes.</p>
-  </div>
-</div>
-
-<div class="section">
-  <div class="parallax" style="background-image: url('https://i.pinimg.com/474x/c1/08/59/c10859f691f0bfd7bbe3746e79b0b005.jpg');"></div>
-  <div class="content">
-    <h1>End of Parallax</h1>
-    <p>Thank you for scrolling!</p>
-  </div>
-</div>
-
-
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    let parallaxSections = document.querySelectorAll(".section");
-
-    window.addEventListener("scroll", function() {
-      parallaxSections.forEach(function(section) {
-        let yOffset = window.pageYOffset;
-        let parallax = section.querySelector(".parallax");
-        let parallaxOffset = parallax.offsetTop;
-        let sectionHeight = section.offsetHeight;
-
-        if (yOffset > parallaxOffset - window.innerHeight && yOffset <= (parallaxOffset + sectionHeight)) {
-          parallax.style.backgroundPositionY = (yOffset - parallaxOffset) * 0.7 + "px"; // Adjust the parallax speed here
+        function setCanvasDimensions() {
+            canvas.width = window.innerWidth * 0.95;
+            canvas.height = window.innerHeight * 0.8;
+            rows = Math.floor(canvas.height / box);
+            cols = Math.floor(canvas.width / box);
         }
-      });
-    });
-  });
-</script>
 
+        setCanvasDimensions();
+
+        let snake = [];
+        snake[0] = { x: 10 * box, y: 10 * box };
+
+        let food = { x: Math.floor(Math.random() * cols) * box, y: Math.floor(Math.random() * rows) * box };
+
+        let direction;
+        let paused = false;
+        let score = 0;
+        const scoreDisplay = document.getElementById("score");
+        const pauseButton = document.getElementById("pauseButton");
+
+        // Touch controls
+        let touchStartX = 0;
+        let touchStartY = 0;
+        const touchSensitivity = 50; // Adjust as needed
+
+        canvas.addEventListener("touchstart", handleTouchStart, false);
+        canvas.addEventListener("touchmove", handleTouchMove, false);
+
+        function handleTouchStart(event) {
+            touchStartX = event.touches[0].clientX;
+            touchStartY = event.touches[0].clientY;
+        }
+
+        function handleTouchMove(event) {
+            const touchX = event.touches[0].clientX;
+            const touchY = event.touches[0].clientY;
+
+            const deltaX = touchX - touchStartX;
+            const deltaY = touchY - touchStartY;
+
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                if (deltaX > touchSensitivity && direction !== "LEFT") {
+                    direction = "RIGHT";
+                } else if (deltaX < -touchSensitivity && direction !== "RIGHT") {
+                    direction = "LEFT";
+                }
+            } else {
+                if (deltaY > touchSensitivity && direction !== "UP") {
+                    direction = "DOWN";
+                } else if (deltaY < -touchSensitivity && direction !== "DOWN") {
+                    direction = "UP";
+                }
+            }
+
+            event.preventDefault();
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < snake.length; i++) {
+                ctx.fillStyle = (i === 0) ? "#f55e00" : "white";
+                ctx.fillRect(snake[i].x, snake[i].y, box, box);
+
+                ctx.strokeStyle = "black";
+                ctx.strokeRect(snake[i].x, snake[i].y, box, box);
+            }
+
+            ctx.fillStyle = "red";
+            ctx.fillRect(food.x, food.y, box, box);
+
+            let snakeX = snake[0].x;
+            let snakeY = snake[0].y;
+
+            if (direction === "LEFT") snakeX -= box;
+            if (direction === "UP") snakeY -= box;
+            if (direction === "RIGHT") snakeX += box;
+            if (direction === "DOWN") snakeY += box;
+
+            if (snakeX < 0) snakeX = canvas.width - box;
+            if (snakeY < 0) snakeY = canvas.height - box;
+            if (snakeX >= canvas.width) snakeX = 0;
+            if (snakeY >= canvas.height) snakeY = 0;
+
+            if (snakeX === food.x && snakeY === food.y) {
+                score++;
+                food = { x: Math.floor(Math.random() * cols) * box, y: Math.floor(Math.random() * rows) * box };
+            } else {
+                snake.pop();
+            }
+
+            let newHead = { x: snakeX, y: snakeY };
+
+            if (collision(newHead, snake)) {
+                clearInterval(game);
+            }
+
+            snake.unshift(newHead);
+
+            scoreDisplay.innerHTML = "Score: " + score;
+        }
+
+        function collision(head, array) {
+            for (let i = 0; i < array.length; i++) {
+                if (head.x === array[i].x && head.y === array[i].y) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function restart() {
+            clearInterval(game);
+            snake = [{ x: 10 * box, y: 10 * box }];
+            direction = undefined;
+            food = { x: Math.floor(Math.random() * cols) * box, y: Math.floor(Math.random() * rows) * box };
+            score = 0;
+            scoreDisplay.innerHTML = "Score: " + score;
+            game = setInterval(draw, 100);
+            paused = false;
+            pauseButton.innerText = "Pause";
+        }
+
+        function togglePause() {
+            if (paused) {
+                game = setInterval(draw, 100);
+                paused = false;
+                pauseButton.innerText = "Pause";
+            } else {
+                clearInterval(game);
+                paused = true;
+                pauseButton.innerText = "Start";
+            }
+        }
+
+        let game = setInterval(draw, 100);
+
+        window.addEventListener("resize", setCanvasDimensions);
+    </script>
 </body>
 </html>

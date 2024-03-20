@@ -5,14 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="universal.css">
   <style>
-    h1{
-      margin: 10px;
-      font-size: 1.7rem;
-    }
-    p{
-      margin-bottom: 20px;
-      font-size: 0.8rem;
-    }
     body {
       display: flex;
       flex-direction: column;
@@ -20,30 +12,53 @@
       justify-content: center;
       height: 100vh;
       margin: 0;
+      background-color: #f0f0f0; /* Set a background color */
+      font-family: Arial, sans-serif; /* Use a web-safe font */
     }
-
+    
+    h1 {
+      margin: 5px 0;
+      font-size: 1.5rem;
+      color: #333; /* Darken the color for better readability */
+    }
+    
+    p {
+      margin-bottom: 10px;
+      font-size: 0.89rem;
+      color: #666; /* Slightly darken the color */
+    }
+    
     #puzzle-container {
       display: grid;
       grid-template-columns: repeat(3, 100px);
       grid-gap: 5px;
+      margin-bottom: 20px;
     }
-
+    
     .puzzle-piece {
       width: 100px;
       height: 100px;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 24px;
+      font-size: 1.5rem;
       font-weight: bold;
       border: 1px solid #ccc;
+      background-color: #fff; /* Add a background color */
       cursor: pointer;
+      transition: background-color 0.3s ease; /* Smooth transition on hover */
     }
-
+    
+    .puzzle-piece:hover {
+      background-color: #f7f7f7; /* Lighten the background color on hover */
+    }
+    
     #timer {
-      margin-top: 20px;
+      margin-bottom: 20px;
+      font-size: 0.8rem;
+      color: #555; /* Darken the color */
     }
-
+    
     #congratulations-popup {
       text-align: center;
       display: none;
@@ -51,13 +66,15 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background-color: #fff;
+      background-color: rgba(255, 255, 255, 0.9); /* Use a semi-transparent background */
       padding: 20px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
       z-index: 1000;
     }
+    
     #restart-button {
-      background-color: #4CAF50;
+      background-color: #2c3e50; /* Dark blue color */
       color: #fff;
       padding: 10px 20px;
       font-size: 1rem;
@@ -65,11 +82,13 @@
       border-radius: 5px;
       cursor: pointer;
       margin-top: 15px;
+      transition: background-color 0.3s ease; /* Smooth transition on hover */
     }
     
     #restart-button:hover {
-      background-color: #45a049;
+      background-color: #1a242f; /* Darken the background color on hover */
     }
+    
     
   </style>
 </head>

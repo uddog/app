@@ -1,13 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page 2</title>
+  <style>
+    .content {
+        perspective: 1000px; /* Sets perspective for zoom */
+      }
+      
+      .content::view-transition-old {
+        transform: scale(1);
+      }
+      
+      .content::view-transition-new {
+        transform: scale(1.2); /* Adjust zoom factor */
+        transition: transform 0.5s ease-in-out;
+      }
+      
+      
+  </style>
 </head>
 <body>
-    <button onclick="localStorage.clear()">dswef</button>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-   <script src="test2.js"></script> 
+  <div class="content">
+    <h1>Welcome to Page 2</h1>
+    <p>This is the content of page 2. You can navigate back to page 1 by refreshing the page or using your browser's back button.</p>
+  </div>
 </body>
 </html>
