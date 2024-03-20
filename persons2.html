@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CSV Profiles</title>
+    <title>Persons</title>
     <link rel="stylesheet" href="universal.css" />
     <link rel="stylesheet" href="navbar.css" />
     <style>
@@ -81,6 +81,9 @@
       }
       .one p {
         font-size: 0.8rem;
+      }
+      a{
+        text-decoration: none;
       }
       .see-more {
         display: block;
@@ -169,31 +172,13 @@
   const two = localStorage.getItem("two");
   const three = localStorage.getItem("three");
   const four = localStorage.getItem("four");
-
-  function showSkeleton() {
-    const profilesContainer = document.getElementById("profilesContainer");
-    profilesContainer.innerHTML = ""; // Clear previous content
-    for (let i = 0; i < 5; i++) {
-      profilesContainer.innerHTML += `
-        <div class="skeleton-profile">
-          <div class="two">
-            <div style="width: 100px; height: 100px; background-color: #ddd; border-radius: 50%;"></div>
-            <div class="one" style="width: 60%;">
-              <h2 style="height: 20px; background-color: #ddd; margin-bottom: 10px;"></h2>
-              <p style="height: 15px; background-color: #ddd;"></p>
-              <p style="height: 15px; background-color: #ddd;"></p>
-            </div>
-          </div>
-        </div>`;
-    }
-  }
-
+  
   function hideSkeletonAndRenderProfiles(data) {
     renderProfiles(data);
     const profilesContainer = document.getElementById("profilesContainer");
     profilesContainer.querySelectorAll(".skeleton-profile").forEach((profile) => profile.remove());
   }
-
+  
   function groupProfilesByF(data) {
     const groupedProfiles = {};
     data.forEach(rowData => {
@@ -209,24 +194,27 @@
     });
     return groupedProfiles;
   }
-
+  
   function renderGroupedProfiles(groupedProfiles) {
     const profilesContainer = document.getElementById("profilesContainer");
     profilesContainer.innerHTML = ""; // Clear previous content
-
+  
     for (const key in groupedProfiles) {
       if (groupedProfiles.hasOwnProperty(key)) {
         const profiles = groupedProfiles[key];
         const profileGroup = document.createElement("div");
         profileGroup.classList.add("profile-group");
         profileGroup.innerHTML += `<h2>${key}</h2>`;
-        
+  
+        // Modified rendering of profiles to include PersonName and PersonInstitute
         profiles.forEach(rowData => {
           const profileName = rowData[3].trim(); // Profile name from column B
           const profileImgSrc = rowData[18].trim(); // Image source from column H
           const profileLink = rowData[19].trim(); // Link from column L
           const specific = rowData[6].trim(); // Data from column F
-
+          const personName = rowData[3].trim(); // Person name from column D
+          const personInstitute = rowData[8].trim(); // Person institute from column I
+  
           profileGroup.innerHTML += `
             <div class="profile">
               <div class="two">
@@ -236,24 +224,25 @@
                   <p>${specific}</p>
                   ${
                     profileLink
-                      ? `<button class="see-more" onclick="storePlaceName('${profileName}', '${profileLink}')">See more</button>`
+                      ?`<a href="${profileLink}" onclick="storePersonData('${personName}', '${personInstitute}')"><button class="see-more">See more</button></a>`
                       : ""
                   }
                 </div>
               </div>
             </div>`;
         });
+  
         profilesContainer.appendChild(profileGroup);
       }
     }
   }
-
-  // Function to store profile name in localStorage
-  function storePlaceName(placeName, link) {
-    localStorage.setItem("PlaceName", placeName);
-    window.location.href = link;
+  
+  // Function to store PersonName and PersonInstitute in local storage
+  function storePersonData(personName, personInstitute) {
+    localStorage.setItem("PersonName", personName);
+    localStorage.setItem("PersonInstitute", personInstitute);
   }
-
+  
   // Function to search profiles by name
   function searchProfiles() {
     var input, filter, profiles, profile, i, txtValue;
@@ -280,9 +269,7 @@
     }
   }
   
-
   window.onload = function () {
-    showSkeleton();
     const storedData = localStorage.getItem("PublicDataPerson");
     if (storedData) {
       Papa.parse(storedData, {
@@ -295,6 +282,7 @@
     }
     document.getElementById("searchInput").addEventListener("input", searchProfiles);
   };
+  
 </script>
 
   </body>
