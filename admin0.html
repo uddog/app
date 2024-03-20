@@ -270,10 +270,41 @@
     // Call the function to fetch and display CSV data
     fetchAndDisplayCSVData();
     
-    // Add event listener to search box for real-time filtering
-    document.getElementById('searchBox').addEventListener('input', function() {
-        searchProfiles();
-    });
+    //for searching 
+    function searchProfiles() {
+        const searchBox = document.getElementById('searchBox');
+        const sections = document.querySelectorAll('.section');
+    
+        sections.forEach(section => {
+            const sectionTitle = section.querySelector('.section-title');
+            let showSectionTitle = false;
+    
+            const profiles = section.querySelectorAll('.profile');
+            profiles.forEach(profile => {
+                const columnCContent = profile.querySelector('div:nth-child(2)'); // Assuming column C content is the second child
+                const imgElement = profile.querySelector('img');
+                const searchTerm = searchBox.value.toLowerCase();
+    
+                if (columnCContent.textContent.toLowerCase().includes(searchTerm)) {
+                    profile.style.display = 'flex';
+                    showSectionTitle = true;
+                } else {
+                    profile.style.display = 'none';
+                }
+    
+                // Center the image
+                imgElement.style.margin = 'auto';
+            });
+    
+            // Change the display property of the profiles container
+            section.style.display = showSectionTitle ? 'flex' : 'none';
+            // Center the content of the profiles
+            section.style.justifyContent = showSectionTitle ? 'center' : 'none';
+        });
+    }
+    
+
+  
     
     // Add event listener to the container to capture clicks on profiles
     document.getElementById('profilesContainer').addEventListener('click', function(event) {

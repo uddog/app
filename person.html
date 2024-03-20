@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Person</title>
+    <link rel="stylesheet" href="universal.css" />
+    <link rel="stylesheet" href="navbar.css" />
+    <link rel="stylesheet" href="test.css">
+    <style>
+
+    </style>
+  </head>
+  <body>
+    <!--NavBar Start-->
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+      <div class="sidebar-top" id="sidebarTop"></div>
+      <a onclick="toggleSidebar()" class="close-btn">&times;</a>
+      <a href="index.html" id="homeLink">Home</a>
+      <a href="inbox.html">Inbox</a>
+      <a href="profiles.html" id="profileBtn">Profile</a>
+      <a href="settings.html">Settings</a>
+      <a href="#" onclick="openLogoutPopup()" id="logoutBtn">Log Out</a>
+    </div>
+    <!-- Main content -->
+    <header>
+      <div>
+        <div class="menu-icon" id="sidebarButton" onclick="toggleSidebar()">
+          &#9776;
+        </div>
+      </div>
+      <nav id="navbar"></nav>
+    </header>
+
+    <!-- Bio section -->
+    <div class="bio-section" id="bioSection" style="display: none"></div>
+
+    <!-- Logout Popup -->
+    <div class="overlay" id="overlay" onclick="closeLogoutPopup()"></div>
+    <div class="popup" id="logoutPopup">
+      <p>Are you sure you want to logout?</p>
+      <a style="color: black" href="index.html"
+        ><button onclick="logout()">Yes</button></a
+      >
+      <button onclick="closeLogoutPopup()">No</button>
+    </div>
+    <!--NavBar End-->
+
+    <div id="profiles">
+      <!-- Profile content will be inserted here -->
+    </div>
+
+    <script src="navbar.js"></script>
+    <script src="universal.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        const PersonInstitute = localStorage.getItem("PersonInstitute");
+        const PersonName = localStorage.getItem("PersonName");
+        const storedData = localStorage.getItem("PublicDataPerson");
+    
+        if (!storedData) {
+            console.error("No CSV data found in local storage.");
+            return;
+        }
+    
+        Papa.parse(storedData, {
+            complete: function (results) {
+                const rows = results.data.slice(1); // Skip first row
+                renderProfilesFromLocalStorage(rows, PersonInstitute, PersonName);
+            },
+            header: false,
+        });
+    
+        function renderProfilesFromLocalStorage(data, PersonInstitute, PersonName) {
+            $("#profiles").empty(); // Clear existing content
+            data.forEach(rowData => {
+                if (rowData[3].trim() === PersonName.trim() && rowData[8].trim() === PersonInstitute.trim()) {
+                    const profileDiv = createProfileDiv(rowData);
+                    $("#profiles").append(profileDiv);
+                }
+            });
+        }
+    
+        function createProfileDiv(rowData) {
+
+    
+            return `
+                <div class="profile" data-one="${rowData[1]}" data-two="${rowData[2]}" data-three="${rowData[3]}" data-four="${rowData[18]}">
+                    <dv class="sticky">
+                        <div class="two">
+                            <img src="${rowData[18]}" alt="${rowData[18]}">
+                            <div class="one">
+                                <h2>${rowData[1]}</h2>
+                                ${rowData[3] ? `<p>নাম : ${rowData[3]}</p>` : ""}
+                                ${rowData[4] ? `<p>পেশা : ${rowData[4]}</p>` : ""}
+                                ${rowData[5] ? `<p>পদ : ${rowData[5]}</p>` : ""}
+                                ${rowData[6] ? `<p>বিশেষজ্ঞ : ${rowData[6]}</p>` : ""}
+                                ${rowData[8] ? `<p>স্থান : ${rowData[8]}</p>` : ""}
+                            </div>
+                        </div>
+                    </dv>
+                    <div class="more">
+                      ${rowData[3] ? `<h2>${rowData[3]}</h2>` : ""}
+                      <div class="man">
+                        <div class="slide">
+                        ${rowData[20] ? `<img src="${rowData[20]}" alt="${rowData[18]}">` : ""}
+                        ${rowData[20] ? `<img src="${rowData[21]}" alt="${rowData[18]}">` : ""}
+                        ${rowData[20] ? `<img src="${rowData[22]}" alt="${rowData[18]}">` : ""}
+                        </div>
+                        ${rowData[15] ? `<p>${rowData[15]}</p>` : ""}
+                      </div>
+                      <div class="data">
+                        ${rowData[9] ? `<p>শিক্ষা : ${rowData[7]}</p>` : ""}
+                        ${rowData[9] ? `<p>অন্য স্থান : ${rowData[9]}</p>` : ""}
+                        ${rowData[10] ? `<p>ঠিকানা : ${rowData[10]}</p>` : ""}
+                        ${rowData[13] ? `<p>যোগাযোগ : ${rowData[13]}</p>` : ""}
+                        ${rowData[14] ? `<p>ইমেইল : ${rowData[14]}</p>` : ""}
+                        ${rowData[11] ? `<p class="nn"><span>নম্বর : ${rowData[11]}</span><span> অন্য নম্বর : ${rowData[12]}</span></p>` : ""}
+                      </div>
+                    </div>
+                </div>`;
+        }
+    
+    });
+    
+    </script>
+  </body>
+</html>

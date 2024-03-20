@@ -26,19 +26,30 @@
         border-color: #007bff;
       }
       #profilesContainer {
+      }
+      .profile-group {
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
+        margin-top: 10px;
       }
+      
+      .profile-group h2 {
+        width: 100%; /* Ensure the h2 spans the full width */
+        text-align: center; /* Center-align the text */
+        margin-top: 10px; /* Adjust margin as needed */
+      }
+      
+
       /* Profile styles */
       .profile {
         margin-bottom: 20px;
-        padding: 10px;
+        padding:10px;
         border: 1px solid #ccc;
         border-radius: 5px;
         font-family: "font1";
-        width: 30vw;
-        margin: 10px;
+        width: 40vw;
+        margin: 5px;
         display: flex;
         justify-content: center;
       }
@@ -183,40 +194,58 @@
     profilesContainer.querySelectorAll(".skeleton-profile").forEach((profile) => profile.remove());
   }
 
-  function renderProfiles(data) {
-    const profilesContainer = document.getElementById("profilesContainer");
-    profilesContainer.innerHTML = ""; // Clear previous content
-
+  function groupProfilesByF(data) {
+    const groupedProfiles = {};
     data.forEach(rowData => {
       const profileType1 = rowData[8].trim(); // Profile type from column D
       const profileType2 = rowData[9].trim(); // Profile type from column D
+      const columnFData = rowData[5].trim(); // Data from column F
       if (profileType1 === one.trim() || profileType2 === one.trim()) {
-        const profileName = rowData[3].trim(); // Profile name from column B
-        const profileImgSrc = rowData[18].trim(); // Image source from column H
-        const specialist = rowData[5].trim(); // Address from column G
-        const profileLink = rowData[19].trim(); // Link from column L
-
-        profilesContainer.innerHTML += `
-          <div class="profile">
-            <div class="two">
-              <img src="${profileImgSrc}" alt="${profileName}">
-              <div class="one">
-                <h2>${profileName}</h2>
-                ${
-                  specialist
-                    ? `<p class="address">${specialist}</p>`
-                    : ""
-                }
-                ${
-                  profileLink
-                    ? `<button class="see-more" onclick="storePlaceName('${profileName}', '${profileLink}')">See more</button>`
-                    : ""
-                }
-              </div>
-            </div>
-          </div>`;
+        if (!groupedProfiles[columnFData]) {
+          groupedProfiles[columnFData] = [];
+        }
+        groupedProfiles[columnFData].push(rowData);
       }
     });
+    return groupedProfiles;
+  }
+
+  function renderGroupedProfiles(groupedProfiles) {
+    const profilesContainer = document.getElementById("profilesContainer");
+    profilesContainer.innerHTML = ""; // Clear previous content
+
+    for (const key in groupedProfiles) {
+      if (groupedProfiles.hasOwnProperty(key)) {
+        const profiles = groupedProfiles[key];
+        const profileGroup = document.createElement("div");
+        profileGroup.classList.add("profile-group");
+        profileGroup.innerHTML += `<h2>${key}</h2>`;
+        
+        profiles.forEach(rowData => {
+          const profileName = rowData[3].trim(); // Profile name from column B
+          const profileImgSrc = rowData[18].trim(); // Image source from column H
+          const profileLink = rowData[19].trim(); // Link from column L
+          const specific = rowData[6].trim(); // Data from column F
+
+          profileGroup.innerHTML += `
+            <div class="profile">
+              <div class="two">
+                <img src="${profileImgSrc}" alt="${profileName}">
+                <div class="one">
+                  <h3>${profileName}</h3>
+                  <p>${specific}</p>
+                  ${
+                    profileLink
+                      ? `<button class="see-more" onclick="storePlaceName('${profileName}', '${profileLink}')">See more</button>`
+                      : ""
+                  }
+                </div>
+              </div>
+            </div>`;
+        });
+        profilesContainer.appendChild(profileGroup);
+      }
+    }
   }
 
   // Function to store profile name in localStorage
@@ -230,18 +259,27 @@
     var input, filter, profiles, profile, i, txtValue;
     input = document.getElementById("searchInput");
     filter = input.value.toUpperCase();
-    profiles = document.getElementsByClassName("profile");
-
+    profiles = document.getElementsByClassName("profile-group"); // Get all profile groups
+  
     for (i = 0; i < profiles.length; i++) {
-      profile = profiles[i].getElementsByClassName("one")[0]; // Get the div containing profile details
-      txtValue = profile.textContent || profile.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        profiles[i].style.display = ""; // Show the profile if the search term matches
-      } else {
-        profiles[i].style.display = "none"; // Hide the profile if the search term does not match
+      let matchFound = false; // Flag to indicate if any profile matches the search term
+      const profileGroup = profiles[i];
+      const profilesInGroup = profileGroup.querySelectorAll(".profile");
+      for (let j = 0; j < profilesInGroup.length; j++) {
+        profile = profilesInGroup[j].getElementsByClassName("one")[0]; // Get the div containing profile details
+        txtValue = profile.textContent || profile.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          profilesInGroup[j].style.display = ""; // Show the profile if the search term matches
+          matchFound = true; // Set the flag to true if any profile matches
+        } else {
+          profilesInGroup[j].style.display = "none"; // Hide the profile if the search term does not match
+        }
       }
+      // Show or hide the profile group based on whether any profiles match the search term
+      profileGroup.style.display = matchFound ? "" : "none";
     }
   }
+  
 
   window.onload = function () {
     showSkeleton();
@@ -249,7 +287,8 @@
     if (storedData) {
       Papa.parse(storedData, {
         complete: function (results) {
-          hideSkeletonAndRenderProfiles(results.data);
+          const groupedProfiles = groupProfilesByF(results.data);
+          renderGroupedProfiles(groupedProfiles);
         },
         header: false
       });
