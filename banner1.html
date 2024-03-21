@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Banner 1</title>
+    <link rel="stylesheet" href="universal.css" />
+    <link rel="stylesheet" href="navbar.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <style>
+
+
+      /* Style for the container */
+      .srch {
+        display: flex;
+        width: 100vw;
+        margin-top: 12vh;
+        justify-content: center;
+      }
+
+      /* Style for the select dropdown */
+      #specialistSelect {
+        padding: 8px; /* Adjust padding as needed */
+        border-radius: 5px; /* Adjust border radius as needed */
+        background-color: transparent;
+        margin-right: 10px;
+        width: 30vw;
+      }
+
+      /* Style for the search input */
+      #searchBox {
+        padding: 8px; /* Adjust padding as needed */
+        border: 1px solid #ccc; /* Adjust border as needed */
+        border-radius: 5px; /* Adjust border radius as needed */
+
+      }
+
+      .group {
+        margin-top: 5px;
+        padding: 10px;
+        text-align: center;
+        font-family: "font2";
+      }
+
+      .group h2 {
+        margin-top: 0;
+        font-size: 24px;
+      }
+
+      .profile {
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        padding-top: 10px;
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        padding-bottom: 10px;
+      }
+      .profile:hover img {
+        scale: 1.07;
+        transition: 0.5s;
+      }
+      .two {
+        padding: 5px;
+        min-height: 100px;
+        display: flex;
+        justify-content: space-around;
+      }
+      .one {
+        align-items: center;
+        display: grid;
+        padding-left: 10px;
+      }
+      .profile img {
+        border-radius: 50%;
+        object-fit: cover;
+        object-position: center;
+        width: 100px; /* Adjust according to your preference */
+        height: 100px; /* Maintain aspect ratio */
+      }
+
+      .profile p {
+        text-align: left;
+        position: relative;
+        font-size: 0.9rem;
+        margin: 5px;
+      }
+
+      .nam {
+      }
+      .inst {
+      }
+      .det {
+      }
+      .tim {
+      }
+
+      .pro{
+        display: flex;
+        justify-content: space-around;
+      }
+      .pro a{
+        text-decoration: none;
+      }
+      .pro button{
+        background-color: rgb(255, 113, 4);
+        padding: 6px 15px;
+        color: white;
+        border-radius: 15px;        
+        border: none;
+      }
+      .pro button:hover{
+        background-color: #eb522c;
+      }
+      /* Style for the skeleton loading scene */
+      .skeleton:first-child {
+        margin-top: 70px;
+      }
+      .skeleton {
+        background-color: #f0f0f0;
+        border-radius: 5px;
+        margin: 10px;
+        height: 200px; /* Adjust height as needed */
+        overflow: hidden;
+        display: grid;
+        place-items: center;
+      }
+      .skeleton-line {
+        margin-top: 20px;
+        background-color: #e0e0e0;
+        height: 20px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        animation: skeleton-animation 1.5s infinite;
+        width: 80vw;
+      }
+      @keyframes skeleton-animation {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(100%);
+        }
+      }
+      #profileCount{
+        position: fixed;
+        top: 19vh;
+        right: 0px;
+        padding: 3px 20px 3px 10px;
+        border-radius: 10px 0px 0px 10px;
+        font-size: 1.2rem;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        z-index: 1;
+
+      }
+    </style>
+  </head>
+  <body>
+    <!--NavBar Start-->
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+      <div class="sidebar-top" id="sidebarTop"></div>
+      <a onclick="toggleSidebar()" class="close-btn">&times;</a>
+      <a href="index.html" id="homeLink">Home</a>
+      <a href="inbox.html">Inbox</a>
+      <a href="profiles.html" id="profileBtn">Profile</a>
+      <a href="settings.html">Settings</a>
+      <a href="#" onclick="openLogoutPopup()" id="logoutBtn">Log Out</a>
+    </div>
+    <!-- Main content -->
+    <header>
+      <div>
+        <div class="menu-icon" id="sidebarButton" onclick="toggleSidebar()">
+          &#9776;
+        </div>
+      </div>
+      <nav id="navbar"></nav>
+    </header>
+
+    <!-- Bio section -->
+    <div class="bio-section" id="bioSection" style="display: none"></div>
+
+    <!-- Logout Popup -->
+    <div class="overlay" id="overlay" onclick="closeLogoutPopup()"></div>
+    <div class="popup" id="logoutPopup">
+      <p>Are you sure you want to logout?</p>
+      <a style="color: black" href="index.html"
+        ><button onclick="logout()">Yes</button></a
+      >
+      <button onclick="closeLogoutPopup()">No</button>
+    </div>
+    <!--NavBar End-->
+
+    <div class="srch">
+      <div>
+        <select id="specialistSelect">
+          <option value="">ALL</option>
+        </select>
+
+      <span id="profileCount">0</span>
+
+      </div>
+      <div>
+        <input type="text" id="searchBox" />
+      </div>
+    </div>
+
+    <div id="result"></div>
+
+    <script src="universal.js"></script>
+    <script src="navbar.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script>
+      const catName = localStorage.getItem('CatName');
+
+      window.onload = function () {
+          localStorageToDivGroups();
+      
+          const selectBox = document.getElementById("specialistSelect");
+          selectBox.addEventListener("change", toggleProfileGroups);
+      };
+      
+      const searchBox = document.getElementById("searchBox");
+      searchBox.addEventListener("input", filterProfileGroups);
+      
+      function localStorageToDivGroups() {
+          showSkeleton();
+          const storedData = localStorage.getItem("PublicDataPerson");
+          Papa.parse(storedData, {
+              complete: function (results) {
+                  const rowData = results.data;
+                  hideSkeleton();
+                  processData(rowData);
+              },
+              error: function (error) {
+                  hideSkeleton();
+                  console.error("Error parsing CSV:", error);
+              }
+          });
+      }
+      
+      function toggleProfileGroups() {
+          const selectedSpecialist = this.value;
+          const allGroups = document.querySelectorAll(".group");
+          let totalCount = 0; // Initialize counter
+      
+          allGroups.forEach(group => {
+              const profiles = group.querySelectorAll(".profile");
+              if (selectedSpecialist === "" || group.dataset.specialist === selectedSpecialist) {
+                  group.style.display = "block";
+                  totalCount += profiles.length; // Update count
+              } else {
+                  group.style.display = "none";
+              }
+          });
+      
+          // Update the total count display
+          document.getElementById("profileCount").textContent = totalCount;
+      }
+      
+      function filterProfileGroups() {
+          const searchTerm = this.value.trim().toLowerCase();
+          const allGroups = document.querySelectorAll(".group");
+          let totalCount = 0; // Initialize counter
+      
+          allGroups.forEach(group => {
+              const profiles = group.querySelectorAll(".profile");
+              let groupHasMatch = false;
+              profiles.forEach(profile => {
+                  const profileName = profile.querySelector('.nam').textContent.trim().toLowerCase();
+                  const match = profileName.includes(searchTerm);
+                  profile.style.display = match ? "block" : "none";
+                  if (match) {
+                      groupHasMatch = true;
+                      totalCount++; // Increment count if profile is displayed
+                  }
+              });
+              group.style.display = groupHasMatch ? "block" : "none";
+          });
+      
+          // Update the total count display
+          document.getElementById("profileCount").textContent = totalCount;
+      }
+      
+      function processData(rowData) {
+          document.getElementById("result").innerHTML = "";
+          const groups = {};
+          let totalCount = 0; // Initialize counter
+      
+          for (let i = 1; i < rowData.length; i++) {
+              const profileData = rowData[i];
+              const specialist = profileData[5];
+              const Profession = profileData[4];
+              const publicUsername = profileData[1];
+      
+              if (Profession === "Doctor") {
+                  groups[specialist] = groups[specialist] || [];
+                  groups[specialist].push({
+                      name: profileData[3],
+                      institute: profileData[8],
+                      number: profileData[11],
+                      degree: profileData[7],
+                      time: profileData[16],
+                      imgSrc: profileData[18],
+                      link: profileData[19],
+                      publicUsername: publicUsername // Store PublicUsername
+                  });
+                  totalCount++; // Increment count for each profile
+              }
+          }
+      
+          // Update the total count display
+          document.getElementById("profileCount").textContent = totalCount;
+      
+          const selectBox = document.getElementById("specialistSelect");
+          selectBox.innerHTML = `<option value="">All ${catName}</option>`;
+          for (const specialist in groups) {
+              const option = document.createElement("option");
+              option.textContent = specialist;
+              option.value = specialist;
+              selectBox.appendChild(option);
+          }
+      
+          for (const specialist in groups) {
+              const groupDiv = document.createElement("div");
+              groupDiv.classList.add("group");
+              groupDiv.dataset.specialist = specialist;
+              groupDiv.innerHTML = `<h2>${specialist}</h2>`;
+      
+              groups[specialist].forEach(profileData => {
+                  const profileDiv = `
+                      <div class="profile">
+                          <div class="two">
+                              <img src="${profileData.imgSrc}" alt="Profile Image">
+                              <div class="one">
+                                  ${profileData.name ? `<p class="nam">নাম: ${profileData.name}</p>` : ""}
+                                  ${profileData.institute ? `<p class="inst">স্থান : ${profileData.institute}</p>` : ""}
+                                  ${profileData.time ? `<p class="tim">সময়: ${profileData.time}</p>` : ""}
+                              </div>
+                          </div>
+                          ${profileData.degree ? `<p class="det">তথ্য: ${profileData.degree}</p>` : ""}
+                          <div class="pro">
+                              ${profileData.number ? `<p class="num"> নম্বর: ${profileData.number}</p>` : ""}
+                              ${profileData.link ? `<a href="${profileData.link}"><button onclick='storePublicUsername("${profileData.publicUsername}")'>See More</button></a>` : ""}
+                          </div>
+                      </div>
+                  `;
+                  groupDiv.innerHTML += profileDiv;
+              });
+      
+              document.getElementById("result").appendChild(groupDiv);
+          }
+      }
+      
+      function storePublicUsername(publicUsername) {
+          localStorage.setItem("PublicUsername", publicUsername); // Store PublicUsername
+      }
+      
+      function showSkeleton() {
+          const resultDiv = document.getElementById("result");
+          resultDiv.innerHTML = "";
+          for (let i = 0; i < 5; i++) {
+              const skeletonDiv = document.createElement("div");
+              skeletonDiv.classList.add("skeleton");
+              for (let j = 0; j < 3; j++) {
+                  const skeletonLine = document.createElement("div");
+                  skeletonLine.classList.add("skeleton-line");
+                  skeletonDiv.appendChild(skeletonLine);
+              }
+              resultDiv.appendChild(skeletonDiv);
+          }
+      }
+      
+      function hideSkeleton() {
+          const resultDiv = document.getElementById("result");
+          resultDiv.innerHTML = "";
+      }
+  </script>
+  
+  </body>
+</html>
