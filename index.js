@@ -29,13 +29,13 @@ function parseCSV(csvData) {
     return parsedData;
 }
 
-const data = localStorage.getItem('MainPage'); // Retrieve image slider data from localStorage
+const banner = localStorage.getItem('Banner'); // Retrieve image slider data from localStorage
 
 // Fetch and display image slider
 async function fetchImageSources() {
 
-    if (data) {
-        const imgDataArray = parseCSV(data).slice(1).map(row => ({
+    if (banner) {
+        const imgDataArray = parseCSV(banner).slice(1).map(row => ({
             src: row[0].trim(),
             href: row[1] ? row[1].trim() : null
         })).filter(imgData => imgData.src !== "");
@@ -55,6 +55,7 @@ async function fetchImageSources() {
         initImageSlider();
     }
 }
+
 
 // Fetch and display post data
 async function fetchAndDisplayData() {
@@ -119,9 +120,22 @@ fetchAndDisplayData();
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 //four box
 // Check if data needs to be updated based on a predefined interval (e.g., 1 hour)
-const updateInterval = 600000; 
+const updateInterval = 50000; 
 
 function shouldUpdateData(lastUpdated) {
     return !lastUpdated || Date.now() - lastUpdated > updateInterval;
@@ -193,7 +207,7 @@ function createElem(tag, text) {
 
 // Fetch and display profile data
 async function fetchProfileData() {
-    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT5yPBQL7OkwisJJ6Dq4jpzATrchx3wbyxQQ09mH0BoPrTFr8FYnKxkT7xjvWB8P51Gled65w6S8VQH/pub?output=csv&gid=0';
+    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT5yPBQL7OkwisJJ6Dq4jpzATrchx3wbyxQQ09mH0BoPrTFr8FYnKxkT7xjvWB8P51Gled65w6S8VQH/pub?output=csv&gid=1509718069';
     const lastCsvUrl = localStorage.getItem('lastCsvUrl');
     const lastUpdated = parseInt(localStorage.getItem(`${csvUrl}_lastUpdated`));
 
