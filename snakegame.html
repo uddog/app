@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game</title>
+    <link rel="stylesheet" href="universal.css">
+    <style>
+      body{
+        background-color: rgb(247, 247, 247);
+      }
+      main{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+      }
+    #pauseResumeBtn{
+      display: none;
+    }
+    canvas {
+      box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+      width: 98vw;
+      height: 80vh;
+      touch-action: none; /* Disable touch gestures */
+      background-color: white;
+    }
+    
+    #score {
+          position: absolute;
+          top: 2vh;
+          left: 5vw;
+          font-size: 1.2rem;
+          color: coral;        
+    }
+    
+    #gameOverPopup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 60vw;
+        transform: translate(-50%,-50%);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    
+    #gameOverContent {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    }
+    #gameOverContent p{
+      margin: 10px;
+    }
+    #gameOverContent button{
+      color: white;
+      background-color: orange;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+    #welcome-message{
+      position: absolute;
+      bottom: 2vh;
+      font-size: 0.9rem;
+      width: 100%;
+      text-align: center;
+    }
+    .container{
+      position: absolute;
+      top: 2vh;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    </style>
+</head>
+<body>
+
+  <div class="container">
+    <h3>Snake by UDDOG</h3>
+  </div>
+
+     <div id="score">0</div>
+  <main>
+    <canvas id="gameCanvas"></canvas>
+  </main>
+
+  <p id="welcome-message">Hey, Play your Best</p>
+
+    <div id="gameOverPopup">
+        <div id="gameOverContent">
+            <h2>Game Over!</h2>
+            <p>Your final score: <span id="finalScore">0</span></p>
+            <button id="restartBtn">Restart</button>
+        </div>
+    </div>
+
+
+    <script>
+
+      
+  const storedUserName = localStorage.getItem('userName');
+if (storedUserName) {
+    const welcomeParagraph = document.getElementById("welcome-message");
+    welcomeParagraph.innerText = `Hey, ${storedUserName}! Play your Best`;
+}
+
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+    
+        const box = 20;
+        const canvasWidth = Math.floor(window.innerWidth * 0.98 / box) * box;
+        const canvasHeight = Math.floor(window.innerHeight * 0.8 / box) * box;
+        canvas.width = canvasWidth;
+        canvas.height = canvasHeight;
+    
+        let snake = [{x: 10, y: 10}];
+        let food = {x: 15, y: 15};
+        let dx = 1;
+        let dy = 0;
+        let score = 0;
+        let gamePaused = false;
+        let gameEnded = false;
+        const gameOverPopup = document.getElementById("gameOverPopup");
+        const finalScoreSpan = document.getElementById("finalScore");
+    
+        function drawSnake() {
+            ctx.fillStyle = "green";
+            snake.forEach(segment => {
+                ctx.fillRect(segment.x * box, segment.y * box, box, box);
+            });
+        }
+    
+        function drawFood() {
+            ctx.fillStyle = "red";
+            ctx.fillRect(food.x * box, food.y * box, box, box);
+        }
+    
+        function moveSnake() {
+            const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+            snake.unshift(head);
+    
+            if (head.x === food.x && head.y === food.y) {
+                score++;
+                generateFood();
+            } else {
+                snake.pop();
+            }
+        }
+    
+        function generateFood() {
+            food = {
+                x: Math.floor(Math.random() * (canvas.width / box)),
+                y: Math.floor(Math.random() * (canvas.height / box))
+            };
+        }
+    
+        function checkCollision() {
+            const head = snake[0];
+            if (head.x < 0) head.x = canvas.width / box - 1;
+            if (head.x >= canvas.width / box) head.x = 0;
+            if (head.y < 0) head.y = canvas.height / box - 1;
+            if (head.y >= canvas.height / box) head.y = 0;
+    
+            for (let i = 1; i < snake.length; i++) {
+                if (head.x === snake[i].x && head.y === snake[i].y) {
+                    endGame();
+                    break;
+                }
+            }
+        }
+    
+        function endGame() {
+            gameEnded = true;
+            gamePaused = true;
+            finalScoreSpan.innerText = score;
+            gameOverPopup.style.display = "flex";
+        }
+    
+        function resetGame() {
+            snake = [{x: 10, y: 10}];
+            food = {x: 15, y: 15};
+            dx = 1;
+            dy = 0;
+            score = 0;
+            gamePaused = false;
+            gameEnded = false;
+            gameOverPopup.style.display = "none";
+        }
+    
+        function drawScore() {
+            document.getElementById("score").innerText = score;
+        }
+    
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawSnake();
+            drawFood();
+            drawScore();
+        }
+    
+        function update() {
+            if (!gamePaused && !gameEnded) {
+                moveSnake();
+                checkCollision();
+            }
+        }
+    
+        function gameLoop() {
+            update();
+            draw();
+        }
+    
+        canvas.addEventListener("touchstart", handleTouchStart, false);
+        canvas.addEventListener("touchmove", handleTouchMove, false);
+        canvas.addEventListener("dblclick", () => {
+            if (!gameEnded) {
+                gamePaused = !gamePaused;
+            }
+        });
+    
+        let xDown = null;
+        let yDown = null;
+    
+        function handleTouchStart(event) {
+            const firstTouch = event.touches[0];
+            xDown = firstTouch.clientX;
+            yDown = firstTouch.clientY;
+        }
+    
+        function handleTouchMove(event) {
+            if (!xDown || !yDown) {
+                return;
+            }
+    
+            const xUp = event.touches[0].clientX;
+            const yUp = event.touches[0].clientY;
+    
+            const xDiff = xDown - xUp;
+            const yDiff = yDown - yUp;
+    
+            if (Math.abs(xDiff) > Math.abs(yDiff)) { // horizontal swipe
+                if (xDiff > 0) { // swipe left
+                    if (dx !== 1) {
+                        dx = -1;
+                        dy = 0;
+                    }
+                } else { // swipe right
+                    if (dx !== -1) {
+                        dx = 1;
+                        dy = 0;
+                    }
+                }
+            } else { // vertical swipe
+                if (yDiff > 0) { // swipe up
+                    if (dy !== 1) {
+                        dx = 0;
+                        dy = -1;
+                    }
+                } else { // swipe down
+                    if (dy !== -1) {
+                        dx = 0;
+                        dy = 1;
+                    }
+                }
+            }
+    
+            xDown = null;
+            yDown = null;
+        }
+    
+        document.getElementById("restartBtn").addEventListener("click", () => {
+            resetGame();
+        });
+    
+        setInterval(gameLoop, 100);
+    });
+    
+    
+    </script>
+</body>
+</html>
