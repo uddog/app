@@ -7,11 +7,11 @@ const csvLinks = [
     { url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQMec3rLMJvXIWdyVxO_ZVzKaJTrxrxqp4Wk1G2jjzEbRAr2x0df81w-6C3UrYpgNgilUTmz_ct4seU/pub?output=csv', key: 'PublicDataPerson' },
     { url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQMec3rLMJvXIWdyVxO_ZVzKaJTrxrxqp4Wk1G2jjzEbRAr2x0df81w-6C3UrYpgNgilUTmz_ct4seU/pub?output=csv&gid=622627727', key: 'PublicDataPlaces' },
     { url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQMec3rLMJvXIWdyVxO_ZVzKaJTrxrxqp4Wk1G2jjzEbRAr2x0df81w-6C3UrYpgNgilUTmz_ct4seU/pub?output=csv&gid=497879876', key: 'PublicDataTransport' },
-    { url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT5yPBQL7OkwisJJ6Dq4jpzATrchx3wbyxQQ09mH0BoPrTFr8FYnKxkT7xjvWB8P51Gled65w6S8VQH/pub?output=csv', key: 'MainPage' },
+    { url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT5yPBQL7OkwisJJ6Dq4jpzATrchx3wbyxQQ09mH0BoPrTFr8FYnKxkT7xjvWB8P51Gled65w6S8VQH/pub?output=csv', key: 'Banner' },
+    { url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT5yPBQL7OkwisJJ6Dq4jpzATrchx3wbyxQQ09mH0BoPrTFr8FYnKxkT7xjvWB8P51Gled65w6S8VQH/pub?output=csv&gid=1509718069', key: 'Boxs' },
     { url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT5yPBQL7OkwisJJ6Dq4jpzATrchx3wbyxQQ09mH0BoPrTFr8FYnKxkT7xjvWB8P51Gled65w6S8VQH/pub?output=csv&gid=471126613', key: 'MoreOption' },
     { url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT5yPBQL7OkwisJJ6Dq4jpzATrchx3wbyxQQ09mH0BoPrTFr8FYnKxkT7xjvWB8P51Gled65w6S8VQH/pub?output=csv&gid=2089505816', key: 'Post' },
     { url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT5yPBQL7OkwisJJ6Dq4jpzATrchx3wbyxQQ09mH0BoPrTFr8FYnKxkT7xjvWB8P51Gled65w6S8VQH/pub?output=csv&gid=1429441367', key: 'Inbox' },  
-    { url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSGA2LCR9epb--Kqdl1U0VXO-4ehjdwFtJeuYWdhspBE7Zl-WGdUA7DG2MaIDKcABGcHThL9fnmnHhx/pub?output=csv', key: 'anik' },  
 
 ];
 
