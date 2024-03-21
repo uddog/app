@@ -57,9 +57,9 @@ async function fetchImageSources() {
 }
 
 
-// Fetch and display post data
+
 async function fetchAndDisplayData() {
-    const data = localStorage.getItem('Post'); // Retrieve post data from localStorage
+    const data = localStorage.getItem('Posts'); // Retrieve post data from localStorage
 
     if (data) {
         const profilesContainer = document.getElementById('csvData');
@@ -68,39 +68,62 @@ async function fetchAndDisplayData() {
 
         for (let i = startIndex; i < rows.length; i++) {
             const columns = rows[i];
-            const profileImageSrc = columns[0].trim();
+            const profileImageSrc = columns[2].trim();
             if (profileImageSrc) {
                 const profileDiv = document.createElement('div');
                 profileDiv.classList.add('threecontent');
+
+                const nameElement = document.createElement('h3');
+                nameElement.textContent = columns[0].trim();
+                profileDiv.appendChild(nameElement);
+
                 const profileImage = document.createElement('img');
                 profileImage.src = profileImageSrc;
                 profileImage.alt = 'Profile Image';
+                profileImage.addEventListener('click', function () {
+                    displayFullScreenImage(profileImageSrc);
+                });
                 profileDiv.appendChild(profileImage);
 
-                const nameElement = document.createElement('h3');
-                nameElement.textContent = columns[1].trim();
-                profileDiv.appendChild(nameElement);
-
-                for (let j = 2; j < columns.length; j++) {
-                    const columnContent = columns[j].trim();
-                    if (columnContent && j !== 4) {  // Skip column E (index 4)
-                        const element = document.createElement(j === 3 ? 'button' : 'p');
-                        if (j === 3) {
-                            element.textContent = 'Details';
-                            element.addEventListener('click', function () {
-                                localStorage.setItem('PostNo', i);
-                                window.location.href = columnContent;
-                            });
-                        } else {
-                            element.textContent = columnContent;
-                        }
-                        profileDiv.appendChild(element);
-                    }
+                // Display Column B data after the image
+                const columnBData = columns[1].trim();
+                if (columnBData) {
+                    const columnBElement = document.createElement('p');
+                    columnBElement.classList.add('column-b-text');
+                    columnBElement.innerHTML = textToLinks(columnBData); // Convert URLs to links
+                    profileDiv.appendChild(columnBElement);
                 }
+
                 profilesContainer.appendChild(profileDiv);
             }
         }
     }
+}
+
+
+
+function textToLinks(text) {
+    return text.replace(/(https?:\/\/[^\s]+)/g, function (url) {
+        return '<a href="' + url + '">' + url + '</a>';
+    }).replace(/<br>/g, "<br>"); // Preserve line breaks
+}
+
+// Function to display the image in full-screen modal
+function displayFullScreenImage(src) {
+    const modal = document.createElement('div');
+    modal.classList.add('modal');
+
+    const modalImg = document.createElement('img');
+    modalImg.src = src;
+    modalImg.alt = 'Full-screen Image';
+
+    modal.appendChild(modalImg);
+
+    modal.addEventListener('click', function () {
+        modal.remove();
+    });
+
+    document.body.appendChild(modal);
 }
 
 // Call the functions
