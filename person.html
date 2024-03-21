@@ -139,8 +139,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script>
       $(document).ready(function () {
-        const PersonInstitute = localStorage.getItem("PersonInstitute");
-        const PersonName = localStorage.getItem("PersonName");
+        const PublicUsername = localStorage.getItem("PublicUsername");
         const storedData = localStorage.getItem("PublicDataPerson");
     
         if (!storedData) {
@@ -151,15 +150,15 @@
         Papa.parse(storedData, {
             complete: function (results) {
                 const rows = results.data.slice(1); // Skip first row
-                renderProfilesFromLocalStorage(rows, PersonInstitute, PersonName);
+                renderProfilesFromLocalStorage(rows, PublicUsername,);
             },
             header: false,
         });
     
-        function renderProfilesFromLocalStorage(data, PersonInstitute, PersonName) {
+        function renderProfilesFromLocalStorage(data, PublicUsername) {
             $("#profiles").empty(); // Clear existing content
             data.forEach(rowData => {
-                if (rowData[3].trim() === PersonName.trim() && rowData[8].trim() === PersonInstitute.trim()) {
+                if (rowData[1].trim() === PublicUsername.trim()) {
                     const profileDiv = createProfileDiv(rowData);
                     $("#profiles").append(profileDiv);
                 }
@@ -175,7 +174,6 @@
                         <div class="two">
                             <img src="${rowData[18]}" alt="${rowData[18]}">
                             <div class="one">
-                                <h2>${rowData[1]}</h2>
                                 ${rowData[3] ? `<p>নাম : ${rowData[3]}</p>` : ""}
                                 ${rowData[4] ? `<p>পেশা : ${rowData[4]}</p>` : ""}
                                 ${rowData[5] ? `<p>পদ : ${rowData[5]}</p>` : ""}

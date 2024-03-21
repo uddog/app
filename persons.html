@@ -286,6 +286,7 @@
               const profileData = rowData[i];
               const specialist = profileData[5];
               const Profession = profileData[4];
+              const publicUsername = profileData[1];
       
               if (Profession === catName.trim()) {
                   groups[specialist] = groups[specialist] || [];
@@ -296,7 +297,8 @@
                       degree: profileData[7],
                       time: profileData[16],
                       imgSrc: profileData[18],
-                      link: profileData[19]
+                      link: profileData[19],
+                      publicUsername: publicUsername // Store PublicUsername
                   });
                   totalCount++; // Increment count for each profile
               }
@@ -334,7 +336,7 @@
                           ${profileData.degree ? `<p class="det">তথ্য: ${profileData.degree}</p>` : ""}
                           <div class="pro">
                               ${profileData.number ? `<p class="num"> নম্বর: ${profileData.number}</p>` : ""}
-                              ${profileData.link ? `<a href="${profileData.link}"><button onclick='storeNameAndInstitute("${profileData.name}", "${profileData.institute}")'>See More</button></a>` : ""}
+                              ${profileData.link ? `<a href="${profileData.link}"><button onclick='storePublicUsername("${profileData.publicUsername}")'>See More</button></a>` : ""}
                           </div>
                       </div>
                   `;
@@ -345,9 +347,8 @@
           }
       }
       
-      function storeNameAndInstitute(name, institute) {
-          localStorage.setItem("PersonName", name);
-          localStorage.setItem("PersonInstitute", institute);
+      function storePublicUsername(publicUsername) {
+          localStorage.setItem("PublicUsername", publicUsername); // Store PublicUsername
       }
       
       function showSkeleton() {
@@ -369,8 +370,6 @@
           const resultDiv = document.getElementById("result");
           resultDiv.innerHTML = "";
       }
-      
-
   </script>
   
   </body>

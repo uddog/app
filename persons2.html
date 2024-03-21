@@ -208,6 +208,7 @@
   
         // Modified rendering of profiles to include PersonName and PersonInstitute
         profiles.forEach(rowData => {
+          const publicUsername = rowData[1].trim(); // PublicUsername from column B
           const profileName = rowData[3].trim(); // Profile name from column B
           const profileImgSrc = rowData[18].trim(); // Image source from column H
           const profileLink = rowData[19].trim(); // Link from column L
@@ -224,8 +225,8 @@
                   <p>${specific}</p>
                   ${
                     profileLink
-                      ?`<a href="${profileLink}" onclick="storePersonData('${personName}', '${personInstitute}')"><button class="see-more">See more</button></a>`
-                      : ""
+                    ? `<a href="${profileLink}" onclick="storePublicUsername('${publicUsername}')"><button class="see-more">See more</button></a>`
+                    : ""
                   }
                 </div>
               </div>
@@ -238,11 +239,10 @@
   }
   
   // Function to store PersonName and PersonInstitute in local storage
-  function storePersonData(personName, personInstitute) {
-    localStorage.setItem("PersonName", personName);
-    localStorage.setItem("PersonInstitute", personInstitute);
-  }
-  
+  function storePublicUsername(publicUsername) {
+    localStorage.setItem("PublicUsername", publicUsername);
+}
+
   // Function to search profiles by name
   function searchProfiles() {
     var input, filter, profiles, profile, i, txtValue;
