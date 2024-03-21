@@ -13,9 +13,30 @@
    <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js');
+        navigator.serviceWorker.register('./sw.js').then(registration => {
+          // Check for updates
+          registration.addEventListener('updatefound', () => {
+            const installingWorker = registration.installing;
+            
+            // Track the state of the installation process
+            installingWorker.addEventListener('statechange', () => {
+              if (installingWorker.state === 'installed') {
+                // A new service worker is installed, so you can inform the user or perform any necessary actions
+                console.log('New service worker installed');
+                
+                // You can prompt the user to refresh the page to apply the update
+                if (confirm('A new version of the app is available. Refresh to update?')) {
+                  window.location.reload();
+                }
+              }
+            });
+          });
+        }).catch(error => {
+          console.error('Service worker registration failed:', error);
+        });
       });
     }
+    
    </script>
 </head>
 
@@ -108,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 <div class="instart">
 
      <div class="udnam">
-        <h2>Test<br><span class="typing" style="color: rgb(248, 83, 12);"></span></h2>
+        <h2>UDDOG<br><span class="typing" style="color: rgb(248, 83, 12);"></span></h2>
         <script>
               
     const text = "একটি সামাজিক উন্নয়নমূলক সংগঠন ";
