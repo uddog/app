@@ -1,200 +1,127 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Snake Game</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post</title>
+    <link rel="stylesheet" href="navbar.css" />
+    <link rel="stylesheet" href="universal.css" />
+    <link rel="stylesheet" href="test.css">
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-        canvas {
-            border: 1px solid black;
-            background-color: #f2f2f2;
-            display: block;
-            margin: 0 auto;
-            width: 95vw;
-            height: 80vh;
-            touch-action: manipulation;
-        }
-        #score {
-            text-align: center;
-            margin-top: 10px;
-            font-size: 18px;
-        }
-        #controls {
-            text-align: center;
-            margin-top: 10px;
-        }
-        button {
-            font-size: 16px;
-            padding: 10px 20px;
-            margin: 0 5px;
-            background-color: #f55e00;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
+   
     </style>
-</head>
-<body>
-    <div id="score">Score: 0</div>
-    <canvas id="gameCanvas"></canvas>
-    <div id="controls">
-        <button id="pauseButton" onclick="togglePause()">Pause</button>
-        <button onclick="restart()">Restart</button>
+  </head>
+
+  <body>
+    <!--NavBar Start-->
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+      <div class="sidebar-top" id="sidebarTop"></div>
+      <a onclick="toggleSidebar()" class="close-btn">&times;</a>
+      <a href="index.html" id="homeLink">Home</a>
+      <a href="inbox.html">Inbox</a>
+      <a href="profiles.html" id="profileBtn">Profile</a>
+      <a href="settings.html">Settings</a>
+      <a href="#" onclick="openLogoutPopup()" id="logoutBtn">Log Out</a>
     </div>
+    <!-- Main content -->
+    <header>
+      <div>
+        <div class="menu-icon" id="sidebarButton" onclick="toggleSidebar()">
+          &#9776;
+        </div>
+      </div>
+      <nav id="navbar"></nav>
+    </header>
+
+    <!-- Bio section -->
+    <div class="bio-section" id="bioSection" style="display: none"></div>
+
+    <!-- Logout Popup -->
+    <div class="overlay" id="overlay" onclick="closeLogoutPopup()"></div>
+    <div class="popup" id="logoutPopup">
+      <p>Are you sure you want to logout?</p>
+      <a style="color: black" href="index.html"
+        ><button onclick="logout()">Yes</button></a
+      >
+      <button onclick="closeLogoutPopup()">No</button>
+    </div>
+    <!--NavBar End-->
+
+    <!-- Profile containers -->
+    <div id="csvData"></div>
+    <script src="universal.js"></script>
+    <script src="test.js"></script>
+    <script src="navbar.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script>
-        const canvas = document.getElementById("gameCanvas");
-        const ctx = canvas.getContext("2d");
-
-        const box = 20;
-        let rows;
-        let cols;
-
-        function setCanvasDimensions() {
-            canvas.width = window.innerWidth * 0.95;
-            canvas.height = window.innerHeight * 0.8;
-            rows = Math.floor(canvas.height / box);
-            cols = Math.floor(canvas.width / box);
-        }
-
-        setCanvasDimensions();
-
-        let snake = [];
-        snake[0] = { x: 10 * box, y: 10 * box };
-
-        let food = { x: Math.floor(Math.random() * cols) * box, y: Math.floor(Math.random() * rows) * box };
-
-        let direction;
-        let paused = false;
-        let score = 0;
-        const scoreDisplay = document.getElementById("score");
-        const pauseButton = document.getElementById("pauseButton");
-
-        // Touch controls
-        let touchStartX = 0;
-        let touchStartY = 0;
-        const touchSensitivity = 50; // Adjust as needed
-
-        canvas.addEventListener("touchstart", handleTouchStart, false);
-        canvas.addEventListener("touchmove", handleTouchMove, false);
-
-        function handleTouchStart(event) {
-            touchStartX = event.touches[0].clientX;
-            touchStartY = event.touches[0].clientY;
-        }
-
-        function handleTouchMove(event) {
-            const touchX = event.touches[0].clientX;
-            const touchY = event.touches[0].clientY;
-
-            const deltaX = touchX - touchStartX;
-            const deltaY = touchY - touchStartY;
-
-            if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                if (deltaX > touchSensitivity && direction !== "LEFT") {
-                    direction = "RIGHT";
-                } else if (deltaX < -touchSensitivity && direction !== "RIGHT") {
-                    direction = "LEFT";
-                }
-            } else {
-                if (deltaY > touchSensitivity && direction !== "UP") {
-                    direction = "DOWN";
-                } else if (deltaY < -touchSensitivity && direction !== "DOWN") {
-                    direction = "UP";
-                }
+        // Function to fetch and display data
+        async function fetchAndDisplayData() {
+            try {
+                let csvData = localStorage.getItem("Posts"); // Retrieve CSV data from local storage
+                if (!csvData) return; // If data is not available, exit
+    
+                Papa.parse(csvData, {
+                    header: false,
+                    complete: function (results) {
+                        totalRows = results.data.length - 1; // Update total rows count
+                        displayData(results.data); // Display the data
+                    },
+                    error: function (error) {
+                        console.error("Error parsing CSV data:", error);
+                    },
+                });
+            } catch (error) {
+                console.error("Error fetching CSV data:", error);
             }
-
-            event.preventDefault();
         }
-
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            for (let i = 0; i < snake.length; i++) {
-                ctx.fillStyle = (i === 0) ? "#f55e00" : "white";
-                ctx.fillRect(snake[i].x, snake[i].y, box, box);
-
-                ctx.strokeStyle = "black";
-                ctx.strokeRect(snake[i].x, snake[i].y, box, box);
-            }
-
-            ctx.fillStyle = "red";
-            ctx.fillRect(food.x, food.y, box, box);
-
-            let snakeX = snake[0].x;
-            let snakeY = snake[0].y;
-
-            if (direction === "LEFT") snakeX -= box;
-            if (direction === "UP") snakeY -= box;
-            if (direction === "RIGHT") snakeX += box;
-            if (direction === "DOWN") snakeY += box;
-
-            if (snakeX < 0) snakeX = canvas.width - box;
-            if (snakeY < 0) snakeY = canvas.height - box;
-            if (snakeX >= canvas.width) snakeX = 0;
-            if (snakeY >= canvas.height) snakeY = 0;
-
-            if (snakeX === food.x && snakeY === food.y) {
-                score++;
-                food = { x: Math.floor(Math.random() * cols) * box, y: Math.floor(Math.random() * rows) * box };
-            } else {
-                snake.pop();
-            }
-
-            let newHead = { x: snakeX, y: snakeY };
-
-            if (collision(newHead, snake)) {
-                clearInterval(game);
-            }
-
-            snake.unshift(newHead);
-
-            scoreDisplay.innerHTML = "Score: " + score;
-        }
-
-        function collision(head, array) {
-            for (let i = 0; i < array.length; i++) {
-                if (head.x === array[i].x && head.y === array[i].y) {
-                    return true;
+    
+        // Function to display data
+        function displayData(rows) {
+            const profilesContainer = document.getElementById("csvData");
+    
+            const startIndex = Math.max(rows.length - 2, 0); // Ensure startIndex is not negative
+            for (let i = rows.length - 1; i >= startIndex; i--) { // Iterate over the last two posts or less
+                const columns = rows[i];
+                const Pimg = columns[1].trim(); // Assuming title is in column B
+                const Pname = columns[2].trim(); // Assuming title is in column C
+                const Pdate = columns[6].trim(); // Assuming title is in column G
+                const title = columns[3].trim(); // Assuming title is in column D
+                const textContent = columns[4].trim(); // Assuming text content is in column E
+                const imgSrc = columns[5].trim(); // Assuming image source is in column F
+    
+                if (title) {
+                    // Check if the profile already exists in the container
+                    if (!profilesContainer.querySelector(`[data-title="${title}"]`)) {
+                        const profileDiv = document.createElement("div");
+                        profileDiv.classList.add("profile", "fade-up");
+                        profileDiv.setAttribute("data-title", title); // Set a data attribute to mark the profile
+    
+                        const profileContent = `
+                            <div class="profile-content">
+                                <div class="title">
+                                    <img src="${Pimg}" alt="Album Image" onclick="displayFullScreenImage('${Pimg}')">
+                                    <p>${Pname}<br>${Pdate}</p>
+                                </div>
+                                <h3>${title}</h3>
+                                <p onclick="toggleText(this)" class="text-content">${textContent}</p>
+                                <div class="album-container">
+                                    <img src="${imgSrc}" alt="Album Image" onclick="displayFullScreenImage('${imgSrc}')">
+                                </div>
+                            </div>`;
+    
+                        profileDiv.innerHTML = profileContent;
+                        profilesContainer.appendChild(profileDiv);
+                        profileDiv.classList.add("show");
+                    }
                 }
             }
-            return false;
         }
+    
+        // Initially load data
+        fetchAndDisplayData();
+    
+</script>
 
-        function restart() {
-            clearInterval(game);
-            snake = [{ x: 10 * box, y: 10 * box }];
-            direction = undefined;
-            food = { x: Math.floor(Math.random() * cols) * box, y: Math.floor(Math.random() * rows) * box };
-            score = 0;
-            scoreDisplay.innerHTML = "Score: " + score;
-            game = setInterval(draw, 100);
-            paused = false;
-            pauseButton.innerText = "Pause";
-        }
-
-        function togglePause() {
-            if (paused) {
-                game = setInterval(draw, 100);
-                paused = false;
-                pauseButton.innerText = "Pause";
-            } else {
-                clearInterval(game);
-                paused = true;
-                pauseButton.innerText = "Start";
-            }
-        }
-
-        let game = setInterval(draw, 100);
-
-        window.addEventListener("resize", setCanvasDimensions);
-    </script>
-</body>
+  </body>
 </html>

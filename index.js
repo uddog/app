@@ -58,6 +58,7 @@ async function fetchImageSources() {
 
 
 
+
 async function fetchAndDisplayData() {
     const data = localStorage.getItem('Posts'); // Retrieve post data from localStorage
 
@@ -68,13 +69,13 @@ async function fetchAndDisplayData() {
 
         for (let i = startIndex; i < rows.length; i++) {
             const columns = rows[i];
-            const profileImageSrc = columns[2].trim();
+            const profileImageSrc = columns[5].trim();
             if (profileImageSrc) {
                 const profileDiv = document.createElement('div');
                 profileDiv.classList.add('threecontent');
 
                 const nameElement = document.createElement('h3');
-                nameElement.textContent = columns[0].trim();
+                nameElement.textContent = columns[3].trim();
                 profileDiv.appendChild(nameElement);
 
                 const profileImage = document.createElement('img');
@@ -86,7 +87,7 @@ async function fetchAndDisplayData() {
                 profileDiv.appendChild(profileImage);
 
                 // Display Column B data after the image
-                const columnBData = columns[1].trim();
+                const columnBData = columns[4].trim();
                 if (columnBData) {
                     const columnBElement = document.createElement('p');
                     columnBElement.classList.add('column-b-text');

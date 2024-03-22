@@ -6,101 +6,178 @@
     <title>Post</title>
     <link rel="stylesheet" href="navbar.css" />
     <link rel="stylesheet" href="universal.css" />
+    <link rel="stylesheet" href="test.css">
     <style>
-/* Styles for the album container */
-.album-container {
-  display: flex;
-  width: 100%;
-  overflow-y: scroll;
-  margin-top: 10px;
-}
-.album-container::-webkit-scrollbar {
-  width:0px;
-  }
-.album-container img {
-  min-width: 90vw;
-  object-fit: cover;
-  object-position: center;
-  margin: 5px;
-}
+      .src{
+        display: flex;
+        justify-content: center;
+        margin-top: 10vh;
+      }
+      /* Styling for search input */
+    #searchInput {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        width: 200px; /* Adjust width as needed */
+      }
+      
+      /* Styling for search button */
+      #searchButton {
+        padding: 1px 16px;
+        background-color: #ff5303;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        margin-left: 5px; /* Adjust margin as needed */
+      }
+      
+      /* Hover effect for search button */
+      #searchButton:hover {
+        background-color: #a06e45;
+      }
 
-/* Other existing styles */
-body {
-  background-color: #e8e4e4;
-}
-
-#csvData {
-  margin-top: 10vh;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
-
-.profile {
-  margin-top: 20px;
-  box-sizing: border-box;
-  padding: 15px;
-  padding-top: 30px;
-  min-height: 50vh;
-  overflow: hidden;
-  text-align: center;
-  background-color: #f8f8f8;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-}
-
-.profile h3 {
-  margin-bottom: 10px;
-  font-size: 1.5em;
-  font-family: "font2";
-  color: #333;
-}
-
-.profile p,
-.profile button {
-  text-align: justify;
-  color: #555;
-  font-family: "font1";
-}
-
-.tex {
-  height: auto;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  text-overflow: ellipsis;
-}
-
-.expanded {
-  overflow: visible;
-  white-space: normal;
-  -webkit-line-clamp: initial;
-}
-
-
-/* Styles for the full-screen modal */
-.modal {
-  position: fixed;
-  z-index: 9999;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.9);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow-y: auto;
-}
-
-.modal img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  cursor: pointer;
-}
-
-
+      #csvData {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+      }
+    
+      .profile {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+        min-height: 50vh;
+        padding: 15px 10px;
+        overflow: hidden;
+        text-align: center;
+        box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+      }
+    
+      .profile h3 {
+        margin-bottom: 10px;
+        font-size: 1.5em;
+        font-family: "font2";
+        text-align: left;
+        color: #333;
+      }
+    
+      .profile p {
+        text-align: justify;
+        color: #555;
+        font-family: "font1";
+      }
+     .profile img{
+        margin-top: 5px;
+        width: 100%;
+     }
+      .text-content {
+        height: auto;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        text-overflow: ellipsis;
+      }
+    
+      .expanded {
+        overflow: visible;
+        white-space: normal;
+        -webkit-line-clamp: initial;
+      }
+    
+      /* Styles for the full-screen modal */
+      .modal {
+        position: fixed;
+        z-index: 9999;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow-y: auto;
+      }
+    
+      .modal img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        cursor: pointer;
+      }
+      
+      
+    
+      .title{
+        font-family: 'font1';
+        padding: 0px 10px;
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+        padding: 5px;
+        border-radius: 10px;
+        display: flex;
+        margin-bottom: 5px;
+        align-items: center;
+      }
+      .title img{
+        width: 10vw;
+        height: 10vw;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+      .title p{
+        text-align: left;
+        font-size: 0.7rem;
+      }
+      .title p::first-line{
+        font-size: 1rem;
+      }
+    
+    
+    
+    .highlight {
+        background-color: yellow;
+        font-weight: bold;
+      }
+         
+      /* Loading overlay styles */
+    .loading-overlay {
+        position: fixed;
+        z-index: 9999;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        }
+        
+        
+            .spinner {
+              border: 4px solid rgba(0, 0, 0, 0.1);
+              border-left-color: #7983ff;
+              border-radius: 50%;
+              width: 50px;
+              height: 50px;
+              animation: spin 1s linear infinite; /* Apply the spin animation */
+            }
+            
+            @keyframes spin {
+              0% {
+                transform: rotate(0deg);
+              }
+              100% {
+                transform: rotate(360deg);
+              }
+            }
+            
+           
     </style>
   </head>
 
@@ -139,162 +216,186 @@ body {
       <button onclick="closeLogoutPopup()">No</button>
     </div>
     <!--NavBar End-->
+
+<div class="src">
+<input type="text" id="searchInput" placeholder="Search...">
+<button id="searchButton">Search</button>
+</div>
+
     <!-- Profile containers -->
     <div id="csvData"></div>
 
-    <script src="universal.js"></script>
+    <!-- Loading overlay -->
+<div id="loadingOverlay" class="loading-overlay">
+  <div class="spinner"></div>
+</div>
 
+    <script src="universal.js"></script>
+<script src="test.js"></script>
     <script src="navbar.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script>
-      // Function to create a full-screen modal for displaying the image
-      function displayFullScreenImage(src) {
-        const modal = document.createElement("div");
-        modal.classList.add("modal");
-    
-        const modalImg = document.createElement("img");
-        modalImg.src = src;
-        modalImg.alt = "Full-screen Image";
-    
-        modal.appendChild(modalImg);
-    
-        modal.addEventListener("click", function () {
-          modal.remove();
-        });
-    
-        document.body.appendChild(modal);
+      
+// Function to create a full-screen modal for displaying images
+function displayFullScreenImage(src) {
+  const modal = document.createElement("div");
+  modal.classList.add("modal");
+
+  const modalImg = document.createElement("img");
+  modalImg.src = src;
+  modalImg.alt = "Full-screen Image";
+
+  modal.appendChild(modalImg);
+
+  modal.addEventListener("click", () => {
+    modal.remove();
+  });
+
+  document.body.appendChild(modal);
+}
+
+// Function to toggle the expanded state of text content
+function toggleText(element) {
+  const textContent = element.parentNode.querySelector(".text-content");
+  textContent.classList.toggle("expanded");
+  const toggleButtons = element.parentNode.querySelectorAll(".text-toggle, .text-collapse");
+  toggleButtons.forEach(button => button.classList.toggle("hidden"));
+}
+
+      function showLoadingOverlay() {
+        document.getElementById("loadingOverlay").style.display = "flex";
       }
-    
-      // Update the createProfileDiv function to include an album container
-      function createProfileDiv(columns) {
+      
+      // Function to hide loading overlay
+      function hideLoadingOverlay() {
+        document.getElementById("loadingOverlay").style.display = "none";
+      }
+
+      
+
+      function highlightMatches(element, searchText) {
+        const innerHTML = element.innerHTML;
+        const index = innerHTML.toLowerCase().indexOf(searchText.toLowerCase());
+        if (index >= 0) {
+          const highlightedText = `<span class="highlight">${innerHTML.substr(index, searchText.length)}</span>`;
+          const newHTML = innerHTML.substring(0, index) + highlightedText + innerHTML.substring(index + searchText.length);
+          element.innerHTML = newHTML;
+        }
+      }
+  
+      function filterProfiles() {
+        const input = document.getElementById("searchInput").value.toLowerCase();
+        const profiles = document.querySelectorAll(".profile");
+  
+        profiles.forEach(profile => {
+          const title = profile.querySelector("h3");
+          const date = profile.querySelector(".title p");
+          const textContent = profile.querySelector(".text-content");
+          const name = profile.querySelector(".title p"); // Assuming Pname is inside .title p
+  
+          // Remove previous highlights
+          profile.querySelectorAll('.highlight').forEach(el => el.classList.remove('highlight'));
+  
+          // Perform search and highlight matches
+          if (title && title.innerText.toLowerCase().includes(input)) {
+            highlightMatches(title, input);
+          }
+          if (date && date.innerText.toLowerCase().includes(input)) {
+            highlightMatches(date, input);
+          }
+          if (textContent && textContent.innerText.toLowerCase().includes(input)) {
+            highlightMatches(textContent, input);
+          }
+          if (name && name.innerText.toLowerCase().includes(input)) {
+            highlightMatches(name, input);
+          }
+  
+          const profileDisplayStyle = title.innerText.toLowerCase().includes(input) || date.innerText.toLowerCase().includes(input) || textContent.innerText.toLowerCase().includes(input) || name.innerText.toLowerCase().includes(input) ? "block" : "none";
+          profile.style.display = profileDisplayStyle;
+        });
+      }
+  
+      // Function to perform search when the button is clicked
+      document.getElementById("searchButton").addEventListener("click", filterProfiles);
+  
+
+
+
+
+
+
+// Function to fetch and display data
+async function fetchAndDisplayData() {
+  try {
+    showLoadingOverlay(); // Show loading overlay
+    let csvData = localStorage.getItem("Posts"); // Retrieve CSV data from local storage
+    if (!csvData) return; // If data is not available, exit
+
+    Papa.parse(csvData, {
+      header: false,
+      complete: function (results) {
+        totalRows = results.data.length - 1; // Update total rows count
+        displayData(results.data); // Display the data
+        hideLoadingOverlay(); // Hide loading overlay after data is loaded
+      },
+      error: function (error) {
+        console.error("Error parsing CSV data:", error);
+        hideLoadingOverlay(); // Hide loading overlay in case of error
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching CSV data:", error);
+    hideLoadingOverlay(); // Hide loading overlay in case of error
+  }
+}
+// Function to display data
+function displayData(rows) {
+  const profilesContainer = document.getElementById("csvData");
+
+  let nonEmptyRows = 0;
+  for (let i = rows.length - 1; i > 0; i--) {
+    const columns = rows[i];
+    const Pimg = columns[1].trim(); // Assuming title is in column B
+    const Pname = columns[2].trim(); // Assuming title is in column C
+    const Pdate = columns[6].trim(); // Assuming title is in column G
+    const title = columns[3].trim(); // Assuming title is in column D
+    const textContent = columns[4].trim(); // Assuming text content is in column E
+    const imgSrc = columns[5].trim(); // Assuming image source is in column F
+
+    if (title) {
+      // Check if the profile already exists in the container
+      if (!profilesContainer.querySelector(`[data-title="${title}"]`)) {
         const profileDiv = document.createElement("div");
         profileDiv.classList.add("profile", "fade-up");
-    
-        const profileContent = document.createElement("div");
-        profileContent.classList.add("profile-content");
-    
-        const profileTitle = document.createElement("h3");
-        profileTitle.textContent = columns[0].trim();
-    
-        const profileText = document.createElement("p");
-        profileText.classList.add("tex");
-    
-        function textToLinks(text) {
-          return text.replace(/(https?:\/\/[^\s]+)/g, function (url) {
-            return '<a href="' + url + '">' + url + "</a>";
-          });
-        }
-    
-        const cellContentLines = columns[1].trim().split("<br>");
-        cellContentLines.forEach((line) => {
-          const lineWithLinks = textToLinks(line);
-          const lineDiv = document.createElement("div");
-          lineDiv.innerHTML = lineWithLinks;
-          profileText.appendChild(lineDiv);
-          profileText.appendChild(document.createElement("br"));
-        });
-    
-        const textToggle = document.createElement("div");
-        textToggle.classList.add("text-toggle");
-        profileText.addEventListener("click", function () {
-          profileText.classList.toggle("expanded");
-        });
-    
-        profileContent.appendChild(profileTitle);
-        profileContent.appendChild(profileText);
-        profileContent.appendChild(textToggle);
-    
-        profileDiv.appendChild(profileContent);
-    
-        const albumContainer = document.createElement("div");
-        albumContainer.classList.add("album-container");
-    
-        function createAndAppendImage(src) {
-          if (src.trim()) {
-            const albumImage = document.createElement("img");
-            albumImage.src = src.trim();
-            albumImage.alt = "Album Image";
-            albumImage.addEventListener("click", function () {
-              displayFullScreenImage(albumImage.src);
-            });
-            albumContainer.appendChild(albumImage);
-          }
-        }
-    
-        createAndAppendImage(columns[2]);
-        createAndAppendImage(columns[3]);
-        createAndAppendImage(columns[4]);
-    
-        profileDiv.appendChild(albumContainer);
-    
-        return profileDiv;
+        profileDiv.setAttribute("data-title", title); // Set a data attribute to mark the profile
+
+        const profileContent = `
+          <div class="profile-content">
+            <div class="title">
+              <img src="${Pimg}" alt="Album Image" onclick="displayFullScreenImage('${Pimg}')">
+              <p>${Pname}<br>${Pdate}</p>
+            </div>
+            <h3>${title}</h3>
+            <p onclick="toggleText(this)" class="text-content">${textContent}</p>
+            <div class="album-container">
+              <img src="${imgSrc}" alt="Album Image" onclick="displayFullScreenImage('${imgSrc}')">
+            </div>
+          </div>`;
+
+        profileDiv.innerHTML = profileContent;
+        profilesContainer.appendChild(profileDiv);
+        profileDiv.classList.add("show");
       }
-    
-      // Function to fetch and display data
-      async function fetchAndDisplayData() {
-        try {
-          let csvData = localStorage.getItem("Posts"); // Retrieve CSV data from local storage
-          if (!csvData) return; // If data is not available, exit
-    
-          Papa.parse(csvData, {
-            header: false,
-            complete: function (results) {
-              totalRows = results.data.length - 1; // Update total rows count
-              displayData(results.data); // Display the data
-            },
-            error: function (error) {
-              console.error("Error parsing CSV data:", error);
-            },
-          });
-        } catch (error) {
-          console.error("Error fetching CSV data:", error);
-        }
-      }
-    
-      // Function to display data
-      function displayData(rows) {
-        const profilesContainer = document.getElementById("csvData");
-    
-        let nonEmptyRows = 0;
-        for (let i = rows.length - 1; i > 0; i--) {
-          const columns = rows[i];
-          const profileImageSrc = columns[0].trim();
-    
-          if (profileImageSrc) {
-            nonEmptyRows++;
-            if (
-              nonEmptyRows >= (currentPage - 1) * rowsPerPage + 1 &&
-              nonEmptyRows <= currentPage * rowsPerPage
-            ) {
-              const profileDiv = createProfileDiv(columns);
-              profilesContainer.appendChild(profileDiv);
-              profileDiv.classList.add("show");
-            }
-          }
-        }
-    
-        // Increase current page for next load
-        currentPage++;
-      }
-    
-      // Variables to manage pagination and data
-      let currentPage = 1;
-      const rowsPerPage = 10;
-      let totalRows = 0;
-    
-      // Event listener to trigger data loading when scrolled to the bottom
-      window.addEventListener("scroll", function () {
-        if (
-          window.innerHeight + window.scrollY >=
-          document.body.offsetHeight
-        ) {
-          fetchAndDisplayData();
-        }
-      });
-    
-      // Initially load data
-      fetchAndDisplayData();
+    }
+  }
+
+  // Increase current page for next load
+}
+
+// Initially load data
+fetchAndDisplayData();
+
+
     </script>
-    
   </body>
 </html>

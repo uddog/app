@@ -275,11 +275,14 @@
   color: #333;
 }
 
-.threecontent p {
-  font-family: "font1";
-  text-align: justify;
-  margin-bottom: 8px;
-  color: #555;
+.column-b-text{
+  font-family: 'font1';
+  height: auto;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
 }
 
 a.sepost {
