@@ -18,7 +18,7 @@
         transition: background-image 0.5s ease-in-out;
         background-size: cover;
         background-position: center;
-        background-color: #010408;
+        background-color: #050709;
       }
       .container {
         position: relative;
@@ -54,7 +54,7 @@
         box-sizing: border-box;
         border-radius: 24px;
         backdrop-filter: blur(6px);
-        border: solid 2px rgba(255, 255, 255, 0.655);
+        border: solid 2px rgba(255, 255, 255, 0.178);
         background-color: rgba(255, 255, 255, 0.084);
         transition: all ease 0.7s;
         color: #fff;
@@ -274,29 +274,30 @@
       function changeBackground(direction) {
         // Retrieve CSV data from local storage
         const csvData = localStorage.getItem("Images");
-      
+
         if (!csvData) {
           console.error("CSV data not found in local storage.");
           return;
         }
-      
+
         // Convert CSV data to an array of image URLs
         const rows = csvData.split("\n");
         const imgUrls = rows.slice(1).map((row) => row.split(",")[0]); // Skip the first row
-      
+
         // Update currentIndex based on direction
-        currentIndex = (currentIndex + direction + imgUrls.length) % imgUrls.length;
-      
+        currentIndex =
+          (currentIndex + direction + imgUrls.length) % imgUrls.length;
+
         // Check if the current row is empty
         while (imgUrls[currentIndex].trim() === "") {
           // If empty, move to the next row
           currentIndex = (currentIndex + 1) % imgUrls.length;
         }
-      
+
         // Set the background image
         document.body.style.backgroundImage = `url(${imgUrls[currentIndex]})`;
       }
-      
+
       // Swipe functionality for touch devices
       document.addEventListener("touchstart", function (event) {
         touchStartX = event.touches[0].clientX;

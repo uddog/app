@@ -156,6 +156,10 @@
     #hello {
       text-align: center;
     }
+    #hello h3{
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
     .button-container {
       margin-top: 5px;
       display: flex;
@@ -164,7 +168,7 @@
     }
     .button {
       margin: 5px;
-      padding: 10px;
+      padding: 30px;
       width: 40vw;
       background-color: #ffffff; /* White */
       color: #000000; /* Black */
@@ -175,13 +179,11 @@
       text-align: center;
       box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     }
-    .button ion-icon {
-      font-size: 1.5rem;
-      margin-bottom: 10px;
+    .button img{
+      width: 100%;
     }
-    .button:hover {
-      background-color: #000000; /* Black on hover */
-      color: #ffffff; /* White on hover */
+    .button:hover img{
+      scale: 1.08;
       transition: 0.3s;
     }
 
@@ -348,10 +350,10 @@
                <div id="hello">
                    <h3>More</h3>
                    <div class="button-container">
-                       <a href="history.html"><button class="button"><ion-icon name="stats-chart-outline"></ion-icon><br>History</button></a>
-                       <a href="card.html"><button class="button"><ion-icon name="id-card-outline"></ion-icon><br>Card</button></a>
-                       <a href="userAge.html"><button class="button"><ion-icon name="hourglass-outline"></ion-icon><br>Your Age</button></a>
-                       <a href=""><button class="button"><ion-icon name="help-outline"></ion-icon><br>Soon</button></a>
+                       <a href="history.html"><button class="button"><img src="https://i.pinimg.com/564x/30/19/cc/3019cc4ac8fd409a34742402468d59f7.jpg"><br>History</button></a>
+                       <a href="card.html"><button class="button"><img src="https://i.pinimg.com/564x/d2/50/b1/d250b12ab2782b1792a65e788f1abe66.jpg"><br>Card</button></a>
+                       <a href="userAge.html"><button class="button"><img src="https://i.pinimg.com/564x/12/5e/9e/125e9e3877d59661ba31fc47e1fbc418.jpg"><br>Your Age</button></a>
+                       <a href=""><button class="button"><img src="https://i.pinimg.com/564x/27/83/45/278345c21e21cfacbd190ec18092a0e5.jpg"><br>Soon</button></a>
                      </div>
                </div>
              </div>
