@@ -225,29 +225,28 @@
         try {
           toggleLoading(true);
           hideResultDiv(); // Hide resultDiv before fetching new data
-
+      
           // Highlight the clicked button
           highlightActiveButton(clickedButton);
-
-          const csvUrl = getCSVUrl(category);
-          const response = await fetch(csvUrl);
-
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+      
+          // Retrieve CSV data from local storage based on category
+          const csvData = getCSVFromLocalStorage(category);
+      
+          if (!csvData) {
+            throw new Error("CSV data not found in local storage.");
           }
-
-          const csvData = await response.text();
+      
           const rows = csvData.split("\n");
           const userUsername = localStorage.getItem("userUsername");
           const columnIndex = rows[3].split(",").indexOf(userUsername);
-
+      
           if (columnIndex !== -1) {
             const resultDiv = document.getElementById(resultDivId);
             resultDiv.innerHTML = "";
-
+      
             for (let i = rows.length - 1; i >= 4; i--) {
               const rowData = rows[i].split(",");
-
+      
               if (
                 rowData.length > columnIndex + 1 &&
                 rowData[columnIndex].trim() !== ""
@@ -259,7 +258,7 @@
                 resultDiv.innerHTML += `<p>${data1} in ${formattedDate}</p>`;
               }
             }
-
+      
             showResultDiv(); // Show resultDiv with animation
           }
         } catch (error) {
@@ -268,21 +267,23 @@
           toggleLoading(false);
         }
       }
-
-      function getCSVUrl(category) {
+      
+      function getCSVFromLocalStorage(category) {
+        // Adjust the local storage key based on your structure
         switch (category) {
           case "Event":
-            return "https://docs.google.com/spreadsheets/d/e/2PACX-1vSqO2wnCm7qgYrAPmti7eLwgiVpLaTdUSrWebr_KLKQ9h0mS2WYIubB-9epYRF6Ro9ihvA9Qe5vZxBC/pub?output=csv";
+            return localStorage.getItem("Events");
           case "Blood":
-            return "https://docs.google.com/spreadsheets/d/e/2PACX-1vSqO2wnCm7qgYrAPmti7eLwgiVpLaTdUSrWebr_KLKQ9h0mS2WYIubB-9epYRF6Ro9ihvA9Qe5vZxBC/pub?output=csv&gid=692804136";
+            return localStorage.getItem("Blood");
           case "Money":
-            return "https://docs.google.com/spreadsheets/d/e/2PACX-1vSqO2wnCm7qgYrAPmti7eLwgiVpLaTdUSrWebr_KLKQ9h0mS2WYIubB-9epYRF6Ro9ihvA9Qe5vZxBC/pub?output=csv&gid=909176802";
-          case "Reference": // New case for Reference
-            return "https://docs.google.com/spreadsheets/d/e/2PACX-1vSqO2wnCm7qgYrAPmti7eLwgiVpLaTdUSrWebr_KLKQ9h0mS2WYIubB-9epYRF6Ro9ihvA9Qe5vZxBC/pub?output=csv&gid=54672331"; // Replace with your CSV link for Reference data
+            return localStorage.getItem("Donation");
+          case "Reference":
+            return localStorage.getItem("Reference");
           default:
-            return "";
+            return null;
         }
       }
+      
 
       // Initial call to display 'Event' data on page load
       displayCSV("Event", "resultDiv", document.querySelector(".btn"));

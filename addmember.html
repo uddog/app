@@ -185,43 +185,39 @@ button:hover {
         function checkAndAddData() {
             const dataInput1 = document.getElementById('dataInput1').value.trim().toLowerCase();
             const dataInput2 = document.getElementById('dataInput2').value.trim();
-
+        
             if (dataInput1 === '' || dataInput2 === '') {
                 showPopup('Please fill in both username and password.');
                 return;
             }
-
+        
             if (dataInput1.includes(' ')) {
                 showPopup('Username cannot contain spaces. Please choose another.');
                 return;
             }
-
-
+        
             document.getElementById('loadingModal').style.display = 'flex';
-
-            fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vRDv7MQUbN2J6k-mj5UI9RsITtNmwhR1LwkxBc3tQ_aUU984nUy1aEIQIWgVUeOJyKTDVkrggQBqn7n/pub?output=csv')
-                .then(response => response.text())
-                .then(csvData => {
-                    const lines = csvData.split('\n');
-                    const usernames = lines.map(line => line.split(',')[1].trim().toLowerCase());
-
-                    if (usernames.includes(dataInput1)) {
-                        showPopup('This username is not available. Please choose another.');
-                    } else {
-                        sendData(dataInput1, dataInput2);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching CSV data:', error);
-                })
-                .finally(() => {
-                    document.getElementById('loadingModal').style.display = 'none';
-                });
+        
+            // Retrieve CSV data from local storage
+            const csvData = localStorage.getItem('PrivteDataAll');
+        
+            if (!csvData) {
+                console.error("CSV data not found in local storage.");
+                return;
+            }
+        
+            const lines = csvData.split('\n');
+            const usernames = lines.map(line => line.split(',')[1].trim().toLowerCase());
+        
+            if (usernames.includes(dataInput1)) {
+                showPopup('This username is not available. Please choose another.');
+            } else {
+                sendData(dataInput1, dataInput2);
+            }
+        
+            document.getElementById('loadingModal').style.display = 'none';
         }
-
-       
-       
-       
+        
         function sendData(username, password) {
             fetch('https://script.google.com/macros/s/AKfycbxJYKNyNPrzJSrZkeGRbay9pQpIwY-PJZaNwtGLHgC0nn2I66Jeb57t3opfpXA3tqsH/exec', {
                     method: 'POST',
@@ -245,55 +241,54 @@ button:hover {
                     document.getElementById('loadingModal').style.display = 'none';
                 });
         }
-
+        
         function showPopup(message) {
             document.getElementById('popupText').innerText = message;
             document.getElementById('popup').style.display = 'block';
         }
-
+        
         function closePopup() {
             document.getElementById('popup').style.display = 'none';
         }
-
+        
         document.getElementById('dataInput1').addEventListener('input', function () {
             const usernameInput = this.value.trim().toLowerCase();
             const usernameError = document.getElementById('usernameError');
-
+        
             if (usernameInput === '') {
                 usernameError.innerText = '';
                 usernameError.style.display = 'none';
                 return;
             }
-
+        
             if (usernameInput.includes(' ')) {
                 usernameError.innerText = 'Username cannot contain spaces. Please choose another.';
                 usernameError.style.display = 'block';
                 return;
             }
-
-
-            fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vRDv7MQUbN2J6k-mj5UI9RsITtNmwhR1LwkxBc3tQ_aUU984nUy1aEIQIWgVUeOJyKTDVkrggQBqn7n/pub?output=csv')
-                .then(response => response.text())
-                .then(csvData => {
-                    const lines = csvData.split('\n');
-                    const usernames = lines.map(line => line.split(',')[1].trim().toLowerCase());
-
-                    if (usernames.includes(usernameInput)) {
-                        usernameError.innerText = 'This username is not available. Please choose another.';
-                        usernameError.style.display = 'block';
-                    } else {
-                        usernameError.innerText = '';
-                        usernameError.style.display = 'none';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching CSV data:', error);
-                    usernameError.innerText = 'Error checking username availability.';
-                    usernameError.style.display = 'block';
-                });
+        
+            // Retrieve CSV data from local storage
+            const csvData = localStorage.getItem('PrivteDataAll');
+        
+            if (!csvData) {
+                console.error("CSV data not found in local storage.");
+                usernameError.innerText = 'Error checking username availability.';
+                usernameError.style.display = 'block';
+                return;
+            }
+        
+            const lines = csvData.split('\n');
+            const usernames = lines.map(line => line.split(',')[1].trim().toLowerCase());
+        
+            if (usernames.includes(usernameInput)) {
+                usernameError.innerText = 'This username is not available. Please choose another.';
+                usernameError.style.display = 'block';
+            } else {
+                usernameError.innerText = '';
+                usernameError.style.display = 'none';
+            }
         });
-
-
+        
     </script>
 
 </body>

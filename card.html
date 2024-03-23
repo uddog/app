@@ -272,34 +272,31 @@
       }
 
       function changeBackground(direction) {
-        // CSV link to your spreadsheet (replace with your own link)
-        const csvLink =
-          "https://docs.google.com/spreadsheets/d/e/2PACX-1vT5yPBQL7OkwisJJ6Dq4jpzATrchx3wbyxQQ09mH0BoPrTFr8FYnKxkT7xjvWB8P51Gled65w6S8VQH/pub?output=csv&gid=366259374";
-
-        // Fetch the CSV data
-        fetch(csvLink)
-          .then((response) => response.text())
-          .then((csvData) => {
-            // Convert CSV data to an array of image URLs
-            const rows = csvData.split("\n");
-            const imgUrls = rows.slice(1).map((row) => row.split(",")[0]); // Skip the first row
-
-            // Update currentIndex based on direction
-            currentIndex =
-              (currentIndex + direction + imgUrls.length) % imgUrls.length;
-
-            // Check if the current row is empty
-            while (imgUrls[currentIndex].trim() === "") {
-              // If empty, move to the next row
-              currentIndex = (currentIndex + 1) % imgUrls.length;
-            }
-
-            // Set the background image
-            document.body.style.backgroundImage = `url(${imgUrls[currentIndex]})`;
-          })
-          .catch((error) => console.error("Error fetching CSV data:", error));
+        // Retrieve CSV data from local storage
+        const csvData = localStorage.getItem("Images");
+      
+        if (!csvData) {
+          console.error("CSV data not found in local storage.");
+          return;
+        }
+      
+        // Convert CSV data to an array of image URLs
+        const rows = csvData.split("\n");
+        const imgUrls = rows.slice(1).map((row) => row.split(",")[0]); // Skip the first row
+      
+        // Update currentIndex based on direction
+        currentIndex = (currentIndex + direction + imgUrls.length) % imgUrls.length;
+      
+        // Check if the current row is empty
+        while (imgUrls[currentIndex].trim() === "") {
+          // If empty, move to the next row
+          currentIndex = (currentIndex + 1) % imgUrls.length;
+        }
+      
+        // Set the background image
+        document.body.style.backgroundImage = `url(${imgUrls[currentIndex]})`;
       }
-
+      
       // Swipe functionality for touch devices
       document.addEventListener("touchstart", function (event) {
         touchStartX = event.touches[0].clientX;
