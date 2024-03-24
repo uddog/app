@@ -13,7 +13,7 @@
       background-repeat: no-repeat;
       background-attachment: fixed;
       color: #2c3e50; /* Text color */
-      background-color: #091128;
+      background-color: #223365;
     }
     header {
       backdrop-filter: blur(10px);
@@ -110,7 +110,7 @@
       padding: 10px;
       text-align: left;
       border-radius: 10px;
-      color: white;
+      color: rgba(240, 240, 240, 0.758);
       box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     }
     .s2 > div:nth-child(1) {
@@ -138,16 +138,13 @@
       position: relative;
       left: 50%;
       transform: translateX(-50%);
+      color: rgba(255, 255, 255, 0.628);
       margin-bottom: 5px;
     }
     .s2 div p {
       text-align: center;
       margin-top: 5px;
       font-size: 1.4rem;
-    }
-    .s2 > div:hover > ion-icon {
-      scale: 1.1;
-      transition: 0.5s;
     }
     .s2 div div {
       font-size: 1.1rem;
@@ -371,10 +368,10 @@
                    <p>${role}</p>
                </div>
                <div class="s2">
-                    <div><ion-icon name="checkmark-done-circle-outline"></ion-icon><br><div>Total<br>Point<br></div><p>${point}</p></div>
-                   <div><ion-icon name="flag-outline"></ion-icon><br><div>Total<br>Events<br></div><p>${attendedEvents}</p></div>
-                   <div><ion-icon name="cash-outline"></ion-icon><br><div>Total<br>Donation<br></div><p>${totalDonation}</p></div>
-                   <div><ion-icon name="medical-outline"></ion-icon><br><div>Total<br>Blood<br><p></div>${totalblood}</p></div>
+                    <div><ion-icon name="checkmark-done-circle"></ion-icon><br><div>Total<br>Point<br></div><p>${point}</p></div>
+                   <div><ion-icon name="flag"></ion-icon><br><div>Total<br>Events<br></div><p>${attendedEvents}</p></div>
+                   <div><ion-icon name="cash"></ion-icon><br><div>Total<br>Donation<br></div><p>${totalDonation}</p></div>
+                   <div><ion-icon name="medical"></ion-icon><br><div>Total<br>Blood<br></div><p>${totalblood}</p></div>
                </div>
            </div>
              <div class="two">
