@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
     <link rel="stylesheet" href="universal.css">
+    <link rel="stylesheet" href="navbar.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
@@ -16,17 +17,14 @@
             }
             /* Mobile-first design */
             main {
-                margin-top: 5vh;
+                margin-top: 7vh;
                 width: 100vw;
                 display: flex;
                 justify-content: center;
             }
             .det{
-                border-radius: 30px 30px 0px 0px;
-                box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-                padding: 30px;
+                padding: 20px;
                 text-align: center;
-                background-color: rgba(255, 255, 255, 0.333);
                 width: 100vw;
             }
             h2 {
@@ -85,7 +83,7 @@
                 width: 100%;
                 margin-top: 20px;
                 padding: 10px;
-                background-color: black;
+                background-color: rgb(255, 65, 7);
                 border: none;
                 color: white;
                 border: 1px solid;
@@ -94,7 +92,7 @@
             }
             
             button:hover {
-                background-color: rgb(92, 88, 88);
+                background-color: rgb(239, 141, 12);
                 color: white;
             }
             
@@ -148,7 +146,40 @@
 
 <body onclick="closeSuccessModal()">
 
-
+    <!--NavBar Start-->
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-top" id="sidebarTop"></div>
+        <a onclick="toggleSidebar()" class="close-btn">&times;</a>
+        <a href="index.html" id="homeLink">Home</a>
+        <a href="inbox.html">Inbox</a>
+        <a href="profiles.html" id="profileBtn">Profile</a>
+        <a href="settings.html">Settings</a>
+        <a href="#" onclick="openLogoutPopup()" id="logoutBtn">Log Out</a>
+      </div>
+      <!-- Main content -->
+      <header>
+        <div>
+          <div class="menu-icon" id="sidebarButton" onclick="toggleSidebar()">
+            &#9776;
+          </div>
+        </div>
+        <nav id="navbar"></nav>
+      </header>
+  
+      <!-- Bio section -->
+      <div class="bio-section" id="bioSection" style="display: none"></div>
+  
+      <!-- Logout Popup -->
+      <div class="overlay" id="overlay" onclick="closeLogoutPopup()"></div>
+      <div class="popup" id="logoutPopup">
+        <p>Are you sure you want to logout?</p>
+        <a style="color: black" href="index.html"
+          ><button onclick="logout()">Yes</button></a
+        >
+        <button onclick="closeLogoutPopup()">No</button>
+      </div>
+      <!--NavBar End-->
 
     <main>
         <div class="det">
@@ -171,7 +202,7 @@
         </div>
     </div>
 
-    
+    <script src="navbar.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const savedRowIndex = localStorage.getItem('rowIndex');

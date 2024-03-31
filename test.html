@@ -1,127 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Post</title>
-    <link rel="stylesheet" href="navbar.css" />
-    <link rel="stylesheet" href="universal.css" />
-    <link rel="stylesheet" href="test.css">
-    <style>
-   
-    </style>
-  </head>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSV to IndexedDB</title>
+<script>
+// Function to fetch CSV data from Google Spreadsheet URL
+function fetchCSVAndStoreLocally(csvUrl) {
+    fetch(csvUrl)
+    .then(response => response.text())
+    .then(csvData => {
+        // Parse CSV data
+        const rows = csvData.split('\n');
+        const data = rows.map(row => row.split(','));
 
-  <body>
-    <!--NavBar Start-->
-    <!-- Sidebar -->
-    <div id="sidebar" class="sidebar">
-      <div class="sidebar-top" id="sidebarTop"></div>
-      <a onclick="toggleSidebar()" class="close-btn">&times;</a>
-      <a href="index.html" id="homeLink">Home</a>
-      <a href="inbox.html">Inbox</a>
-      <a href="profiles.html" id="profileBtn">Profile</a>
-      <a href="settings.html">Settings</a>
-      <a href="#" onclick="openLogoutPopup()" id="logoutBtn">Log Out</a>
-    </div>
-    <!-- Main content -->
-    <header>
-      <div>
-        <div class="menu-icon" id="sidebarButton" onclick="toggleSidebar()">
-          &#9776;
-        </div>
-      </div>
-      <nav id="navbar"></nav>
-    </header>
+        // Open or create IndexedDB database
+        const request = window.indexedDB.open('mydb', 1);
 
-    <!-- Bio section -->
-    <div class="bio-section" id="bioSection" style="display: none"></div>
+        request.onerror = function(event) {
+            console.error('IndexedDB error:', event.target.errorCode);
+        };
 
-    <!-- Logout Popup -->
-    <div class="overlay" id="overlay" onclick="closeLogoutPopup()"></div>
-    <div class="popup" id="logoutPopup">
-      <p>Are you sure you want to logout?</p>
-      <a style="color: black" href="index.html"
-        ><button onclick="logout()">Yes</button></a
-      >
-      <button onclick="closeLogoutPopup()">No</button>
-    </div>
-    <!--NavBar End-->
+        request.onupgradeneeded = function(event) {
+            const db = event.target.result;
+            const objectStore = db.createObjectStore('mytable', { keyPath: 'id', autoIncrement: true });
 
-    <!-- Profile containers -->
-    <div id="csvData"></div>
-    <script src="universal.js"></script>
-    <script src="test.js"></script>
-    <script src="navbar.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-    <script>
-        // Function to fetch and display data
-        async function fetchAndDisplayData() {
-            try {
-                let csvData = localStorage.getItem("Posts"); // Retrieve CSV data from local storage
-                if (!csvData) return; // If data is not available, exit
-    
-                Papa.parse(csvData, {
-                    header: false,
-                    complete: function (results) {
-                        totalRows = results.data.length - 1; // Update total rows count
-                        displayData(results.data); // Display the data
-                    },
-                    error: function (error) {
-                        console.error("Error parsing CSV data:", error);
-                    },
-                });
-            } catch (error) {
-                console.error("Error fetching CSV data:", error);
+            // Define the structure of the object store (assuming 3 columns in CSV)
+            objectStore.createIndex('column1', 'column1', { unique: false });
+            objectStore.createIndex('column2', 'column2', { unique: false });
+            objectStore.createIndex('column3', 'column3', { unique: false });
+        };
+
+        request.onsuccess = function(event) {
+            const db = event.target.result;
+
+            // Start a new transaction
+            const transaction = db.transaction(['mytable'], 'readwrite');
+            const objectStore = transaction.objectStore('mytable');
+
+            // Insert data into IndexedDB database
+            for (let i = 0; i < data.length; i++) {
+                objectStore.add({ column1: data[i][0], column2: data[i][1], column3: data[i][2] });
             }
-        }
-    
-        // Function to display data
-        function displayData(rows) {
-            const profilesContainer = document.getElementById("csvData");
-    
-            const startIndex = Math.max(rows.length - 2, 0); // Ensure startIndex is not negative
-            for (let i = rows.length - 1; i >= startIndex; i--) { // Iterate over the last two posts or less
-                const columns = rows[i];
-                const Pimg = columns[1].trim(); // Assuming title is in column B
-                const Pname = columns[2].trim(); // Assuming title is in column C
-                const Pdate = columns[6].trim(); // Assuming title is in column G
-                const title = columns[3].trim(); // Assuming title is in column D
-                const textContent = columns[4].trim(); // Assuming text content is in column E
-                const imgSrc = columns[5].trim(); // Assuming image source is in column F
-    
-                if (title) {
-                    // Check if the profile already exists in the container
-                    if (!profilesContainer.querySelector(`[data-title="${title}"]`)) {
-                        const profileDiv = document.createElement("div");
-                        profileDiv.classList.add("profile", "fade-up");
-                        profileDiv.setAttribute("data-title", title); // Set a data attribute to mark the profile
-    
-                        const profileContent = `
-                            <div class="profile-content">
-                                <div class="title">
-                                    <img src="${Pimg}" alt="Album Image" onclick="displayFullScreenImage('${Pimg}')">
-                                    <p>${Pname}<br>${Pdate}</p>
-                                </div>
-                                <h3>${title}</h3>
-                                <p onclick="toggleText(this)" class="text-content">${textContent}</p>
-                                <div class="album-container">
-                                    <img src="${imgSrc}" alt="Album Image" onclick="displayFullScreenImage('${imgSrc}')">
-                                </div>
-                            </div>`;
-    
-                        profileDiv.innerHTML = profileContent;
-                        profilesContainer.appendChild(profileDiv);
-                        profileDiv.classList.add("show");
-                    }
-                }
-            }
-        }
-    
-        // Initially load data
-        fetchAndDisplayData();
-    
+
+            // Close the transaction
+            transaction.oncomplete = function() {
+                console.log('Data inserted successfully into IndexedDB.');
+            };
+        };
+    })
+    .catch(error => {
+        console.error('Error fetching CSV:', error);
+    });
+}
+
+// Call the function with the CSV URL
+fetchCSVAndStoreLocally('https://docs.google.com/spreadsheets/d/e/2PACX-1vRDv7MQUbN2J6k-mj5UI9RsITtNmwhR1LwkxBc3tQ_aUU984nUy1aEIQIWgVUeOJyKTDVkrggQBqn7n/pub?output=csv');
 </script>
-
-  </body>
+</head>
+<body>
+<h1>CSV to IndexedDB</h1>
+<p>Data from the CSV link of Google Spreadsheet will be fetched and stored locally in IndexedDB.</p>
+</body>
 </html>

@@ -1,30 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Page 2</title>
-  <style>
-    .content {
-        perspective: 1000px; /* Sets perspective for zoom */
-      }
-      
-      .content::view-transition-old {
-        transform: scale(1);
-      }
-      
-      .content::view-transition-new {
-        transform: scale(1.2); /* Adjust zoom factor */
-        transition: transform 0.5s ease-in-out;
-      }
-      
-      
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Display Data from Web SQL</title>
 </head>
 <body>
-  <div class="content">
-    <h1>Welcome to Page 2</h1>
-    <p>This is the content of page 2. You can navigate back to page 1 by refreshing the page or using your browser's back button.</p>
-  </div>
+<h1>Display Data from Web SQL</h1>
+<div id="data"></div>
+
+<script>
+// Function to fetch and display data from Web SQL
+function displayDataFromWebSQL() {
+    // Open the Web SQL database
+    const db = openDatabase('mydb', '1.0', 'My Database', 2 * 1024 * 1024);
+
+    // Retrieve data from the database
+    db.transaction(function(tx) {
+        tx.executeSql('SELECT * FROM mytable', [], function(tx, result) {
+            const dataDiv = document.getElementById('data');
+            const rows = result.rows;
+
+            // Display data in a table
+            let tableHtml = '<table border="1"><tr><th>Column 1</th><th>Column 2</th><th>Column 3</th></tr>';
+            for (let i = 0; i < rows.length; i++) {
+                tableHtml += '<tr>';
+                tableHtml += '<td>' + rows.item(i).column1 + '</td>';
+                tableHtml += '<td>' + rows.item(i).column2 + '</td>';
+                tableHtml += '<td>' + rows.item(i).column3 + '</td>';
+                tableHtml += '</tr>';
+            }
+            tableHtml += '</table>';
+            dataDiv.innerHTML = tableHtml;
+        });
+    });
+}
+
+// Call the function to display data
+displayDataFromWebSQL();
+</script>
 </body>
 </html>

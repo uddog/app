@@ -14,13 +14,10 @@
         overflow: scroll;
         scroll-snap-type: x mandatory;
         box-sizing: border-box;
-        background-image: url(https://i.pinimg.com/564x/fc/33/55/fc3355c66a18c121c80942bfcf510aed.jpg);
       }
       .custom-img {
-        margin-top: 5vh;
         padding-top: 20px;
         scroll-snap-align: start;
-        border-radius: 30px 30px 0px 0px;
         box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
         min-width: 100vw;
         display: flex;
@@ -51,14 +48,10 @@
       }
 
       .container {
-        margin-top: 5vh;
+        margin-top: 8vh;
         padding-top: 20px;
         padding-bottom: 20px;
         scroll-snap-align: start;
-        backdrop-filter: blur(10px);
-        background-color: rgba(255, 255, 255, 0.237);
-        border-radius: 30px 30px 0px 0px;
-        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
         text-align: center;
         min-width: 100vw;
         overflow-y: scroll;
@@ -145,6 +138,41 @@
   </head>
 
   <body>
+    <!--NavBar Start-->
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+      <div class="sidebar-top" id="sidebarTop"></div>
+      <a onclick="toggleSidebar()" class="close-btn">&times;</a>
+      <a href="index.html" id="homeLink">Home</a>
+      <a href="inbox.html">Inbox</a>
+      <a href="profiles.html" id="profileBtn">Profile</a>
+      <a href="settings.html">Settings</a>
+      <a href="#" onclick="openLogoutPopup()" id="logoutBtn">Log Out</a>
+    </div>
+    <!-- Main content -->
+    <header>
+      <div>
+        <div class="menu-icon" id="sidebarButton" onclick="toggleSidebar()">
+          &#9776;
+        </div>
+      </div>
+      <nav id="navbar"></nav>
+    </header>
+
+    <!-- Bio section -->
+    <div class="bio-section" id="bioSection" style="display: none"></div>
+
+    <!-- Logout Popup -->
+    <div class="overlay" id="overlay" onclick="closeLogoutPopup()"></div>
+    <div class="popup" id="logoutPopup">
+      <p>Are you sure you want to logout?</p>
+      <a style="color: black" href="index.html"
+        ><button onclick="logout()">Yes</button></a
+      >
+      <button onclick="closeLogoutPopup()">No</button>
+    </div>
+    <!--NavBar End-->
+
     <main>
       <div class="container">
         <h2>Change Photo</h2>
@@ -175,6 +203,7 @@
       </div>
     </main>
 
+    <script src="navbar.js"></script>
     <script>
       document.getElementById("message").style.display = "none";
 
