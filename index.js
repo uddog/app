@@ -81,9 +81,6 @@ async function fetchAndDisplayData() {
                 const profileImage = document.createElement('img');
                 profileImage.src = profileImageSrc;
                 profileImage.alt = 'Profile Image';
-                profileImage.addEventListener('click', function () {
-                    displayFullScreenImage(profileImageSrc);
-                });
                 profileDiv.appendChild(profileImage);
 
                 // Display Column B data after the image
@@ -109,23 +106,6 @@ function textToLinks(text) {
     }).replace(/<br>/g, "<br>"); // Preserve line breaks
 }
 
-// Function to display the image in full-screen modal
-function displayFullScreenImage(src) {
-    const modal = document.createElement('div');
-    modal.classList.add('modal');
-
-    const modalImg = document.createElement('img');
-    modalImg.src = src;
-    modalImg.alt = 'Full-screen Image';
-
-    modal.appendChild(modalImg);
-
-    modal.addEventListener('click', function () {
-        modal.remove();
-    });
-
-    document.body.appendChild(modal);
-}
 
 // Call the functions
 fetchImageSources();
