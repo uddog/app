@@ -95,40 +95,7 @@
       <div class="spinner"></div>
     </div>
 
-    <!--NavBar Start-->
-    <!-- Sidebar -->
-    <div id="sidebar" class="sidebar">
-      <div class="sidebar-top" id="sidebarTop"></div>
-      <a onclick="toggleSidebar()" class="close-btn">&times;</a>
-      <a href="index.html" id="homeLink">Home</a>
-      <a href="inbox.html">Inbox</a>
-      <a href="profiles.html" id="profileBtn">Profile</a>
-      <a href="settings.html">Settings</a>
-      <a href="#" onclick="openLogoutPopup()" id="logoutBtn">Log Out</a>
-    </div>
-    <!-- Main content -->
-    <header>
-      <div>
-        <div class="menu-icon" id="sidebarButton" onclick="toggleSidebar()">
-          &#9776;
-        </div>
-      </div>
-      <nav id="navbar"></nav>
-    </header>
-
-    <!-- Bio section -->
-    <div class="bio-section" id="bioSection" style="display: none"></div>
-
-    <!-- Logout Popup -->
-    <div class="overlay" id="overlay" onclick="closeLogoutPopup()"></div>
-    <div class="popup" id="logoutPopup">
-      <p>Are you sure you want to logout?</p>
-      <a style="color: black" href="index.html"
-        ><button onclick="logout()">Yes</button></a
-      >
-      <button onclick="closeLogoutPopup()">No</button>
-    </div>
-    <!--NavBar End-->
+    <div id="MainNavBar"></div>
 
     <div id="singlePost"></div>
     <script src="universal.js"></script>
@@ -138,73 +105,72 @@
     <script>
       async function fetchSinglePost(postNo) {
         try {
-            // Retrieve CSV data from local storage
-            const csvData = localStorage.getItem('Post');
-            if (!csvData) {
-                console.error('No CSV data found in local storage.');
-                return;
-            }
-    
-            Papa.parse(csvData, {
-                complete: function (results) {
-                    displaySinglePost(results.data, postNo);
-                    // Hide loading overlay after displaying the post
-                    document.getElementById("loadingOverlay").style.display = "none";
-                },
-                error: function (error) {
-                    console.error("Error parsing CSV data:", error);
-                },
-            });
+          // Retrieve CSV data from local storage
+          const csvData = localStorage.getItem("Post");
+          if (!csvData) {
+            console.error("No CSV data found in local storage.");
+            return;
+          }
+
+          Papa.parse(csvData, {
+            complete: function (results) {
+              displaySinglePost(results.data, postNo);
+              // Hide loading overlay after displaying the post
+              document.getElementById("loadingOverlay").style.display = "none";
+            },
+            error: function (error) {
+              console.error("Error parsing CSV data:", error);
+            },
+          });
         } catch (error) {
-            console.error("Error fetching CSV data:", error);
+          console.error("Error fetching CSV data:", error);
         }
-    }
-    
-    function displaySinglePost(rows, postNo) {
+      }
+
+      function displaySinglePost(rows, postNo) {
         const columns = rows[postNo];
-    
+
         const singlePostContainer = document.getElementById("singlePost");
-    
+
         // Create elements to display the post content
         const profileDiv = document.createElement("div");
         profileDiv.classList.add("profile");
-    
+
         const profileImage = document.createElement("img");
         const profileImageSrc = columns[0].trim();
         profileImage.src = profileImageSrc;
         profileImage.alt = "Profile Image";
         profileDiv.appendChild(profileImage);
-    
+
         const nameElement = document.createElement("h3");
         nameElement.textContent = columns[1].trim();
         profileDiv.appendChild(nameElement);
-    
+
         // Skip column C (index 2)
         for (let j = 3; j < columns.length; j++) {
-            const columnContent = columns[j].trim();
-            if (columnContent && j !== 3) {
-                // Skip displaying column D (index 3)
-                const element = document.createElement("p");
-                element.innerHTML = columnContent.replace(/\n/g, "<br>"); // Replace newlines with <br> tags
-                profileDiv.appendChild(element);
-            }
+          const columnContent = columns[j].trim();
+          if (columnContent && j !== 3) {
+            // Skip displaying column D (index 3)
+            const element = document.createElement("p");
+            element.innerHTML = columnContent.replace(/\n/g, "<br>"); // Replace newlines with <br> tags
+            profileDiv.appendChild(element);
+          }
         }
-    
+
         singlePostContainer.appendChild(profileDiv);
-    }
-    
-    // Retrieve the stored PostNo from localStorage
-    const storedPostNo = localStorage.getItem("PostNo");
-    
-    // Fetch and display the single post based on PostNo
-    if (storedPostNo !== null) {
+      }
+
+      // Retrieve the stored PostNo from localStorage
+      const storedPostNo = localStorage.getItem("PostNo");
+
+      // Fetch and display the single post based on PostNo
+      if (storedPostNo !== null) {
         // Show loading overlay before fetching data
         document.getElementById("loadingOverlay").style.display = "flex";
         fetchSinglePost(storedPostNo);
-    } else {
+      } else {
         console.error("No PostNo found in localStorage.");
-    }
-    
+      }
     </script>
   </body>
 </html>

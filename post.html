@@ -6,22 +6,22 @@
     <title>Post</title>
     <link rel="stylesheet" href="navbar.css" />
     <link rel="stylesheet" href="universal.css" />
-    <link rel="stylesheet" href="test.css">
+    <link rel="stylesheet" href="test.css" />
     <style>
-      .src{
+      .src {
         display: flex;
         justify-content: center;
         margin-top: 10vh;
       }
       /* Styling for search input */
-    #searchInput {
+      #searchInput {
         padding: 8px;
         border: 1px solid #ccc;
         border-radius: 4px;
         font-size: 16px;
         width: 200px; /* Adjust width as needed */
       }
-      
+
       /* Styling for search button */
       #searchButton {
         padding: 1px 16px;
@@ -33,7 +33,7 @@
         font-size: 1rem;
         margin-left: 5px; /* Adjust margin as needed */
       }
-      
+
       /* Hover effect for search button */
       #searchButton:hover {
         background-color: #a06e45;
@@ -44,7 +44,7 @@
         flex-wrap: wrap;
         justify-content: space-around;
       }
-    
+
       .profile {
         margin-top: 10px;
         margin-bottom: 10px;
@@ -53,9 +53,10 @@
         padding: 15px 10px;
         overflow: hidden;
         text-align: center;
-        box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+        box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+          rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
       }
-    
+
       .profile h3 {
         margin-bottom: 10px;
         font-size: 1.5em;
@@ -63,16 +64,16 @@
         text-align: left;
         color: #333;
       }
-    
+
       .profile p {
         text-align: justify;
         color: #555;
         font-family: "font1";
       }
-     .profile img{
+      .profile img {
         margin-top: 5px;
         width: 100%;
-     }
+      }
       .text-content {
         height: auto;
         overflow: hidden;
@@ -81,13 +82,13 @@
         -webkit-box-orient: vertical;
         text-overflow: ellipsis;
       }
-    
+
       .expanded {
         overflow: visible;
         white-space: normal;
         -webkit-line-clamp: initial;
       }
-    
+
       /* Styles for the full-screen modal */
       .modal {
         position: fixed;
@@ -102,27 +103,26 @@
         align-items: center;
         overflow-y: auto;
       }
-    
+
       .modal img {
         max-width: 100%;
         max-height: 100%;
         object-fit: contain;
         cursor: pointer;
       }
-      
-      
-    
-      .title{
-        font-family: 'font1';
+
+      .title {
+        font-family: "font1";
         padding: 0px 10px;
-        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+          rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
         padding: 5px;
         border-radius: 10px;
         display: flex;
         margin-bottom: 5px;
         align-items: center;
       }
-      .title img{
+      .title img {
         width: 10vw;
         height: 10vw;
         object-fit: cover;
@@ -130,23 +130,21 @@
         border-radius: 50%;
         margin-right: 10px;
       }
-      .title p{
+      .title p {
         text-align: left;
         font-size: 0.7rem;
       }
-      .title p::first-line{
+      .title p::first-line {
         font-size: 1rem;
       }
-    
-    
-    
-    .highlight {
+
+      .highlight {
         background-color: yellow;
         font-weight: bold;
       }
-         
+
       /* Loading overlay styles */
-    .loading-overlay {
+      .loading-overlay {
         position: fixed;
         z-index: 9999;
         top: 0;
@@ -156,146 +154,119 @@
         display: flex;
         justify-content: center;
         align-items: center;
+      }
+
+      .spinner {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-left-color: #7983ff;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite; /* Apply the spin animation */
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
         }
-        
-        
-            .spinner {
-              border: 4px solid rgba(0, 0, 0, 0.1);
-              border-left-color: #7983ff;
-              border-radius: 50%;
-              width: 50px;
-              height: 50px;
-              animation: spin 1s linear infinite; /* Apply the spin animation */
-            }
-            
-            @keyframes spin {
-              0% {
-                transform: rotate(0deg);
-              }
-              100% {
-                transform: rotate(360deg);
-              }
-            }
-            
-           
+        100% {
+          transform: rotate(360deg);
+        }
+      }
     </style>
   </head>
 
   <body>
-    <!--NavBar Start-->
-    <!-- Sidebar -->
-    <div id="sidebar" class="sidebar">
-      <div class="sidebar-top" id="sidebarTop"></div>
-      <a onclick="toggleSidebar()" class="close-btn">&times;</a>
-      <a href="index.html" id="homeLink">Home</a>
-      <a href="inbox.html">Inbox</a>
-      <a href="profiles.html" id="profileBtn">Profile</a>
-      <a href="settings.html">Settings</a>
-      <a href="#" onclick="openLogoutPopup()" id="logoutBtn">Log Out</a>
+    <div id="MainNavBar"></div>
+
+    <div class="src">
+      <input type="text" id="searchInput" placeholder="Search..." />
+      <button id="searchButton">Search</button>
     </div>
-    <!-- Main content -->
-    <header>
-      <div>
-        <div class="menu-icon" id="sidebarButton" onclick="toggleSidebar()">
-          &#9776;
-        </div>
-      </div>
-      <nav id="navbar"></nav>
-    </header>
-
-    <!-- Bio section -->
-    <div class="bio-section" id="bioSection" style="display: none"></div>
-
-    <!-- Logout Popup -->
-    <div class="overlay" id="overlay" onclick="closeLogoutPopup()"></div>
-    <div class="popup" id="logoutPopup">
-      <p>Are you sure you want to logout?</p>
-      <a style="color: black" href="index.html"
-        ><button onclick="logout()">Yes</button></a
-      >
-      <button onclick="closeLogoutPopup()">No</button>
-    </div>
-    <!--NavBar End-->
-
-<div class="src">
-<input type="text" id="searchInput" placeholder="Search...">
-<button id="searchButton">Search</button>
-</div>
 
     <!-- Profile containers -->
     <div id="csvData"></div>
 
     <!-- Loading overlay -->
-<div id="loadingOverlay" class="loading-overlay">
-  <div class="spinner"></div>
-</div>
+    <div id="loadingOverlay" class="loading-overlay">
+      <div class="spinner"></div>
+    </div>
 
     <script src="universal.js"></script>
-<script src="test.js"></script>
+    <script src="test.js"></script>
     <script src="navbar.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script>
-      
-// Function to create a full-screen modal for displaying images
-function displayFullScreenImage(src) {
-  const modal = document.createElement("div");
-  modal.classList.add("modal");
+      // Function to create a full-screen modal for displaying images
+      function displayFullScreenImage(src) {
+        const modal = document.createElement("div");
+        modal.classList.add("modal");
 
-  const modalImg = document.createElement("img");
-  modalImg.src = src;
-  modalImg.alt = "Full-screen Image";
+        const modalImg = document.createElement("img");
+        modalImg.src = src;
+        modalImg.alt = "Full-screen Image";
 
-  modal.appendChild(modalImg);
+        modal.appendChild(modalImg);
 
-  modal.addEventListener("click", () => {
-    modal.remove();
-  });
+        modal.addEventListener("click", () => {
+          modal.remove();
+        });
 
-  document.body.appendChild(modal);
-}
+        document.body.appendChild(modal);
+      }
 
-// Function to toggle the expanded state of text content
-function toggleText(element) {
-  const textContent = element.parentNode.querySelector(".text-content");
-  textContent.classList.toggle("expanded");
-  const toggleButtons = element.parentNode.querySelectorAll(".text-toggle, .text-collapse");
-  toggleButtons.forEach(button => button.classList.toggle("hidden"));
-}
+      // Function to toggle the expanded state of text content
+      function toggleText(element) {
+        const textContent = element.parentNode.querySelector(".text-content");
+        textContent.classList.toggle("expanded");
+        const toggleButtons = element.parentNode.querySelectorAll(
+          ".text-toggle, .text-collapse"
+        );
+        toggleButtons.forEach((button) => button.classList.toggle("hidden"));
+      }
 
       function showLoadingOverlay() {
         document.getElementById("loadingOverlay").style.display = "flex";
       }
-      
+
       // Function to hide loading overlay
       function hideLoadingOverlay() {
         document.getElementById("loadingOverlay").style.display = "none";
       }
 
-      
-
       function highlightMatches(element, searchText) {
         const innerHTML = element.innerHTML;
         const index = innerHTML.toLowerCase().indexOf(searchText.toLowerCase());
         if (index >= 0) {
-          const highlightedText = `<span class="highlight">${innerHTML.substr(index, searchText.length)}</span>`;
-          const newHTML = innerHTML.substring(0, index) + highlightedText + innerHTML.substring(index + searchText.length);
+          const highlightedText = `<span class="highlight">${innerHTML.substr(
+            index,
+            searchText.length
+          )}</span>`;
+          const newHTML =
+            innerHTML.substring(0, index) +
+            highlightedText +
+            innerHTML.substring(index + searchText.length);
           element.innerHTML = newHTML;
         }
       }
-  
+
       function filterProfiles() {
-        const input = document.getElementById("searchInput").value.toLowerCase();
+        const input = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
         const profiles = document.querySelectorAll(".profile");
-  
-        profiles.forEach(profile => {
+
+        profiles.forEach((profile) => {
           const title = profile.querySelector("h3");
           const date = profile.querySelector(".title p");
           const textContent = profile.querySelector(".text-content");
           const name = profile.querySelector(".title p"); // Assuming Pname is inside .title p
-  
+
           // Remove previous highlights
-          profile.querySelectorAll('.highlight').forEach(el => el.classList.remove('highlight'));
-  
+          profile
+            .querySelectorAll(".highlight")
+            .forEach((el) => el.classList.remove("highlight"));
+
           // Perform search and highlight matches
           if (title && title.innerText.toLowerCase().includes(input)) {
             highlightMatches(title, input);
@@ -303,73 +274,78 @@ function toggleText(element) {
           if (date && date.innerText.toLowerCase().includes(input)) {
             highlightMatches(date, input);
           }
-          if (textContent && textContent.innerText.toLowerCase().includes(input)) {
+          if (
+            textContent &&
+            textContent.innerText.toLowerCase().includes(input)
+          ) {
             highlightMatches(textContent, input);
           }
           if (name && name.innerText.toLowerCase().includes(input)) {
             highlightMatches(name, input);
           }
-  
-          const profileDisplayStyle = title.innerText.toLowerCase().includes(input) || date.innerText.toLowerCase().includes(input) || textContent.innerText.toLowerCase().includes(input) || name.innerText.toLowerCase().includes(input) ? "block" : "none";
+
+          const profileDisplayStyle =
+            title.innerText.toLowerCase().includes(input) ||
+            date.innerText.toLowerCase().includes(input) ||
+            textContent.innerText.toLowerCase().includes(input) ||
+            name.innerText.toLowerCase().includes(input)
+              ? "block"
+              : "none";
           profile.style.display = profileDisplayStyle;
         });
       }
-  
+
       // Function to perform search when the button is clicked
-      document.getElementById("searchButton").addEventListener("click", filterProfiles);
-  
+      document
+        .getElementById("searchButton")
+        .addEventListener("click", filterProfiles);
 
+      // Function to fetch and display data
+      async function fetchAndDisplayData() {
+        try {
+          showLoadingOverlay(); // Show loading overlay
+          let csvData = localStorage.getItem("Posts"); // Retrieve CSV data from local storage
+          if (!csvData) return; // If data is not available, exit
 
+          Papa.parse(csvData, {
+            header: false,
+            complete: function (results) {
+              totalRows = results.data.length - 1; // Update total rows count
+              displayData(results.data); // Display the data
+              hideLoadingOverlay(); // Hide loading overlay after data is loaded
+            },
+            error: function (error) {
+              console.error("Error parsing CSV data:", error);
+              hideLoadingOverlay(); // Hide loading overlay in case of error
+            },
+          });
+        } catch (error) {
+          console.error("Error fetching CSV data:", error);
+          hideLoadingOverlay(); // Hide loading overlay in case of error
+        }
+      }
+      // Function to display data
+      function displayData(rows) {
+        const profilesContainer = document.getElementById("csvData");
 
+        let nonEmptyRows = 0;
+        for (let i = rows.length - 1; i > 0; i--) {
+          const columns = rows[i];
+          const Pimg = columns[1].trim(); // Assuming title is in column B
+          const Pname = columns[2].trim(); // Assuming title is in column C
+          const Pdate = columns[6].trim(); // Assuming title is in column G
+          const title = columns[3].trim(); // Assuming title is in column D
+          const textContent = columns[4].trim(); // Assuming text content is in column E
+          const imgSrc = columns[5].trim(); // Assuming image source is in column F
 
+          if (title) {
+            // Check if the profile already exists in the container
+            if (!profilesContainer.querySelector(`[data-title="${title}"]`)) {
+              const profileDiv = document.createElement("div");
+              profileDiv.classList.add("profile", "fade-up");
+              profileDiv.setAttribute("data-title", title); // Set a data attribute to mark the profile
 
-
-// Function to fetch and display data
-async function fetchAndDisplayData() {
-  try {
-    showLoadingOverlay(); // Show loading overlay
-    let csvData = localStorage.getItem("Posts"); // Retrieve CSV data from local storage
-    if (!csvData) return; // If data is not available, exit
-
-    Papa.parse(csvData, {
-      header: false,
-      complete: function (results) {
-        totalRows = results.data.length - 1; // Update total rows count
-        displayData(results.data); // Display the data
-        hideLoadingOverlay(); // Hide loading overlay after data is loaded
-      },
-      error: function (error) {
-        console.error("Error parsing CSV data:", error);
-        hideLoadingOverlay(); // Hide loading overlay in case of error
-      },
-    });
-  } catch (error) {
-    console.error("Error fetching CSV data:", error);
-    hideLoadingOverlay(); // Hide loading overlay in case of error
-  }
-}
-// Function to display data
-function displayData(rows) {
-  const profilesContainer = document.getElementById("csvData");
-
-  let nonEmptyRows = 0;
-  for (let i = rows.length - 1; i > 0; i--) {
-    const columns = rows[i];
-    const Pimg = columns[1].trim(); // Assuming title is in column B
-    const Pname = columns[2].trim(); // Assuming title is in column C
-    const Pdate = columns[6].trim(); // Assuming title is in column G
-    const title = columns[3].trim(); // Assuming title is in column D
-    const textContent = columns[4].trim(); // Assuming text content is in column E
-    const imgSrc = columns[5].trim(); // Assuming image source is in column F
-
-    if (title) {
-      // Check if the profile already exists in the container
-      if (!profilesContainer.querySelector(`[data-title="${title}"]`)) {
-        const profileDiv = document.createElement("div");
-        profileDiv.classList.add("profile", "fade-up");
-        profileDiv.setAttribute("data-title", title); // Set a data attribute to mark the profile
-
-        const profileContent = `
+              const profileContent = `
           <div class="profile-content">
             <div class="title">
               <img src="${Pimg}" alt="Album Image" onclick="displayFullScreenImage('${Pimg}')">
@@ -382,20 +358,18 @@ function displayData(rows) {
             </div>
           </div>`;
 
-        profileDiv.innerHTML = profileContent;
-        profilesContainer.appendChild(profileDiv);
-        profileDiv.classList.add("show");
+              profileDiv.innerHTML = profileContent;
+              profilesContainer.appendChild(profileDiv);
+              profileDiv.classList.add("show");
+            }
+          }
+        }
+
+        // Increase current page for next load
       }
-    }
-  }
 
-  // Increase current page for next load
-}
-
-// Initially load data
-fetchAndDisplayData();
-
-
+      // Initially load data
+      fetchAndDisplayData();
     </script>
   </body>
 </html>

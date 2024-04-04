@@ -29,7 +29,8 @@
         border-radius: 10px;
         margin: 10px 5px;
         padding: 20px 10px;
-        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+          rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
       }
       .profile img {
         height: 90px;
@@ -39,26 +40,27 @@
         scale: 1.07;
         transition: 0.8s;
       }
-      .one{
+      .one {
         margin-left: 20px;
       }
-      .more{
+      .more {
         padding-top: 20px;
-        border-radius: 20px 20px 0px 0px ;
+        border-radius: 20px 20px 0px 0px;
         position: sticky;
         margin-top: 20px;
-        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+          rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
         background-color: white;
         padding-bottom: 40px;
       }
-      .more h2{
+      .more h2 {
         text-align: center;
       }
-      .more .man{
+      .more .man {
         padding: 5px;
         margin-top: 20px;
       }
-      .slide{
+      .slide {
         width: 55vw;
         float: left;
         display: flex;
@@ -66,22 +68,22 @@
         margin-right: 10px;
       }
       .slide::-webkit-scrollbar {
-        width:0px;
-        }
-        
-      .slide img{
+        width: 0px;
+      }
+
+      .slide img {
         height: auto;
         object-fit: cover;
         object-position: center;
         min-width: 55vw;
       }
-      .more .man p{
+      .more .man p {
         text-align: justify;
       }
-      .more .man p::first-letter{
+      .more .man p::first-letter {
         font-size: 2rem;
       }
-      .data{
+      .data {
         margin-top: 10px;
         border-radius: 20px 20px 0px 0px;
         padding: 10px;
@@ -90,47 +92,15 @@
       .data p {
         margin: 5px;
       }
-      .nn{
+      .nn {
         display: flex;
         justify-content: space-around;
       }
     </style>
   </head>
   <body>
-    <!--NavBar Start-->
-    <!-- Sidebar -->
-    <div id="sidebar" class="sidebar">
-      <div class="sidebar-top" id="sidebarTop"></div>
-      <a onclick="toggleSidebar()" class="close-btn">&times;</a>
-      <a href="index.html" id="homeLink">Home</a>
-      <a href="inbox.html">Inbox</a>
-      <a href="profiles.html" id="profileBtn">Profile</a>
-      <a href="settings.html">Settings</a>
-      <a href="#" onclick="openLogoutPopup()" id="logoutBtn">Log Out</a>
-    </div>
-    <!-- Main content -->
-    <header>
-      <div>
-        <div class="menu-icon" id="sidebarButton" onclick="toggleSidebar()">
-          &#9776;
-        </div>
-      </div>
-      <nav id="navbar"></nav>
-    </header>
-
-    <!-- Bio section -->
-    <div class="bio-section" id="bioSection" style="display: none"></div>
-
-    <!-- Logout Popup -->
-    <div class="overlay" id="overlay" onclick="closeLogoutPopup()"></div>
-    <div class="popup" id="logoutPopup">
-      <p>Are you sure you want to logout?</p>
-      <a style="color: black" href="index.html"
-        ><button onclick="logout()">Yes</button></a
-      >
-      <button onclick="closeLogoutPopup()">No</button>
-    </div>
-    <!--NavBar End-->
+    
+    <div id="MainNavBar"></div>
 
     <div id="profiles">
       <!-- Profile content will be inserted here -->
@@ -144,44 +114,58 @@
       $(document).ready(function () {
         const PublicUsername = localStorage.getItem("PublicUsername");
         const storedData = localStorage.getItem("PublicDataPerson");
-    
-        if (!storedData) {
-            console.error("No CSV data found in local storage.");
-            return;
-        }
-    
-        Papa.parse(storedData, {
-            complete: function (results) {
-                const rows = results.data.slice(1); // Skip first row
-                renderProfilesFromLocalStorage(rows, PublicUsername,);
-            },
-            header: false,
-        });
-    
-        function renderProfilesFromLocalStorage(data, PublicUsername) {
-            $("#profiles").empty(); // Clear existing content
-            data.forEach(rowData => {
-                if (rowData[1].trim() === PublicUsername.trim()) {
-                    const profileDiv = createProfileDiv(rowData);
-                    $("#profiles").append(profileDiv);
-                }
-            });
-        }
-    
-        function createProfileDiv(rowData) {
 
-    
-            return `
-                <div class="profile" data-one="${rowData[1]}" data-two="${rowData[2]}" data-three="${rowData[3]}" data-four="${rowData[18]}">
+        if (!storedData) {
+          console.error("No CSV data found in local storage.");
+          return;
+        }
+
+        Papa.parse(storedData, {
+          complete: function (results) {
+            const rows = results.data.slice(1); // Skip first row
+            renderProfilesFromLocalStorage(rows, PublicUsername);
+          },
+          header: false,
+        });
+
+        function renderProfilesFromLocalStorage(data, PublicUsername) {
+          $("#profiles").empty(); // Clear existing content
+          data.forEach((rowData) => {
+            if (rowData[1].trim() === PublicUsername.trim()) {
+              const profileDiv = createProfileDiv(rowData);
+              $("#profiles").append(profileDiv);
+            }
+          });
+        }
+
+        function createProfileDiv(rowData) {
+          return `
+                <div class="profile" data-one="${
+                  rowData[1]
+                }" data-two="${rowData[2]}" data-three="${rowData[3]}" data-four="${rowData[18]}">
                     <dv class="sticky">
                         <div class="two">
                             <img src="${rowData[18]}" alt="${rowData[18]}">
                             <div class="one">
-                                ${rowData[3] ? `<p>নাম : ${rowData[3]}</p>` : ""}
-                                ${rowData[4] ? `<p>পেশা : ${rowData[4]}</p>` : ""}
+                                ${
+                                  rowData[3] ? `<p>নাম : ${rowData[3]}</p>` : ""
+                                }
+                                ${
+                                  rowData[4]
+                                    ? `<p>পেশা : ${rowData[4]}</p>`
+                                    : ""
+                                }
                                 ${rowData[5] ? `<p>পদ : ${rowData[5]}</p>` : ""}
-                                ${rowData[6] ? `<p>বিশেষজ্ঞ : ${rowData[6]}</p>` : ""}
-                                ${rowData[8] ? `<p>স্থান : ${rowData[8]}</p>` : ""}
+                                ${
+                                  rowData[6]
+                                    ? `<p>বিশেষজ্ঞ : ${rowData[6]}</p>`
+                                    : ""
+                                }
+                                ${
+                                  rowData[8]
+                                    ? `<p>স্থান : ${rowData[8]}</p>`
+                                    : ""
+                                }
                             </div>
                         </div>
                     </dv>
@@ -189,9 +173,21 @@
                       ${rowData[3] ? `<h2>${rowData[3]}</h2>` : ""}
                       <div class="man">
                         <div class="slide">
-                        ${rowData[20] ? `<img src="${rowData[20]}" alt="${rowData[18]}">` : ""}
-                        ${rowData[20] ? `<img src="${rowData[21]}" alt="${rowData[18]}">` : ""}
-                        ${rowData[20] ? `<img src="${rowData[22]}" alt="${rowData[18]}">` : ""}
+                        ${
+                          rowData[20]
+                            ? `<img src="${rowData[20]}" alt="${rowData[18]}">`
+                            : ""
+                        }
+                        ${
+                          rowData[20]
+                            ? `<img src="${rowData[21]}" alt="${rowData[18]}">`
+                            : ""
+                        }
+                        ${
+                          rowData[20]
+                            ? `<img src="${rowData[22]}" alt="${rowData[18]}">`
+                            : ""
+                        }
                         </div>
                         ${rowData[15] ? `<p>${rowData[15]}</p>` : ""}
                       </div>
@@ -202,14 +198,16 @@
                         ${rowData[10] ? `<p>ঠিকানা : ${rowData[10]}</p>` : ""}
                         ${rowData[13] ? `<p>যোগাযোগ : ${rowData[13]}</p>` : ""}
                         ${rowData[14] ? `<p>ইমেইল : ${rowData[14]}</p>` : ""}
-                        ${rowData[11] ? `<p class="nn"><span>নম্বর : ${rowData[11]}</span><span> অন্য নম্বর : ${rowData[12]}</span></p>` : ""}
+                        ${
+                          rowData[11]
+                            ? `<p class="nn"><span>নম্বর : ${rowData[11]}</span><span> অন্য নম্বর : ${rowData[12]}</span></p>`
+                            : ""
+                        }
                       </div>
                     </div>
                 </div>`;
         }
-    
-    });
-    
+      });
     </script>
   </body>
 </html>

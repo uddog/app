@@ -1,92 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Custom Map</title>
-    <link rel="stylesheet" href="universal.css">
-    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="universal.css" />
+    <link rel="stylesheet" href="navbar.css" />
     <style>
-        h3{
-            margin-top: 10vh;
-            height: 5vh;
-            display: grid;
-            place-items: center;
-        }
-        main{
-            width: 100vw;
-            display: flex;
-            justify-content: center;
-        }
-        iframe {
-            height: 84vh;
-            width: 95%;
-        }
+      h3 {
+        margin-top: 10vh;
+        height: 5vh;
+        display: grid;
+        place-items: center;
+      }
+      main {
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+      }
+      iframe {
+        height: 84vh;
+        width: 95%;
+      }
     </style>
-</head>
-<body>
- <!--NavBar Start-->
-    <!-- Sidebar -->
-    <div id="sidebar" class="sidebar">
-        <div class="sidebar-top" id="sidebarTop"></div>
-        <a onclick="toggleSidebar()" class="close-btn">&times;</a>
-        <a href="index.html" id="homeLink">Home</a>
-        <a href="inbox.html">Inbox</a>
-        <a href="profiles.html" id="profileBtn">Profile</a>
-        <a href="settings.html">Settings</a>
-        <a href="#" onclick="openLogoutPopup()" id="logoutBtn">Log Out</a>
-      </div>
-      <!-- Main content -->
-      <header>
-        <div>
-          <div class="menu-icon" id="sidebarButton" onclick="toggleSidebar()">
-            &#9776;
-          </div>
-        </div>
-        <nav id="navbar"></nav>
-      </header>
-  
-      <!-- Bio section -->
-      <div class="bio-section" id="bioSection" style="display: none"></div>
-  
-      <!-- Logout Popup -->
-      <div class="overlay" id="overlay" onclick="closeLogoutPopup()"></div>
-      <div class="popup" id="logoutPopup">
-        <p>Are you sure you want to logout?</p>
-        <a style="color: black" href="index.html"
-          ><button onclick="logout()">Yes</button></a
-        >
-        <button onclick="closeLogoutPopup()">No</button>
-      </div>
-      <!--NavBar End-->
-  
-  <h3 class="nam">You are Now in</h3>
-<main>
-    <iframe id="mapFrame" frameborder="0" allowfullscreen></iframe>
-</main>
+  </head>
+  <body>
+    <div id="MainNavBar"></div>
+
+    <h3 class="nam">You are Now in</h3>
+    <main>
+      <iframe id="mapFrame" frameborder="0" allowfullscreen></iframe>
+    </main>
     <script>
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showMap);
-            } else {
-                alert("Geolocation is not supported by this browser.");
-            }
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showMap);
+        } else {
+          alert("Geolocation is not supported by this browser.");
         }
+      }
 
-        function showMap(position) {
-            var latitude = position.coords.latitude;
-            var longitude = position.coords.longitude;
-            var mapUrl = "https://www.google.com/maps?q=" + latitude + "," + longitude + "&output=embed";
-            document.getElementById("mapFrame").src = mapUrl;
-        }
+      function showMap(position) {
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+        var mapUrl =
+          "https://www.google.com/maps?q=" +
+          latitude +
+          "," +
+          longitude +
+          "&output=embed";
+        document.getElementById("mapFrame").src = mapUrl;
+      }
 
-        // Call the function to get user's location and show it on the map
-        getLocation();
+      // Call the function to get user's location and show it on the map
+      getLocation();
     </script>
     <script src="navbar.js"></script>
     <script src="universal.js"></script>
-    <script>
-    
-    </script>
-</body>
+    <script></script>
+  </body>
 </html>

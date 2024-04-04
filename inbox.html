@@ -102,40 +102,7 @@
       <div class="spinner"></div>
     </div>
 
-    <!--NavBar Start-->
-    <!-- Sidebar -->
-    <div id="sidebar" class="sidebar">
-      <div class="sidebar-top" id="sidebarTop"></div>
-      <a onclick="toggleSidebar()" class="close-btn">&times;</a>
-      <a href="index.html" id="homeLink">Home</a>
-      <a href="inbox.html">Inbox</a>
-      <a href="profiles.html" id="profileBtn">Profile</a>
-      <a href="settings.html">Settings</a>
-      <a href="#" onclick="openLogoutPopup()" id="logoutBtn">Log Out</a>
-    </div>
-    <!-- Main content -->
-    <header>
-      <div>
-        <div class="menu-icon" id="sidebarButton" onclick="toggleSidebar()">
-          &#9776;
-        </div>
-      </div>
-      <nav id="navbar"></nav>
-    </header>
-
-    <!-- Bio section -->
-    <div class="bio-section" id="bioSection" style="display: none"></div>
-
-    <!-- Logout Popup -->
-    <div class="overlay" id="overlay" onclick="closeLogoutPopup()"></div>
-    <div class="popup" id="logoutPopup">
-      <p>Are you sure you want to logout?</p>
-      <a style="color: black" href="index.html"
-        ><button onclick="logout()">Yes</button></a
-      >
-      <button onclick="closeLogoutPopup()">No</button>
-    </div>
-    <!--NavBar End-->
+    <div id="MainNavBar"></div>
 
     <!-- SMS Container -->
     <div id="smsContainer"></div>
@@ -149,32 +116,32 @@
     <script>
       // Function to format the date
       function formatDate(inputDate) {
-          const options = { year: "numeric", month: "long", day: "numeric" };
-          return new Date(inputDate).toLocaleDateString("en-US", options);
+        const options = { year: "numeric", month: "long", day: "numeric" };
+        return new Date(inputDate).toLocaleDateString("en-US", options);
       }
-  
+
       // Function to retrieve CSV data from local storage
       function retrieveCSVFromLocalStorage() {
-          return localStorage.getItem('Inbox'); // Assuming csvData is the key used for storing CSV data
+        return localStorage.getItem("Inbox"); // Assuming csvData is the key used for storing CSV data
       }
-  
+
       // Function to parse CSV data and display SMS
       function parseCSVAndDisplaySMS(csvText) {
-          // Use Papaparse to parse the CSV data
-          Papa.parse(csvText, {
-              complete: function (results) {
-                  const rows = results.data;
-  
-                  // Create SMS cards with collapsible details
-                  let smsHTML = "";
-  
-                  for (let i = rows.length - 1; i > 0; i--) {
-                      const rowData = rows[i];
-                      const date = formatDate(rowData[0]); // Format the date
-                      const smsSender = rowData[1];
-                      const smsDetails = rowData.slice(2).join(","); // Join remaining fields if any
-  
-                      smsHTML += `
+        // Use Papaparse to parse the CSV data
+        Papa.parse(csvText, {
+          complete: function (results) {
+            const rows = results.data;
+
+            // Create SMS cards with collapsible details
+            let smsHTML = "";
+
+            for (let i = rows.length - 1; i > 0; i--) {
+              const rowData = rows[i];
+              const date = formatDate(rowData[0]); // Format the date
+              const smsSender = rowData[1];
+              const smsDetails = rowData.slice(2).join(","); // Join remaining fields if any
+
+              smsHTML += `
                           <div class="sms-card" onclick="toggleDetails(this)">
                               <div class="al">
                                   <h3>${smsSender}</h3>
@@ -185,46 +152,46 @@
                               </div>
                           </div>
                       `;
-                  }
-  
-                  // Display the SMS in the specified container
-                  document.getElementById("smsContainer").innerHTML = smsHTML;
-  
-                  // Hide loading overlay after displaying the SMS container
-                  document.getElementById("loadingOverlay").style.display = "none";
-              },
-              error: function (error) {
-                  console.error("Error parsing CSV:", error);
-              },
-          });
+            }
+
+            // Display the SMS in the specified container
+            document.getElementById("smsContainer").innerHTML = smsHTML;
+
+            // Hide loading overlay after displaying the SMS container
+            document.getElementById("loadingOverlay").style.display = "none";
+          },
+          error: function (error) {
+            console.error("Error parsing CSV:", error);
+          },
+        });
       }
-  
+
       // Toggle collapsible details when an SMS card is clicked
       function toggleDetails(card) {
-          const details = card.querySelector(".sms-details");
-          details.style.display = details.style.display === "block" ? "none" : "block";
+        const details = card.querySelector(".sms-details");
+        details.style.display =
+          details.style.display === "block" ? "none" : "block";
       }
-  
+
       // Function to fetch and display SMS data with collapsible details
       function fetchAndDisplaySMS() {
-          try {
-              // Retrieve CSV data from local storage
-              const csvText = retrieveCSVFromLocalStorage();
-              if (!csvText) {
-                  console.error("No CSV data found in local storage.");
-                  return;
-              }
-  
-              // Parse CSV data and display SMS
-              parseCSVAndDisplaySMS(csvText);
-          } catch (error) {
-              console.error("Error fetching CSV data:", error);
+        try {
+          // Retrieve CSV data from local storage
+          const csvText = retrieveCSVFromLocalStorage();
+          if (!csvText) {
+            console.error("No CSV data found in local storage.");
+            return;
           }
+
+          // Parse CSV data and display SMS
+          parseCSVAndDisplaySMS(csvText);
+        } catch (error) {
+          console.error("Error fetching CSV data:", error);
+        }
       }
-  
+
       // Fetch and display SMS data with collapsible details when the page loads
       document.addEventListener("DOMContentLoaded", fetchAndDisplaySMS);
-  </script>
-  
+    </script>
   </body>
 </html>

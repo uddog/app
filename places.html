@@ -98,7 +98,7 @@
           background-color: rgba(0, 0, 0, 0.3);
         }
       }
-      #profileCount{
+      #profileCount {
         position: fixed;
         top: 11.5vh;
         right: 0px;
@@ -112,47 +112,10 @@
     </style>
   </head>
   <body>
-    <!--NavBar Start-->
-    <!-- Sidebar -->
-    <div id="sidebar" class="sidebar">
-      <div class="sidebar-top" id="sidebarTop"></div>
-      <a onclick="toggleSidebar()" class="close-btn">&times;</a>
-      <a href="index.html" id="homeLink">Home</a>
-      <a href="inbox.html">Inbox</a>
-      <a href="profiles.html" id="profileBtn">Profile</a>
-      <a href="settings.html">Settings</a>
-      <a href="#" onclick="openLogoutPopup()" id="logoutBtn">Log Out</a>
-    </div>
-    <!-- Main content -->
-    <header>
-      <div>
-        <div class="menu-icon" id="sidebarButton" onclick="toggleSidebar()">
-          &#9776;
-        </div>
-      </div>
-      <nav id="navbar"></nav>
-    </header>
-
-    <!-- Bio section -->
-    <div class="bio-section" id="bioSection" style="display: none"></div>
-
-    <!-- Logout Popup -->
-    <div class="overlay" id="overlay" onclick="closeLogoutPopup()"></div>
-    <div class="popup" id="logoutPopup">
-      <p>Are you sure you want to logout?</p>
-      <a style="color: black" href="index.html"
-        ><button onclick="logout()">Yes</button></a
-      >
-      <button onclick="closeLogoutPopup()">No</button>
-    </div>
-    <!--NavBar End-->
+    <div id="MainNavBar"></div>
 
     <div id="searchContainer">
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="Search"
-      />
+      <input type="text" id="searchInput" placeholder="Search" />
     </div>
     <span id="profileCount">0</span>
 
@@ -161,14 +124,14 @@
     <script src="universal.js"></script>
     <script src="navbar.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-<script>
- const catName = localStorage.getItem('CatName');
+    <script>
+      const catName = localStorage.getItem("CatName");
 
-function showSkeleton() {
-  const profilesContainer = document.getElementById("profilesContainer");
-  profilesContainer.innerHTML = ""; // Clear previous content
-  for (let i = 0; i < 5; i++) {
-    profilesContainer.innerHTML += `
+      function showSkeleton() {
+        const profilesContainer = document.getElementById("profilesContainer");
+        profilesContainer.innerHTML = ""; // Clear previous content
+        for (let i = 0; i < 5; i++) {
+          profilesContainer.innerHTML += `
       <div class="skeleton-profile">
         <div class="two">
           <div style="width: 100px; height: 100px; background-color: #ddd; border-radius: 50%;"></div>
@@ -179,42 +142,40 @@ function showSkeleton() {
           </div>
         </div>
       </div>`;
-  }
-}
+        }
+      }
 
-function hideSkeletonAndRenderProfiles(data) {
-  renderProfiles(data);
-  const profilesContainer = document.getElementById("profilesContainer");
-  profilesContainer.querySelectorAll(".skeleton-profile").forEach((profile) => profile.remove());
-  updateProfileCount();
-}
+      function hideSkeletonAndRenderProfiles(data) {
+        renderProfiles(data);
+        const profilesContainer = document.getElementById("profilesContainer");
+        profilesContainer
+          .querySelectorAll(".skeleton-profile")
+          .forEach((profile) => profile.remove());
+        updateProfileCount();
+      }
 
-function renderProfiles(data) {
-  const profilesContainer = document.getElementById("profilesContainer");
-  profilesContainer.innerHTML = ""; // Clear previous content
-  let count = 0; // Initialize count
+      function renderProfiles(data) {
+        const profilesContainer = document.getElementById("profilesContainer");
+        profilesContainer.innerHTML = ""; // Clear previous content
+        let count = 0; // Initialize count
 
-  data.forEach(rowData => {
-    const profileType = rowData[3].trim(); // Profile type from column D
-    if (profileType === catName.trim()) {
-      const profileName = rowData[1].trim(); // Profile name from column B
-      const profileImgSrc = rowData[7].trim(); // Image source from column H
-      const profileAddress = rowData[6].trim(); // Address from column G
-      const profilePhone = rowData[4].trim(); // Phone number from column E
-      const profileLink = rowData[12].trim(); // Link from column L
-      const mainperson = rowData[9].trim(); // Link from column L
+        data.forEach((rowData) => {
+          const profileType = rowData[3].trim(); // Profile type from column D
+          if (profileType === catName.trim()) {
+            const profileName = rowData[1].trim(); // Profile name from column B
+            const profileImgSrc = rowData[7].trim(); // Image source from column H
+            const profileAddress = rowData[6].trim(); // Address from column G
+            const profilePhone = rowData[4].trim(); // Phone number from column E
+            const profileLink = rowData[12].trim(); // Link from column L
+            const mainperson = rowData[9].trim(); // Link from column L
 
-      profilesContainer.innerHTML += `
+            profilesContainer.innerHTML += `
         <div class="profile">
           <div class="two">
             <img src="${profileImgSrc}" alt="${profileName}">
             <div class="one">
               <h2>${profileName}</h2>
-              ${
-                mainperson
-                  ? `<p class="main">প্রধান : ${mainperson}</p>`
-                  : ""
-              }
+              ${mainperson ? `<p class="main">প্রধান : ${mainperson}</p>` : ""}
               ${
                 profileAddress
                   ? `<p class="address">ঠিকানা : ${profileAddress}</p>`
@@ -233,62 +194,62 @@ function renderProfiles(data) {
               : ""
           }
         </div>`;
-      count++; // Increment count
-    }
-  });
+            count++; // Increment count
+          }
+        });
 
-  document.getElementById("profileCount").textContent = count; // Update count in HTML
-}
+        document.getElementById("profileCount").textContent = count; // Update count in HTML
+      }
 
-// Function to store profile name in localStorage
-function storePlaceName(placeName, link) {
-  localStorage.setItem("PlaceName", placeName);
-  window.location.href = link;
-}
+      // Function to store profile name in localStorage
+      function storePlaceName(placeName, link) {
+        localStorage.setItem("PlaceName", placeName);
+        window.location.href = link;
+      }
 
-// Function to search profiles by name
-function searchProfiles() {
-  var input, filter, profiles, profile, i, txtValue;
-  input = document.getElementById("searchInput");
-  filter = input.value.toUpperCase();
-  profiles = document.getElementsByClassName("profile");
-  let count = 0; // Initialize count
+      // Function to search profiles by name
+      function searchProfiles() {
+        var input, filter, profiles, profile, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        profiles = document.getElementsByClassName("profile");
+        let count = 0; // Initialize count
 
-  for (i = 0; i < profiles.length; i++) {
-    profile = profiles[i].getElementsByClassName("one")[0]; // Get the div containing profile details
-    txtValue = profile.textContent || profile.innerText;
-    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-      profiles[i].style.display = ""; // Show the profile if the search term matches
-      count++; // Increment count
-    } else {
-      profiles[i].style.display = "none"; // Hide the profile if the search term does not match
-    }
-  }
+        for (i = 0; i < profiles.length; i++) {
+          profile = profiles[i].getElementsByClassName("one")[0]; // Get the div containing profile details
+          txtValue = profile.textContent || profile.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            profiles[i].style.display = ""; // Show the profile if the search term matches
+            count++; // Increment count
+          } else {
+            profiles[i].style.display = "none"; // Hide the profile if the search term does not match
+          }
+        }
 
-  document.getElementById("profileCount").textContent = count; // Update count in HTML
-}
+        document.getElementById("profileCount").textContent = count; // Update count in HTML
+      }
 
-window.onload = function () {
-  showSkeleton();
-  const storedData = localStorage.getItem("PublicDataPlaces");
-  if (storedData) {
-    Papa.parse(storedData, {
-      complete: function (results) {
-        hideSkeletonAndRenderProfiles(results.data);
-      },
-      header: false
-    });
-  }
-  document.getElementById("searchInput").addEventListener("input", searchProfiles);
-};
+      window.onload = function () {
+        showSkeleton();
+        const storedData = localStorage.getItem("PublicDataPlaces");
+        if (storedData) {
+          Papa.parse(storedData, {
+            complete: function (results) {
+              hideSkeletonAndRenderProfiles(results.data);
+            },
+            header: false,
+          });
+        }
+        document
+          .getElementById("searchInput")
+          .addEventListener("input", searchProfiles);
+      };
 
-// Function to update the count of displayed profiles
-function updateProfileCount() {
-  const profiles = document.getElementsByClassName("profile");
-  document.getElementById("profileCount").textContent = profiles.length;
-}
-
-</script>
-
+      // Function to update the count of displayed profiles
+      function updateProfileCount() {
+        const profiles = document.getElementsByClassName("profile");
+        document.getElementById("profileCount").textContent = profiles.length;
+      }
+    </script>
   </body>
-</html> 
+</html>

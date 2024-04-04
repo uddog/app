@@ -33,18 +33,17 @@
         flex-wrap: wrap;
         margin-top: 10px;
       }
-      
+
       .profile-group h2 {
         width: 100%; /* Ensure the h2 spans the full width */
         text-align: center; /* Center-align the text */
         margin-top: 10px; /* Adjust margin as needed */
       }
-      
 
       /* Profile styles */
       .profile {
         margin-bottom: 20px;
-        padding:10px;
+        padding: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
         font-family: "font1";
@@ -82,7 +81,7 @@
       .one p {
         font-size: 0.8rem;
       }
-      a{
+      a {
         text-decoration: none;
       }
       .see-more {
@@ -120,103 +119,67 @@
     </style>
   </head>
   <body>
-    <!--NavBar Start-->
-    <!-- Sidebar -->
-    <div id="sidebar" class="sidebar">
-      <div class="sidebar-top" id="sidebarTop"></div>
-      <a onclick="toggleSidebar()" class="close-btn">&times;</a>
-      <a href="index.html" id="homeLink">Home</a>
-      <a href="inbox.html">Inbox</a>
-      <a href="profiles.html" id="profileBtn">Profile</a>
-      <a href="settings.html">Settings</a>
-      <a href="#" onclick="openLogoutPopup()" id="logoutBtn">Log Out</a>
-    </div>
-    <!-- Main content -->
-    <header>
-      <div>
-        <div class="menu-icon" id="sidebarButton" onclick="toggleSidebar()">
-          &#9776;
-        </div>
-      </div>
-      <nav id="navbar"></nav>
-    </header>
-
-    <!-- Bio section -->
-    <div class="bio-section" id="bioSection" style="display: none"></div>
-
-    <!-- Logout Popup -->
-    <div class="overlay" id="overlay" onclick="closeLogoutPopup()"></div>
-    <div class="popup" id="logoutPopup">
-      <p>Are you sure you want to logout?</p>
-      <a style="color: black" href="index.html"
-        ><button onclick="logout()">Yes</button></a
-      >
-      <button onclick="closeLogoutPopup()">No</button>
-    </div>
-    <!--NavBar End-->
+    <div id="MainNavBar"></div>
 
     <div id="searchContainer">
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="Search"
-      />
+      <input type="text" id="searchInput" placeholder="Search" />
     </div>
     <div id="profilesContainer"></div>
     <script src="universal.js"></script>
     <script src="navbar.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-<script>
+    <script>
+      const one = localStorage.getItem("one");
+      const two = localStorage.getItem("two");
+      const three = localStorage.getItem("three");
+      const four = localStorage.getItem("four");
 
-  const one = localStorage.getItem("one");
-  const two = localStorage.getItem("two");
-  const three = localStorage.getItem("three");
-  const four = localStorage.getItem("four");
-  
-  function hideSkeletonAndRenderProfiles(data) {
-    renderProfiles(data);
-    const profilesContainer = document.getElementById("profilesContainer");
-    profilesContainer.querySelectorAll(".skeleton-profile").forEach((profile) => profile.remove());
-  }
-  
-  function groupProfilesByF(data) {
-    const groupedProfiles = {};
-    data.forEach(rowData => {
-      const profileType1 = rowData[8].trim(); // Profile type from column D
-      const profileType2 = rowData[9].trim(); // Profile type from column D
-      const columnFData = rowData[5].trim(); // Data from column F
-      if (profileType1 === one.trim() || profileType2 === one.trim()) {
-        if (!groupedProfiles[columnFData]) {
-          groupedProfiles[columnFData] = [];
-        }
-        groupedProfiles[columnFData].push(rowData);
+      function hideSkeletonAndRenderProfiles(data) {
+        renderProfiles(data);
+        const profilesContainer = document.getElementById("profilesContainer");
+        profilesContainer
+          .querySelectorAll(".skeleton-profile")
+          .forEach((profile) => profile.remove());
       }
-    });
-    return groupedProfiles;
-  }
-  
-  function renderGroupedProfiles(groupedProfiles) {
-    const profilesContainer = document.getElementById("profilesContainer");
-    profilesContainer.innerHTML = ""; // Clear previous content
-  
-    for (const key in groupedProfiles) {
-      if (groupedProfiles.hasOwnProperty(key)) {
-        const profiles = groupedProfiles[key];
-        const profileGroup = document.createElement("div");
-        profileGroup.classList.add("profile-group");
-        profileGroup.innerHTML += `<h2>${key}</h2>`;
-  
-        // Modified rendering of profiles to include PersonName and PersonInstitute
-        profiles.forEach(rowData => {
-          const publicUsername = rowData[1].trim(); // PublicUsername from column B
-          const profileName = rowData[3].trim(); // Profile name from column B
-          const profileImgSrc = rowData[18].trim(); // Image source from column H
-          const profileLink = rowData[19].trim(); // Link from column L
-          const specific = rowData[6].trim(); // Data from column F
-          const personName = rowData[3].trim(); // Person name from column D
-          const personInstitute = rowData[8].trim(); // Person institute from column I
-  
-          profileGroup.innerHTML += `
+
+      function groupProfilesByF(data) {
+        const groupedProfiles = {};
+        data.forEach((rowData) => {
+          const profileType1 = rowData[8].trim(); // Profile type from column D
+          const profileType2 = rowData[9].trim(); // Profile type from column D
+          const columnFData = rowData[5].trim(); // Data from column F
+          if (profileType1 === one.trim() || profileType2 === one.trim()) {
+            if (!groupedProfiles[columnFData]) {
+              groupedProfiles[columnFData] = [];
+            }
+            groupedProfiles[columnFData].push(rowData);
+          }
+        });
+        return groupedProfiles;
+      }
+
+      function renderGroupedProfiles(groupedProfiles) {
+        const profilesContainer = document.getElementById("profilesContainer");
+        profilesContainer.innerHTML = ""; // Clear previous content
+
+        for (const key in groupedProfiles) {
+          if (groupedProfiles.hasOwnProperty(key)) {
+            const profiles = groupedProfiles[key];
+            const profileGroup = document.createElement("div");
+            profileGroup.classList.add("profile-group");
+            profileGroup.innerHTML += `<h2>${key}</h2>`;
+
+            // Modified rendering of profiles to include PersonName and PersonInstitute
+            profiles.forEach((rowData) => {
+              const publicUsername = rowData[1].trim(); // PublicUsername from column B
+              const profileName = rowData[3].trim(); // Profile name from column B
+              const profileImgSrc = rowData[18].trim(); // Image source from column H
+              const profileLink = rowData[19].trim(); // Link from column L
+              const specific = rowData[6].trim(); // Data from column F
+              const personName = rowData[3].trim(); // Person name from column D
+              const personInstitute = rowData[8].trim(); // Person institute from column I
+
+              profileGroup.innerHTML += `
             <div class="profile">
               <div class="two">
                 <img src="${profileImgSrc}" alt="${profileName}">
@@ -225,65 +188,65 @@
                   <p>${specific}</p>
                   ${
                     profileLink
-                    ? `<a href="${profileLink}" onclick="storePublicUsername('${publicUsername}')"><button class="see-more">See more</button></a>`
-                    : ""
+                      ? `<a href="${profileLink}" onclick="storePublicUsername('${publicUsername}')"><button class="see-more">See more</button></a>`
+                      : ""
                   }
                 </div>
               </div>
             </div>`;
-        });
-  
-        profilesContainer.appendChild(profileGroup);
-      }
-    }
-  }
-  
-  // Function to store PersonName and PersonInstitute in local storage
-  function storePublicUsername(publicUsername) {
-    localStorage.setItem("PublicUsername", publicUsername);
-}
+            });
 
-  // Function to search profiles by name
-  function searchProfiles() {
-    var input, filter, profiles, profile, i, txtValue;
-    input = document.getElementById("searchInput");
-    filter = input.value.toUpperCase();
-    profiles = document.getElementsByClassName("profile-group"); // Get all profile groups
-  
-    for (i = 0; i < profiles.length; i++) {
-      let matchFound = false; // Flag to indicate if any profile matches the search term
-      const profileGroup = profiles[i];
-      const profilesInGroup = profileGroup.querySelectorAll(".profile");
-      for (let j = 0; j < profilesInGroup.length; j++) {
-        profile = profilesInGroup[j].getElementsByClassName("one")[0]; // Get the div containing profile details
-        txtValue = profile.textContent || profile.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-          profilesInGroup[j].style.display = ""; // Show the profile if the search term matches
-          matchFound = true; // Set the flag to true if any profile matches
-        } else {
-          profilesInGroup[j].style.display = "none"; // Hide the profile if the search term does not match
+            profilesContainer.appendChild(profileGroup);
+          }
         }
       }
-      // Show or hide the profile group based on whether any profiles match the search term
-      profileGroup.style.display = matchFound ? "" : "none";
-    }
-  }
-  
-  window.onload = function () {
-    const storedData = localStorage.getItem("PublicDataPerson");
-    if (storedData) {
-      Papa.parse(storedData, {
-        complete: function (results) {
-          const groupedProfiles = groupProfilesByF(results.data);
-          renderGroupedProfiles(groupedProfiles);
-        },
-        header: false
-      });
-    }
-    document.getElementById("searchInput").addEventListener("input", searchProfiles);
-  };
-  
-</script>
 
+      // Function to store PersonName and PersonInstitute in local storage
+      function storePublicUsername(publicUsername) {
+        localStorage.setItem("PublicUsername", publicUsername);
+      }
+
+      // Function to search profiles by name
+      function searchProfiles() {
+        var input, filter, profiles, profile, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        profiles = document.getElementsByClassName("profile-group"); // Get all profile groups
+
+        for (i = 0; i < profiles.length; i++) {
+          let matchFound = false; // Flag to indicate if any profile matches the search term
+          const profileGroup = profiles[i];
+          const profilesInGroup = profileGroup.querySelectorAll(".profile");
+          for (let j = 0; j < profilesInGroup.length; j++) {
+            profile = profilesInGroup[j].getElementsByClassName("one")[0]; // Get the div containing profile details
+            txtValue = profile.textContent || profile.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              profilesInGroup[j].style.display = ""; // Show the profile if the search term matches
+              matchFound = true; // Set the flag to true if any profile matches
+            } else {
+              profilesInGroup[j].style.display = "none"; // Hide the profile if the search term does not match
+            }
+          }
+          // Show or hide the profile group based on whether any profiles match the search term
+          profileGroup.style.display = matchFound ? "" : "none";
+        }
+      }
+
+      window.onload = function () {
+        const storedData = localStorage.getItem("PublicDataPerson");
+        if (storedData) {
+          Papa.parse(storedData, {
+            complete: function (results) {
+              const groupedProfiles = groupProfilesByF(results.data);
+              renderGroupedProfiles(groupedProfiles);
+            },
+            header: false,
+          });
+        }
+        document
+          .getElementById("searchInput")
+          .addEventListener("input", searchProfiles);
+      };
+    </script>
   </body>
-</html> 
+</html>

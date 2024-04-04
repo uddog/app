@@ -127,40 +127,7 @@
   </head>
 
   <body>
-    <!--NavBar Start-->
-    <!-- Sidebar -->
-    <div id="sidebar" class="sidebar">
-      <div class="sidebar-top" id="sidebarTop"></div>
-      <a onclick="toggleSidebar()" class="close-btn">&times;</a>
-      <a href="index.html" id="homeLink">Home</a>
-      <a href="inbox.html">Inbox</a>
-      <a href="profiles.html" id="profileBtn">Profile</a>
-      <a href="settings.html">Settings</a>
-      <a href="#" onclick="openLogoutPopup()" id="logoutBtn">Log Out</a>
-    </div>
-    <!-- Main content -->
-    <header>
-      <div>
-        <div class="menu-icon" id="sidebarButton" onclick="toggleSidebar()">
-          &#9776;
-        </div>
-      </div>
-      <nav id="navbar"></nav>
-    </header>
-
-    <!-- Bio section -->
-    <div class="bio-section" id="bioSection" style="display: none"></div>
-
-    <!-- Logout Popup -->
-    <div class="overlay" id="overlay" onclick="closeLogoutPopup()"></div>
-    <div class="popup" id="logoutPopup">
-      <p>Are you sure you want to logout?</p>
-      <a style="color: black" href="index.html"
-        ><button onclick="logout()">Yes</button></a
-      >
-      <button onclick="closeLogoutPopup()">No</button>
-    </div>
-    <!--NavBar End-->
+    <div id="MainNavBar"></div>
 
     <div class="spinner-container loading" id="loading">
       <div class="spinner"></div>
@@ -225,28 +192,28 @@
         try {
           toggleLoading(true);
           hideResultDiv(); // Hide resultDiv before fetching new data
-      
+
           // Highlight the clicked button
           highlightActiveButton(clickedButton);
-      
+
           // Retrieve CSV data from local storage based on category
           const csvData = getCSVFromLocalStorage(category);
-      
+
           if (!csvData) {
             throw new Error("CSV data not found in local storage.");
           }
-      
+
           const rows = csvData.split("\n");
           const userUsername = localStorage.getItem("userUsername");
           const columnIndex = rows[3].split(",").indexOf(userUsername);
-      
+
           if (columnIndex !== -1) {
             const resultDiv = document.getElementById(resultDivId);
             resultDiv.innerHTML = "";
-      
+
             for (let i = rows.length - 1; i >= 4; i--) {
               const rowData = rows[i].split(",");
-      
+
               if (
                 rowData.length > columnIndex + 1 &&
                 rowData[columnIndex].trim() !== ""
@@ -258,7 +225,7 @@
                 resultDiv.innerHTML += `<p>${data1} in ${formattedDate}</p>`;
               }
             }
-      
+
             showResultDiv(); // Show resultDiv with animation
           }
         } catch (error) {
@@ -267,7 +234,7 @@
           toggleLoading(false);
         }
       }
-      
+
       function getCSVFromLocalStorage(category) {
         // Adjust the local storage key based on your structure
         switch (category) {
@@ -283,7 +250,6 @@
             return null;
         }
       }
-      
 
       // Initial call to display 'Event' data on page load
       displayCSV("Event", "resultDiv", document.querySelector(".btn"));

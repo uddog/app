@@ -1,3 +1,41 @@
+
+
+const n = document.getElementById('MainNavBar');
+n.innerHTML = `
+<!--NavBar Start-->
+<!-- Sidebar -->
+<div id="sidebar" class="sidebar">
+  <div class="sidebar-top" id="sidebarTop"></div>
+  <a onclick="toggleSidebar()" class="close-btn">&times;</a>
+  <a href="index.html" id="homeLink">Home</a>
+  <a href="inbox.html">Inbox</a>
+  <a href="profiles.html" id="profileBtn">Profile</a>
+  <a href="settings.html">Settings</a>
+  <a href="#" onclick="openLogoutPopup()" id="logoutBtn">Log Out</a>
+</div>
+<!-- Main content -->
+<header>
+    <div>
+        <div class="menu-icon" id="sidebarButton" onclick="toggleSidebar()">&#9776;</div>
+    </div>
+    <nav id="navbar">
+    </nav>
+</header>
+
+<!-- Bio section -->
+<div class="bio-section" id="bioSection" style="display: none;">
+</div>
+
+<!-- Logout Popup -->
+<div class="overlay" id="overlay" onclick="closeLogoutPopup()"></div>
+<div class="popup" id="logoutPopup">
+    <p>Are you sure you want to logout?</p>
+    <a style="color: black;" href="index.html"><button onclick="logout()">Yes</button></a>  
+    <button onclick="closeLogoutPopup()">No</button>
+</div>  
+<!--NavBar End-->
+`
+
 document.addEventListener("DOMContentLoaded", function () {
   const savedRowIndex = localStorage.getItem("rowIndex");
   const savedUserPassword = localStorage.getItem("userPassword");
