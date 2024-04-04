@@ -23,8 +23,6 @@
       }
       .two {
         display: flex;
-        justify-content: space-around;
-        align-items: center;
         font-size: 0.8rem;
         border-radius: 10px;
         margin: 10px 5px;
@@ -32,8 +30,12 @@
         box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
       }
       .profile img {
+        margin-left: 10px;
         height: 90px;
         width: 90px;
+      }
+      .one{
+        margin-left: 10px;
       }
       .two:hover img {
         scale: 1.07;
@@ -220,9 +222,7 @@
                                 ${rowData[5] ? `<p>Email : ${rowData[5]}</p>` : ""}
                             </div>
                         </div>
-                        <div class="slide">
-                            ${profileImages.map(imgSrc => `<img src="${imgSrc}" alt="Image">`).join('')}
-                        </div>
+                        ${rowData[13] ? `<div class="slide"> ${profileImages.map(imgSrc => `<img src="${imgSrc}" alt="Image">`).join('')}</div>` : ""}
                         ${rowData[14] ? `<p class="pa">Change Image by Scroll Right</p>` : ""}
                     </div>
                     <div class="deta">
